@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1372020434 source:e:\allans programming\games indev\mine sweeper\block.cpp
+	"block.h"
+
+1369622300 e:\allans programming\games indev\mine sweeper\block.h
+	<allegro.h>
+	<string>
+	<time.h>
+
+1372022406 source:e:\allans programming\games indev\mine sweeper\main.cpp
+	<allegro.h>
+	<string>
+	<time.h>
+	"block.h"
+
+1396122198 source:e:\allans programming\games indev\mine sweeper\resources.rc
+
