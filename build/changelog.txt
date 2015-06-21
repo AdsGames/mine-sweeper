@@ -7,9 +7,18 @@
 
 Allan Legemaate, Allan Daniel Software
 -----------------------
-Adsgames 2012
+Adsgames 2012-2015
 Changelog:
 -----------------------
+
+Version 1.5
+--------------
+*Splash Image Changed ( again)
+*Timer for beeping more consistant
+*Upped resolution
+*Now using png
+*Fixed bugs
+
 
 Version 1.3
 --------------
