@@ -49,6 +49,9 @@ int fps;
 int frames_done;
 int old_time;
 
+int get_height;
+int get_width;
+
 int width, height;
 
 void ticker(){
@@ -497,7 +500,8 @@ int main(){
   install_mouse();
   install_timer();
   set_color_depth(32);
-  set_gfx_mode( GFX_AUTODETECT_WINDOWED, 1280, 960, 0, 0);
+  get_desktop_resolution(&get_width,&get_height);
+  set_gfx_mode( GFX_AUTODETECT, get_width,get_height,0, 0);
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
   set_window_title("Minesweeper");
 
