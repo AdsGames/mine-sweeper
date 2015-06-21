@@ -47,3 +47,35 @@
 1434857658 source:e:\allans programming\games indev\minesweeper\tools.cpp
 	"tools.h"
 
+1434858959 source:c:\users\danny\documents\github\minesweeper\block.cpp
+	"block.h"
+
+1434858959 c:\users\danny\documents\github\minesweeper\block.h
+	<allegro.h>
+	<string>
+	<time.h>
+	<sstream>
+	"tools.h"
+
+1434858959 c:\users\danny\documents\github\minesweeper\tools.h
+	<allegro.h>
+	<alpng.h>
+	<string>
+	<iostream>
+	<sstream>
+	<fstream>
+	<math.h>
+
+1419449000 source:c:\users\danny\documents\github\minesweeper\resources.rc
+
+1434858959 source:c:\users\danny\documents\github\minesweeper\tools.cpp
+	"tools.h"
+
+1434859706 source:c:\users\danny\documents\github\minesweeper\main.cpp
+	<allegro.h>
+	<alpng.h>
+	<string>
+	<time.h>
+	"tools.h"
+	"block.h"
+
