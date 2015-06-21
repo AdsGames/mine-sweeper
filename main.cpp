@@ -13,9 +13,8 @@ Block MyBlocks[100][100];
 BITMAP* buffer;
 BITMAP* cursor;
 BITMAP* bimages[11];
-BITMAP* foreground;
 BITMAP* menu;
-BITMAP* splash;
+BITMAP* intro;
 BITMAP* title;
 BITMAP* playing_board;
 
@@ -96,17 +95,14 @@ void setup(bool first){
     cursor = load_bitmap( "images/cursor.png", NULL);
 
     // Creates a buffer
-    buffer = create_bitmap( 640, 480);
+    buffer = create_bitmap( 1280, 960);
 
     // Board for the tiles
-    playing_board = create_bitmap( 640, 480);
+    playing_board = create_bitmap( 1280, 880);
 
     // Sets Starting Images
     title = load_bitmap( "images/title.png", NULL);
-    splash = load_bitmap( "images/splash.png", NULL);
-
-    // Sets Foreground
-    foreground = load_bitmap( "images/foreground.png", NULL);
+    intro = load_bitmap( "images/intro.png", NULL);
 
     // Sets Sounds
     explode = load_sample( "sounds/explode.wav" );
@@ -136,8 +132,8 @@ void setup(bool first){
   mines = 0;
   flags = 0;
 
-  width = 16;
-  height = 12;
+  width = 8;
+  height = 6;
 
   mousedown = false;
   firstPress = false;
@@ -149,16 +145,33 @@ void setup(bool first){
   // Sets blocks
   for( int i = 0; i < width; i++){
     for( int t = 0; t < height; t++){
-      // Back to 0
-      MyBlocks[i][t].SetType(0);
-
       // Mines
       if( random(0, 7) == 0){
         MyBlocks[i][t].SetType(9);
         mines++;
       }
+      else{
+        // Back to 0
+        MyBlocks[i][t].SetType(0);
+      }
 
-      // Number based on surrounding mines
+      // Set info
+      MyBlocks[i][t].SetImages("images/blocks/none.png");
+      MyBlocks[i][t].SetFlaged(false);
+      MyBlocks[i][t].SetSelected(false);
+
+      MyBlocks[i][t].SetWidth( playing_board -> w/width);
+      MyBlocks[i][t].SetHeight( playing_board -> h/height);
+
+      // Set position
+      MyBlocks[i][t].SetX( i * ( playing_board -> w/width));
+      MyBlocks[i][t].SetY( t * ( playing_board -> h/height));
+    }
+  }
+
+  // Number based on surrounding mines
+  for( int i = 0; i < width; i++){
+    for( int t = 0; t < height; t++){
       if( MyBlocks[i][t].GetType() != 9){
         int type = 0;
 
@@ -189,17 +202,7 @@ void setup(bool first){
         MyBlocks[i][t].SetType(type);
       }
 
-      // Set info
-      MyBlocks[i][t].SetImages("images/blocks/none.png");
-      MyBlocks[i][t].SetFlaged(false);
-      MyBlocks[i][t].SetSelected(false);
 
-      MyBlocks[i][t].SetWidth( playing_board -> w/width);
-      MyBlocks[i][t].SetHeight( playing_board -> h/height);
-
-      // Set position
-      MyBlocks[i][t].SetX(i * ( playing_board -> w/width));
-      MyBlocks[i][t].SetY(t * ( playing_board -> h/height));
     }
   }
 }
@@ -208,7 +211,7 @@ void setup(bool first){
 void game(){
   // A.D.S. Games Splash
   if( gameScreen == 0){
-    highcolor_fade_in(splash,8);
+    highcolor_fade_in(intro,8);
     rest(2000);
     highcolor_fade_out(8);
     gameScreen = 1;
@@ -272,7 +275,7 @@ void game(){
     if( mouse_b){
       for( int i = 0; i < width; i++){
         for( int t = 0; t < height; t++){
-          if( collisionAny( mouse_x, mouse_x, MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(), mouse_y, mouse_y, MyBlocks[i][t].GetY(), MyBlocks[i][t].GetY() + MyBlocks[i][t].GetHeight())){
+          if( collisionAny( mouse_x, mouse_x, MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(), mouse_y, mouse_y, MyBlocks[i][t].GetY() + 80, MyBlocks[i][t].GetY() + 80 + MyBlocks[i][t].GetHeight())){
             if( mouse_b & 1 && mousedown == false && MyBlocks[i][t].GetFlaged() == false){
               MyBlocks[i][t].Change();
               MyBlocks[i][t].SetSelected(true);
@@ -363,12 +366,12 @@ void game(){
 
     // Press buttons
     if( mouse_b & 1){
-      if( mouse_x < 260 && mouse_x > 170 && mouse_y < 290 && mouse_y > 260){
+      if( collisionAny( mouse_x, mouse_x, 340, 520, mouse_y, mouse_y, 520, 580)){
         setup(false);
         gameScreen = 4;
         highcolor_fade_out(8);
       }
-      else if( mouse_x < 470&&mouse_x > 380 && mouse_y < 290 && mouse_y > 260){
+      else if( collisionAny( mouse_x, mouse_x, 760, 940, mouse_y, mouse_y, 520, 580)){
         closeGame = true;
       }
     }
@@ -380,12 +383,12 @@ void game(){
 
     // Press buttons
     if( mouse_b & 1){
-      if( collisionAny( mouse_x, mouse_x, 170, 260, mouse_y, mouse_y, 260, 290)){
+      if( collisionAny( mouse_x, mouse_x, 340, 520, mouse_y, mouse_y, 520, 580)){
         setup(false);
         gameScreen = 4;
         highcolor_fade_out(8);
       }
-      else if( collisionAny( mouse_x, mouse_x, 380, 470, mouse_y, mouse_y, 260, 290)){
+      else if( collisionAny( mouse_x, mouse_x, 760, 940, mouse_y, mouse_y, 520, 580)){
         closeGame = true;
       }
     }
@@ -418,19 +421,17 @@ void draw(){
     // Draw blocks
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
-        MyBlocks[i][t].draw(buffer, playing_board -> w/width, playing_board -> h/height);
+        MyBlocks[i][t].draw(playing_board, playing_board -> w/width, playing_board -> h/height);
       }
     }
-
-    // Draws foreground
-    //draw_sprite( buffer, foreground, 0, 0);
+    draw_sprite( buffer, playing_board, 0, 80);
 
     // Draws text
-    textprintf_right_ex( buffer, font, 620, 0, makecol(255,255,255), -1,"Mines Left: %i" , mines-flags);
-    textprintf_ex( buffer, font, 20, 0, makecol(255,255,255),-1, "Time: %i" , timeIn);
+    textprintf_right_ex( buffer, font, 1240, 0, makecol(255,255,255), -1, "Mines Left: %i", mines-flags);
+    textprintf_ex( buffer, font, 40, 0, makecol(255,255,255), -1, "Time: %i", timeIn);
 
     // Draws Mouse
-    draw_sprite( buffer, cursor, mouse_x-10, mouse_y-10);
+    draw_sprite( buffer, cursor, mouse_x, mouse_y);
   }
 
   // Win
@@ -438,22 +439,22 @@ void draw(){
     rectfill( buffer, 0, 0, SCREEN_W, SCREEN_H, makecol( 0, 0, 0));
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
-        MyBlocks[i][t].draw( buffer, playing_board -> w/width, playing_board -> h/height);
+        MyBlocks[i][t].draw( playing_board, playing_board -> w/width, playing_board -> h/height);
       }
     }
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
         if( MyBlocks[i][t].GetSelected() == true){
-          MyBlocks[i][t].draw(buffer, playing_board -> w/width, playing_board -> h/height);
+          MyBlocks[i][t].draw(playing_board, playing_board -> w/width, playing_board -> h/height);
         }
       }
     }
+    draw_sprite( buffer, playing_board, 0, 80);
 
-    draw_sprite(buffer, menu, 150, 150);
-    draw_sprite(buffer, foreground, 0, 0);
+    draw_sprite(buffer, menu, 300, 300);
 
-    textprintf_centre_ex(buffer,font,320,155, makecol(0,0,0),-1,"You Win!");
-    textprintf_centre_ex(buffer,font,320,185, makecol(0,0,0),-1,"Time: %i Seconds",timeIn);
+    textprintf_centre_ex( buffer,font,640,320, makecol(0,0,0),-1,"You Win!");
+    textprintf_centre_ex( buffer,font,640,380, makecol(0,0,0),-1,"Time: %i Seconds",timeIn);
 
     draw_sprite( buffer, cursor, mouse_x, mouse_y);
   }
@@ -463,22 +464,21 @@ void draw(){
     rectfill( buffer, 0, 0, SCREEN_W, SCREEN_H, makecol( 0, 0, 0));
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
-        MyBlocks[i][t].draw( buffer, playing_board -> w/width, playing_board -> h/height);
+        MyBlocks[i][t].draw( playing_board, playing_board -> w/width, playing_board -> h/height);
       }
     }
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
         if( MyBlocks[i][t].GetSelected() == true){
-          MyBlocks[i][t].draw(buffer, playing_board -> w/width, playing_board -> h/height);
+          MyBlocks[i][t].draw(playing_board, playing_board -> w/width, playing_board -> h/height);
         }
       }
     }
+    draw_sprite( buffer, playing_board, 0, 80);
+    draw_sprite( buffer, menu, 300, 300);
 
-    draw_sprite(buffer, menu, 150, 150);
-    draw_sprite(buffer, foreground, 0, 0);
-
-    textprintf_centre_ex(buffer,font,320,155, makecol(0,0,0),-1,"You Lose!");
-    textprintf_centre_ex(buffer,font,320,185, makecol(0,0,0),-1,"Mines Left: %i",mines-flags);
+    textprintf_centre_ex( buffer,font,640,320, makecol(0,0,0),-1,"You Lose!");
+    textprintf_centre_ex( buffer,font,640,380, makecol(0,0,0),-1,"Mines Left: %i",mines-flags);
 
     draw_sprite( buffer, cursor, mouse_x, mouse_y);
   }
@@ -529,7 +529,7 @@ int main(){
   }
 
   // Clears Memory
-  delete [] buffer, cursor, bimages, foreground, title, explode, menu, font;
+  delete [] buffer, cursor, bimages, title, explode, menu, font;
 
   allegro_exit();
 
