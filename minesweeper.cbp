@@ -12,17 +12,20 @@
 				<Option object_output="output" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Linker>
+					<Add option="-lalpng" />
+					<Add option="-lalleg" />
+				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add library="alleg" />
-		</Linker>
 		<Unit filename="block.cpp" />
 		<Unit filename="block.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
+		<Unit filename="tools.cpp" />
+		<Unit filename="tools.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

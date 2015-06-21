@@ -15,3 +15,35 @@
 
 1396122198 source:e:\allans programming\games indev\mine sweeper\resources.rc
 
+1434857697 source:e:\allans programming\games indev\minesweeper\block.cpp
+	"block.h"
+
+1434857740 e:\allans programming\games indev\minesweeper\block.h
+	<allegro.h>
+	<string>
+	<time.h>
+	<sstream>
+	"tools.h"
+
+1434857638 source:e:\allans programming\games indev\minesweeper\main.cpp
+	<allegro.h>
+	<alpng.h>
+	<string>
+	<time.h>
+	"tools.h"
+	"block.h"
+
+1396122198 source:e:\allans programming\games indev\minesweeper\resources.rc
+
+1428682870 e:\allans programming\games indev\minesweeper\tools.h
+	<allegro.h>
+	<alpng.h>
+	<string>
+	<iostream>
+	<sstream>
+	<fstream>
+	<math.h>
+
+1434857658 source:e:\allans programming\games indev\minesweeper\tools.cpp
+	"tools.h"
+
