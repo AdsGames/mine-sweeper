@@ -47,17 +47,24 @@
 1434857658 source:e:\allans programming\games indev\minesweeper\tools.cpp
 	"tools.h"
 
+1434858959 D
+
 1434857697 source:e:\allans programming\games indev\minesweeper\src\block.cpp
 	"block.h"
 
 1434857740 e:\allans programming\games indev\minesweeper\src\block.h
+
+1434858959 source:c:\users\danny\documents\github\minesweeper\block.cpp
+	"block.h"
+
+1434858959 c:\users\danny\documents\github\minesweeper\block.h
+
+1434859706 gin/master
 	<allegro.h>
 	<string>
 	<time.h>
 	<sstream>
 	"tools.h"
-
-1428682870 e:\allans programming\games indev\minesweeper\src\tools.h
 	<allegro.h>
 	<alpng.h>
 	<string>
@@ -65,6 +72,10 @@
 	<sstream>
 	<fstream>
 	<math.h>
+
+1428682870 e:\allans programming\games indev\minesweeper\src\tools.h
+
+1434858959 c:\users\danny\documents\github\minesweeper\tools.h
 
 1434928146 source:e:\allans programming\games indev\minesweeper\src\main.cpp
 	<allegro.h>
@@ -85,7 +96,7 @@
 	<string>
 	<time.h>
 
-1434854097 source:c:\users\allan\documents\games indev\minesweeper\src\block.cpp
+1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\block.cpp
 	"block.h"
 
 1434854140 c:\users\allan\documents\games indev\minesweeper\src\block.h
@@ -104,7 +115,7 @@
 	<fstream>
 	<math.h>
 
-1483200373 source:c:\users\allan\documents\games indev\minesweeper\src\button.cpp
+1483208857 source:c:\users\allan\documents\games indev\minesweeper\src\button.cpp
 	"button.h"
 
 1387735208 c:\users\allan\documents\games indev\minesweeper\src\button.h
@@ -112,10 +123,10 @@
 	<string>
 	<time.h>
 
-1434854058 source:c:\users\allan\documents\games indev\minesweeper\src\tools.cpp
+1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\tools.cpp
 	"tools.h"
 
-1483202498 source:c:\users\allan\documents\games indev\minesweeper\src\main.cpp
+1483211443 source:c:\users\allan\documents\games indev\minesweeper\src\main.cpp
 	<allegro.h>
 	<alpng.h>
 	<string>
@@ -126,14 +137,14 @@
 	"menu.h"
 	"game.h"
 
-1434854140 c:\users\allan\documents\games indev\minesweeper\include\block.h
+1483204112 c:\users\allan\documents\games indev\minesweeper\include\block.h
 	<allegro.h>
 	<string>
 	<time.h>
 	<sstream>
 	"tools.h"
 
-1428679270 c:\users\allan\documents\games indev\minesweeper\include\tools.h
+1483204112 c:\users\allan\documents\games indev\minesweeper\include\tools.h
 	<allegro.h>
 	<alpng.h>
 	<string>
@@ -142,44 +153,65 @@
 	<fstream>
 	<math.h>
 
-1483200357 c:\users\allan\documents\games indev\minesweeper\include\button.h
+1483208828 c:\users\allan\documents\games indev\minesweeper\include\button.h
 	<allegro.h>
 	<string>
-	<time.h>
 
-1396118598 source:c:\users\allan\documents\games indev\minesweeper\res\resources.rc
+1483204112 source:c:\users\allan\documents\games indev\minesweeper\res\resources.rc
 
-1483202766 source:c:\users\allan\documents\games indev\minesweeper\src\init.cpp
+1483209656 source:c:\users\allan\documents\games indev\minesweeper\src\init.cpp
 	"init.h"
 
-1483201594 c:\users\allan\documents\games indev\minesweeper\include\init.h
+1483204112 c:\users\allan\documents\games indev\minesweeper\include\init.h
 	"state.h"
 
-1483202475 c:\users\allan\documents\games indev\minesweeper\include\state.h
+1483204112 c:\users\allan\documents\games indev\minesweeper\include\state.h
 	<allegro.h>
 
-1483131758 source:c:\users\allan\documents\games indev\minesweeper\src\state.cpp
+1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\state.cpp
 	"state.h"
 
-1483204012 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
+1483211651 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
 	"game.h"
 
-1483203849 c:\users\allan\documents\games indev\minesweeper\include\game.h
+1483211688 c:\users\allan\documents\games indev\minesweeper\include\game.h
 	"state.h"
 	"tools.h"
 	"block.h"
+	"button.h"
+	"globals.h"
 
-1483202970 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
+1483211636 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
 	"menu.h"
 
-1483202747 c:\users\allan\documents\games indev\minesweeper\include\menu.h
+1483211573 c:\users\allan\documents\games indev\minesweeper\include\menu.h
 	"state.h"
 	"button.h"
+	"globals.h"
 
-1483202015 source:c:\users\allan\documents\games indev\minesweeper\src\intro.cpp
+1483210654 source:c:\users\allan\documents\games indev\minesweeper\src\intro.cpp
 	"intro.h"
 
-1483202094 c:\users\allan\documents\games indev\minesweeper\include\intro.h
+1483204112 c:\users\allan\documents\games indev\minesweeper\include\intro.h
 	"state.h"
 	"tools.h"
+
+1483202094 
+
+1419449000 source:c:\users\danny\documents\github\minesweeper\resources.rc
+
+1434858959 source:c:\users\danny\documents\github\minesweeper\tools.cpp
+	"tools.h"
+
+1434859706 source:c:\users\danny\documents\github\minesweeper\main.cpp
+	<allegro.h>
+	<alpng.h>
+	<string>
+	<time.h>
+	"tools.h"
+	"block.h"
+
+1483211520 c:\users\allan\documents\games indev\minesweeper\include\globals.h
+
+1483211531 source:c:\users\allan\documents\games indev\minesweeper\src\globals.cpp
 

@@ -75,6 +75,9 @@ void change_state(){
       case STATE_GAME:
         currentState = new game();
         break;
+      case STATE_EXIT:
+        close_button_pressed = true;
+        break;
     }
 
     //Change the current state ID

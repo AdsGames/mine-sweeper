@@ -7,9 +7,18 @@
 
 Allan Legemaate, Allan Daniel Software
 -----------------------
-Adsgames 2012-2015
+Adsgames 2012-2016
 Changelog:
 -----------------------
+
+Version 1.6
+--------------
+*Major code changes, see github!
+*Images edited
+*640x640 resolution 
+*New splash
+*Main Menu
+*Difficulty selection
 
 Version 1.5
 --------------

@@ -9,6 +9,7 @@
 
 #include "state.h"
 #include "button.h"
+#include "globals.h"
 
 class menu : public state{
   public:
