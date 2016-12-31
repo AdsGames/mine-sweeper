@@ -9,7 +9,9 @@ intro::intro(){
 
 // Destructor
 intro::~intro(){
-
+  // Clean up images
+  destroy_bitmap( img_intro);
+  destroy_bitmap( img_title);
 }
 
 // Draw to screen
