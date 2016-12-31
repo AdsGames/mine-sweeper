@@ -9,72 +9,72 @@
 
 #include "tools.h"
 
-using namespace std;
-
+// Block class!
 class Block{
+  public:
+    // Construct and deconstruct
+    Block();
+    ~Block();
 
-public:
-  Block();
-  ~Block();
+    // Set images for block
+    void SetImages( std::string new_image);
 
-  void SetImages( string image1, string image2);
-  void SetImages( string image1);
+    // X / Y
+    int GetX(){ return x; }
+    int GetY(){ return y; }
 
-  int GetY();
-  int GetX();
+    // Width / height
+    int GetHeight(){ return height; }
+    int GetWidth(){ return width; }
 
-  int GetHeight();
-  int GetWidth();
+    // Returns type of block
+    int GetType(){ return type; }
 
-  int GetType();
+    // Mouse selected or not
+    bool GetSelected(){ return selected; }
 
-  bool GetSelected();
-  bool GetFlaged();
+    // Is it flagged?
+    bool GetFlaged(){ return flaged; }
 
-  bool GetDead();
+    // Set the type
+    void SetType(int newType){ type = newType; }
 
-  BITMAP* GetImage();
+    // Set whether already selected
+    void SetSelected(bool newSelected){ selected = newSelected; }
 
-  void draw(BITMAP* tempBitmap, float stretchWidth, float stretchHeight);
-  void DrawNewSprite( BITMAP* tempBitmap, BITMAP* spriteToDraw, float stretchWidth, float stretchHeight);
+    // Set whether flagged or not
+    void SetFlaged(bool newFlag){ flaged = newFlag; }
 
-  void SetX( int newValue);
-  void SetY( int newValue);
+    // Set Position
+    void SetX( int newValue){ x = newValue; }
+    void SetY( int newValue){ y = newValue; }
 
-  void SetWidth(int newValue);
-  void SetHeight(int newValue);
+    // Set Size
+    void SetWidth( float newValue){ width = newValue; }
+    void SetHeight( float newValue){ height = newValue; }
 
-  void SetType(int newType);
-  void SetValue(int newValue);
+    // Change type
+    void Change();
 
+    // Draw image to screen
+    void draw(BITMAP* tempBitmap);
+  private:
+    // Position
+    int x;
+    int y;
 
-  void SetSelected(bool newSelected);
-  void SetFlaged(bool newFlag);
+    // Size
+    float width;
+    float height;
 
-  void Change();
+    // Other flags
+    int type;
+    bool selected;
+    bool flaged;
 
-private:
-
-  int x;
-  int y;
-
-  int width;
-  int height;
-
-  int frame;
-  int type;
-  int value;
-
-  bool selected;
-
-  bool flaged;
-
-  bool animated;
-
-  BITMAP *images[2][2];
-
-  BITMAP *flag;
+    // Images
+    BITMAP *image;
+    BITMAP *flag;
 };
 
 #endif
-

@@ -95,9 +95,6 @@ game::game(){
 
       // Set info
       MyBlocks[i][t].SetImages( "images/blocks/none.png");
-      MyBlocks[i][t].SetFlaged( false);
-      MyBlocks[i][t].SetSelected( false);
-
       MyBlocks[i][t].SetWidth( playing_board -> w/width);
       MyBlocks[i][t].SetHeight( playing_board -> h/height);
 
@@ -134,7 +131,17 @@ game::game(){
 
 // Clean up
 game::~game(){
-  highcolor_fade_out(8);
+  // Fade out
+  //highcolor_fade_out(8);
+
+  // Destroy bitmaps
+  destroy_bitmap( buffer);
+  destroy_bitmap( menu);
+  destroy_bitmap( playing_board);
+
+  // Destroy sounds
+  destroy_sample( explode);
+  destroy_sample( timer);
 }
 
 // All game logic goes on here
@@ -255,6 +262,8 @@ void game::update(){
       }
     }
   }
+  if( key[KEY_SPACE])
+    set_next_state( STATE_MENU);
 }
 
 
@@ -266,7 +275,7 @@ void game::draw(){
   // Draw blocks
   for( int i = 0; i < width; i++){
     for( int t = 0; t < height; t++){
-      MyBlocks[i][t].draw( playing_board, playing_board -> w / width, playing_board -> h / height);
+      MyBlocks[i][t].draw( playing_board);
     }
   }
 

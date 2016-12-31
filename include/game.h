@@ -43,13 +43,13 @@ class game : public state{
     BITMAP* menu;
     BITMAP* playing_board;
 
-    // Buttons
-    Button menu_yes;
-    Button menu_no;
-
     // Sounds
     SAMPLE* explode;
     SAMPLE* timer;
+
+    // Buttons
+    Button menu_yes;
+    Button menu_no;
 
     // Variables
     int mines;

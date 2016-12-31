@@ -58,7 +58,7 @@ void change_state(){
   if( nextState != STATE_NULL ){
     //Delete the current state
     if( nextState != STATE_EXIT ){
-        delete currentState;
+      delete currentState;
     }
 
     //Change the state
@@ -78,6 +78,8 @@ void change_state(){
       case STATE_EXIT:
         close_button_pressed = true;
         break;
+      default:
+        currentState = new menu();
     }
 
     //Change the current state ID
@@ -139,11 +141,11 @@ int main(){
     }
     while(ticks > 0){
       int old_ticks = ticks;
-      // Update always
-      currentState -> update();
-
       // Check for state change
       change_state();
+
+      // Update always
+      currentState -> update();
 
       ticks--;
       if(old_ticks <= ticks){

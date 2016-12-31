@@ -11,7 +11,9 @@ Button::Button(){
 }
 
 Button::~Button(){
-  delete [] images[0], images[1];
+  // Destroy bitmaps
+  destroy_bitmap( images[0]);
+  destroy_bitmap( images[1]);
 }
 
 void Button::set_images( std::string image1, std::string image2){
