@@ -1,49 +1,41 @@
+/*
+ * Button Class
+ * Allan Legemaate
+ * 31/12/2016
+ * Redone to be more intuitive
+ */
 #ifndef BUTTON_H
 #define BUTTON_H
 
 #include <allegro.h>
 #include <string>
-#include <time.h>
-
-using namespace std;
 
 class Button{
+  public:
+    Button();
+    ~Button();
 
-public:
-  Button();
-  ~Button();
+    void set_images( std::string image1, std::string image2);
 
-  void SetImages( std::string image1, std::string image2);
+    bool get_hover();
 
-  void SetHover(bool newHover);
-  bool GetHover();
+    void draw(BITMAP* tempBitmap);
 
-  void setResDiv(int newResDiv);
+    void set_position( int newX, int newY);
 
-  void draw(BITMAP* tempBitmap);
-  void DrawNewSprite( BITMAP* tempBitmap, BITMAP* spriteToDraw);
+    void set_type(int newType);
+    void set_value(int newValue);
 
-  void SetPosition( int newX, int newY);
+    int get_x();
+    int get_y();
+  private:
+    int button_height;
+    int button_width;
 
-  void SetType(int newType);
-  void SetValue(int newValue);
+    int x;
+    int y;
 
-  bool CheckHover();
-
-  int GetX();
-  int GetY();
-
-private:
-  int button_height;
-  int button_width;
-  int resDiv;
-
-  int x;
-  int y;
-
-  bool hover;
-
-  BITMAP *images[2][2];
+    BITMAP *images[2];
 };
 
 #endif

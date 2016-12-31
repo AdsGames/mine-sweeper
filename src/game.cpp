@@ -13,6 +13,7 @@ volatile bool beepQueue = false;
 volatile int timeIn = 0;
 int done;
 
+// Init game state
 game::game(){
   // Cursor
   enable_hardware_cursor();
@@ -28,7 +29,7 @@ game::game(){
   buffer = create_bitmap( SCREEN_W, SCREEN_H);
 
   // Board for the tiles
-  playing_board = create_bitmap( 640, 640);
+  playing_board = create_bitmap( 640, 580);
 
   // Sets Sounds
   explode = load_sample( "sounds/explode.wav" );
@@ -37,14 +38,20 @@ game::game(){
   // Sets menu
   menu = load_bitmap( "images/menu.png", NULL);
 
+  // Buttons
+  menu_yes.set_images( "images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
+  menu_yes.set_position( 156, 398);
+  menu_no.set_images( "images/buttons/button_no.png", "images/buttons/button_no_hover.png");
+  menu_no.set_position( 368, 398);
+
   // Fonts
   FONT *f1, *f2, *f3, *f4, *f5;
 
   // Sets Font
   f1 = load_font( "data/arial_rounded_mt_bold.pcx", NULL, NULL);
-  f2 = extract_font_range(f1, ' ', 'A'-1);
-  f3 = extract_font_range(f1, 'A', 'Z');
-  f4 = extract_font_range(f1, 'Z'+1, 'z');
+  f2 = extract_font_range( f1, ' ', 'A'-1);
+  f3 = extract_font_range( f1, 'A', 'Z');
+  f4 = extract_font_range( f1, 'Z'+1, 'z');
 
   //  Merge fonts
   font = merge_fonts( f4, f5 = merge_fonts(f2, f3));
@@ -60,8 +67,8 @@ game::game(){
   mines = 0;
   flags = 0;
 
-  width = 6;
-  height = 5;
+  width = game_difficulty;
+  height = game_difficulty;
 
   mousedown = false;
   firstPress = false;
@@ -69,7 +76,7 @@ game::game(){
   done = false;
 
   // Set to game
-  gameScreen = 4;
+  gameScreen = MINISTATE_GAME;
 
   // Reset timer
   timeIn = 0;
@@ -106,29 +113,14 @@ game::game(){
       if( MyBlocks[i][t].GetType() != 9){
         int type = 0;
 
-        if( i < width){
-          if( MyBlocks[i+1][t].GetType() == 9){ type++;}
-        }
-        if( i < width - 1 && t > 0){
-          if( MyBlocks[i+1][t-1].GetType() == 9){ type++;}
-        }
-        if( i < width - 1 && t < height - 1){
-          if( MyBlocks[i+1][t+1].GetType() == 9){ type++;}
-        }
-        if( t < height - 1){
-          if( MyBlocks[i][t+1].GetType() == 9){ type++;}
-        }
-        if( i > 0){
-          if( MyBlocks[i-1][t].GetType() == 9){ type++;}
-        }
-        if( i > 0 && t > 0){
-          if( MyBlocks[i-1][t-1].GetType() == 9){ type++;}
-        }
-        if( i > 0 && t < height - 1){
-          if( MyBlocks[i-1][t+1].GetType() == 9){ type++;}
-        }
-        if( t > 0){
-          if( MyBlocks[i][t-1].GetType() == 9){type++;}
+        // Surrounding 8 cells
+        for( int j = -1; j <= 1; j ++){
+          for( int k = -1; k <= 1; k ++){
+            if( ((j < 0 && i > 0) || (j > 0 && i < width - 1) || j == 0) && ((k < 0 && t > 0) || (k > 0 && t < height - 1) || k == 0)){
+              if( MyBlocks[i + j][t + k].GetType() == 9)
+                type ++;
+            }
+          }
         }
         MyBlocks[i][t].SetType(type);
       }
@@ -140,6 +132,7 @@ game::game(){
   show_mouse( screen);
 }
 
+// Clean up
 game::~game(){
 
 }
@@ -147,10 +140,10 @@ game::~game(){
 // All game logic goes on here
 void game::update(){
   // Game
-  if( gameScreen == 4){
+  if( gameScreen == MINISTATE_GAME){
     // Plays stressing timer sound
     if( beepQueue && sound == true){
-      play_sample(timer,255,122,500,0);
+      play_sample( timer, 255, 122, 500, 0);
       beepQueue = false;
     }
 
@@ -176,7 +169,7 @@ void game::update(){
             MyBlocks[i][t].Change();
           }
         }
-        gameScreen = 5;
+        gameScreen = MINISTATE_WIN;
         done = true;
       }
     }
@@ -186,7 +179,7 @@ void game::update(){
     if( mouse_b){
       for( int i = 0; i < width; i++){
         for( int t = 0; t < height; t++){
-          if( collisionAny( mouse_x, mouse_x, MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(), mouse_y, mouse_y, MyBlocks[i][t].GetY() + 80, MyBlocks[i][t].GetY() + 80 + MyBlocks[i][t].GetHeight())){
+          if( collisionAny( mouse_x, mouse_x, MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(), mouse_y, mouse_y, MyBlocks[i][t].GetY() + 60, MyBlocks[i][t].GetY() + 60 + MyBlocks[i][t].GetHeight())){
             if( mouse_b & 1 && mousedown == false && MyBlocks[i][t].GetFlaged() == false){
               MyBlocks[i][t].Change();
               MyBlocks[i][t].SetSelected(true);
@@ -198,7 +191,7 @@ void game::update(){
                     MyBlocks[i][t].Change();
                   }
                 }
-                gameScreen = 6;
+                gameScreen = MINISTATE_LOSE;
                 done = true;
               }
               mousedown=true;
@@ -225,39 +218,18 @@ void game::update(){
     for( int i = 0; i < width; i++){
       for( int t = 0; t < height; t++){
         if( MyBlocks[i][t].GetSelected() == true && MyBlocks[i][t].GetType() == 0){
+          // Make it non updating
           MyBlocks[i][t].SetType(10);
           MyBlocks[i][t].Change();
-          if( i < width - 1){
-            MyBlocks[i+1][t].Change();
-            MyBlocks[i+1][t].SetSelected(true);
-          }
-          if( i < width - 1 && t > 0){
-            MyBlocks[i+1][t-1].Change();
-            MyBlocks[i+1][t-1].SetSelected(true);
-          }
-          if( i < width - 1 && t < height - 1){
-            MyBlocks[i+1][t+1].Change();
-            MyBlocks[i+1][t+1].SetSelected(true);
-          }
-          if( t < height - 1){
-            MyBlocks[i][t+1].Change();
-            MyBlocks[i][t+1].SetSelected(true);
-          }
-          if( i > 0){
-            MyBlocks[i-1][t].Change();
-            MyBlocks[i-1][t].SetSelected(true);
-          }
-          if( i > 0 && t > 0){
-            MyBlocks[i-1][t-1].Change();
-            MyBlocks[i-1][t-1].SetSelected(true);
-          }
-          if( i > 0 && t < height - 1){
-            MyBlocks[i-1][t+1].Change();
-            MyBlocks[i-1][t+1].SetSelected(true);
-          }
-          if( t > 0){
-            MyBlocks[i][t-1].Change();
-            MyBlocks[i][t-1].SetSelected(true);
+
+          // Surrounding 8 cells
+          for( int j = -1; j <= 1; j ++){
+            for( int k = -1; k <= 1; k ++){
+              if( ((j < 0 && i > 0) || (j > 0 && i < width - 1) || j == 0) && ((k < 0 && t > 0) || (k > 0 && t < height - 1) || k == 0)){
+                MyBlocks[i + j][t + k].Change();
+                MyBlocks[i + j][t + k].SetSelected(true);
+              }
+            }
           }
         }
       }
@@ -270,17 +242,17 @@ void game::update(){
   }
 
   // Win or lose
-  else if( gameScreen == 5 || gameScreen == 6){
+  else if( gameScreen == MINISTATE_WIN || gameScreen == MINISTATE_LOSE){
     int newgame = 0;
 
     // Press buttons
     if( mouse_b & 1){
-      if( collisionAny( mouse_x, mouse_x, 340, 520, mouse_y, mouse_y, 520, 580)){
+      if( menu_yes.get_hover()){
         set_next_state( STATE_GAME);
-        gameScreen = 4;
+        gameScreen = MINISTATE_GAME;
         highcolor_fade_out(8);
       }
-      else if( collisionAny( mouse_x, mouse_x, 760, 940, mouse_y, mouse_y, 520, 580)){
+      else if( menu_no.get_hover()){
         set_next_state( STATE_MENU);
       }
     }
@@ -291,32 +263,38 @@ void game::update(){
 // All drawing goes on here
 void game::draw(){
   // Draws background
-  rectfill( buffer, 0, 0, SCREEN_W, SCREEN_H, makecol( 0, 0, 0));
+  clear_to_color( buffer, 0x000000);
 
   // Draw blocks
   for( int i = 0; i < width; i++){
     for( int t = 0; t < height; t++){
-      MyBlocks[i][t].draw(playing_board, playing_board -> w/width, playing_board -> h/height);
+      MyBlocks[i][t].draw( playing_board, playing_board -> w / width, playing_board -> h / height);
     }
   }
 
-  // Stretch tiles to fit
-  stretch_sprite( buffer, playing_board, 0, 60, SCREEN_W, SCREEN_H - 60);
+  // Draw board
+  draw_sprite( buffer, playing_board, 0, 60);
 
   // Game Text
-  if( gameScreen == 4){
-    textprintf_right_ex( buffer, font, 1240, 0, makecol(255,255,255), -1, "Mines Left: %i", mines-flags);
-    textprintf_ex( buffer, font, 40, 0, makecol(255,255,255), -1, "Time: %i", timeIn);
-  }
-  // Win menu text
-  else if( gameScreen == 5){
-    textprintf_centre_ex( buffer,font,640,320, makecol(0,0,0),-1,"You Win!");
-    textprintf_centre_ex( buffer,font,640,380, makecol(0,0,0),-1,"Time: %i Seconds",timeIn);
-  }
-  // Lose menu text
-  else{
-    textprintf_centre_ex( buffer,font,640,320, makecol(0,0,0),-1,"You Lose!");
-    textprintf_centre_ex( buffer,font,640,380, makecol(0,0,0),-1,"Mines Left: %i",mines-flags);
+  textprintf_right_ex( buffer, font, SCREEN_W - 10, 10, makecol(255,255,255), -1, "Mines Left: %i", mines-flags);
+  textprintf_ex( buffer, font, 10, 10, makecol(255,255,255), -1, "Time: %i", timeIn);
+
+  // Win and Lose menu text
+  if( gameScreen == MINISTATE_WIN || gameScreen == MINISTATE_LOSE){
+    draw_sprite( buffer, menu, 128, 234);
+    // Unique elements
+    if( gameScreen == MINISTATE_WIN){
+      textprintf_centre_ex( buffer, font, SCREEN_W/2, 260, makecol(0,0,0), -1, "You Win!");
+      textprintf_centre_ex( buffer, font, SCREEN_W/2, 300, makecol(0,0,0), -1, "Time: %i Seconds", timeIn);
+    }
+    else if( gameScreen == MINISTATE_LOSE){
+      textprintf_centre_ex( buffer, font, SCREEN_W/2, 260, makecol(0,0,0), -1, "You Lose!");
+      textprintf_centre_ex( buffer, font, SCREEN_W/2, 300, makecol(0,0,0), -1, "Mines Left: %i", mines - flags);
+    }
+    textprintf_centre_ex( buffer, font, SCREEN_W/2, 340, makecol(0,0,0), -1, "Play Again?");
+    // Buttons
+    menu_yes.draw( buffer);
+    menu_no.draw( buffer);
   }
 
   // Draws buffer

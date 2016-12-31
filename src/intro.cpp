@@ -16,7 +16,7 @@ intro::~intro(){
 void intro::draw(){
   // A.D.S. Games Splash
   highcolor_fade_in( img_intro, 8);
-  rest( 2000);
+  rest( 1000);
   highcolor_fade_out( 8);
 
   // Minesweeper Splash
