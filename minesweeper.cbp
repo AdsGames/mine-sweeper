@@ -12,20 +12,37 @@
 				<Option object_output="output" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add directory="include" />
+				</Compiler>
 				<Linker>
 					<Add option="-lalpng" />
 					<Add option="-lalleg" />
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src/adsmath_private.h" />
+		<Unit filename="include/block.h" />
+		<Unit filename="include/button.h" />
+		<Unit filename="include/game.h" />
+		<Unit filename="include/globals.h" />
+		<Unit filename="include/init.h" />
+		<Unit filename="include/intro.h" />
+		<Unit filename="include/menu.h" />
+		<Unit filename="include/state.h" />
+		<Unit filename="include/tools.h" />
+		<Unit filename="res/resources.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="src/block.cpp" />
-		<Unit filename="src/block.h" />
 		<Unit filename="src/button.cpp" />
-		<Unit filename="src/button.h" />
+		<Unit filename="src/game.cpp" />
+		<Unit filename="src/globals.cpp" />
+		<Unit filename="src/init.cpp" />
+		<Unit filename="src/intro.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/menu.cpp" />
+		<Unit filename="src/state.cpp" />
 		<Unit filename="src/tools.cpp" />
-		<Unit filename="src/tools.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
