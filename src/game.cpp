@@ -132,7 +132,7 @@ game::game(){
 // Clean up
 game::~game(){
   // Fade out
-  //highcolor_fade_out(8);
+  highcolor_fade_out(8);
 
   // Destroy bitmaps
   destroy_bitmap( buffer);

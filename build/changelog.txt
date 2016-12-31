@@ -19,6 +19,8 @@ Version 1.6
 *New splash
 *Main Menu
 *Difficulty selection
+*Fixed memory leaks
+*Fixed some crashes
 
 Version 1.5
 --------------
