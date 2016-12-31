@@ -134,7 +134,7 @@ game::game(){
 
 // Clean up
 game::~game(){
-
+  highcolor_fade_out(8);
 }
 
 // All game logic goes on here
@@ -249,8 +249,6 @@ void game::update(){
     if( mouse_b & 1){
       if( menu_yes.get_hover()){
         set_next_state( STATE_GAME);
-        gameScreen = MINISTATE_GAME;
-        highcolor_fade_out(8);
       }
       else if( menu_no.get_hover()){
         set_next_state( STATE_MENU);

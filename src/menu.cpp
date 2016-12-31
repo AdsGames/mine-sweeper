@@ -27,7 +27,7 @@ menu::menu(){
 }
 
 menu::~menu(){
-
+  highcolor_fade_out(8);
 }
 
 // Update game

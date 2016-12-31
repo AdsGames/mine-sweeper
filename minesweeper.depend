@@ -171,7 +171,7 @@
 1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\state.cpp
 	"state.h"
 
-1483211651 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
+1483212051 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
 	"game.h"
 
 1483211688 c:\users\allan\documents\games indev\minesweeper\include\game.h
@@ -181,15 +181,16 @@
 	"button.h"
 	"globals.h"
 
-1483211636 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
+1483212056 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
 	"menu.h"
 
-1483211573 c:\users\allan\documents\games indev\minesweeper\include\menu.h
+1483212070 c:\users\allan\documents\games indev\minesweeper\include\menu.h
 	"state.h"
 	"button.h"
 	"globals.h"
+	"tools.h"
 
-1483210654 source:c:\users\allan\documents\games indev\minesweeper\src\intro.cpp
+1483212119 source:c:\users\allan\documents\games indev\minesweeper\src\intro.cpp
 	"intro.h"
 
 1483204112 c:\users\allan\documents\games indev\minesweeper\include\intro.h
