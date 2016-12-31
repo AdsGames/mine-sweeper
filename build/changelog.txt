@@ -13,10 +13,12 @@ Changelog:
 
 Version 1.5
 --------------
-*Splash Image Changed ( again)
+*Splash Image Changed (again)
 *Timer for beeping more consistant
 *Upped resolution
-*Now using png
+*Now using png graphics
+*New images
+*Sizeable maps
 *Fixed bugs
 
 

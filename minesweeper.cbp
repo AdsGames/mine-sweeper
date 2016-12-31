@@ -18,14 +18,14 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="block.cpp" />
-		<Unit filename="block.h" />
-		<Unit filename="main.cpp" />
-		<Unit filename="resources.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
-		<Unit filename="tools.cpp" />
-		<Unit filename="tools.h" />
+		<Unit filename="src/adsmath_private.h" />
+		<Unit filename="src/block.cpp" />
+		<Unit filename="src/block.h" />
+		<Unit filename="src/button.cpp" />
+		<Unit filename="src/button.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/tools.cpp" />
+		<Unit filename="src/tools.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
