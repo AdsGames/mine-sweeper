@@ -28,6 +28,8 @@ menu::menu(){
 
 // Destructor
 menu::~menu(){
+  highcolor_fade_out(8);
+
   // Destroy bitmaps
   destroy_bitmap( main_menu);
   destroy_bitmap( buffer);
