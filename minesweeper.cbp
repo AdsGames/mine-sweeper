@@ -28,6 +28,7 @@
 		<Unit filename="include/init.h" />
 		<Unit filename="include/intro.h" />
 		<Unit filename="include/menu.h" />
+		<Unit filename="include/mouseListener.h" />
 		<Unit filename="include/state.h" />
 		<Unit filename="include/tools.h" />
 		<Unit filename="res/resources.rc">
@@ -41,6 +42,7 @@
 		<Unit filename="src/intro.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/menu.cpp" />
+		<Unit filename="src/mouseListener.cpp" />
 		<Unit filename="src/state.cpp" />
 		<Unit filename="src/tools.cpp" />
 		<Extensions>
