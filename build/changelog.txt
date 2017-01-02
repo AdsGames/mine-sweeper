@@ -21,6 +21,7 @@ Version 1.6
 *Difficulty selection
 *Fixed memory leaks
 *Fixed some crashes
+*New Mouse handler
 
 Version 1.5
 --------------

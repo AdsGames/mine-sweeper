@@ -11,6 +11,7 @@
 #include "button.h"
 #include "globals.h"
 #include "tools.h"
+#include "mouseListener.h"
 
 class menu : public state{
   public:

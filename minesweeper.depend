@@ -126,11 +126,12 @@
 1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\tools.cpp
 	"tools.h"
 
-1483215169 source:c:\users\allan\documents\games indev\minesweeper\src\main.cpp
+1483386177 source:c:\users\allan\documents\games indev\minesweeper\src\main.cpp
 	<allegro.h>
 	<alpng.h>
 	<string>
 	<time.h>
+	"mouseListener.h"
 	"state.h"
 	"init.h"
 	"intro.h"
@@ -159,7 +160,7 @@
 
 1483204112 source:c:\users\allan\documents\games indev\minesweeper\res\resources.rc
 
-1483214452 source:c:\users\allan\documents\games indev\minesweeper\src\init.cpp
+1483386347 source:c:\users\allan\documents\games indev\minesweeper\src\init.cpp
 	"init.h"
 
 1483214378 c:\users\allan\documents\games indev\minesweeper\include\init.h
@@ -173,24 +174,26 @@
 1483204112 source:c:\users\allan\documents\games indev\minesweeper\src\state.cpp
 	"state.h"
 
-1483216198 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
+1483387344 source:c:\users\allan\documents\games indev\minesweeper\src\game.cpp
 	"game.h"
 
-1483216186 c:\users\allan\documents\games indev\minesweeper\include\game.h
+1483387453 c:\users\allan\documents\games indev\minesweeper\include\game.h
 	"state.h"
 	"tools.h"
 	"block.h"
 	"button.h"
 	"globals.h"
+	"mouseListener.h"
 
-1483214792 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
+1483387067 source:c:\users\allan\documents\games indev\minesweeper\src\menu.cpp
 	"menu.h"
 
-1483212070 c:\users\allan\documents\games indev\minesweeper\include\menu.h
+1483386938 c:\users\allan\documents\games indev\minesweeper\include\menu.h
 	"state.h"
 	"button.h"
 	"globals.h"
 	"tools.h"
+	"mouseListener.h"
 
 1483212505 source:c:\users\allan\documents\games indev\minesweeper\src\intro.cpp
 	"intro.h"
@@ -217,4 +220,10 @@
 1483211520 c:\users\allan\documents\games indev\minesweeper\include\globals.h
 
 1483211531 source:c:\users\allan\documents\games indev\minesweeper\src\globals.cpp
+
+1483386905 c:\users\allan\documents\games indev\minesweeper\include\mouselistener.h
+	<allegro.h>
+
+1483386899 source:c:\users\allan\documents\games indev\minesweeper\src\mouselistener.cpp
+	"mouseListener.h"
 

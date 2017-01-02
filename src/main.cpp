@@ -10,6 +10,8 @@
 #include <string>
 #include <time.h>
 
+#include "mouseListener.h"
+
 #include "state.h"
 #include "init.h"
 #include "intro.h"
@@ -37,6 +39,9 @@ END_OF_FUNCTION(ticker)
 
 // Current state object
 state *currentState = NULL;
+
+// Mouse listener
+mouseListener mouse_check;
 
 // Delete game state and free state resources
 void clean_up(){
@@ -143,6 +148,9 @@ int main(){
       int old_ticks = ticks;
       // Check for state change
       change_state();
+
+      // Check mice
+      mouse_check.update();
 
       // Update always
       currentState -> update();

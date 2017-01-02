@@ -16,7 +16,7 @@ init::init(){
 
 // Update
 void init::update(){
-  set_next_state( STATE_INTRO);
+  set_next_state( STATE_MENU);
 }
 
 // Destruct state

@@ -16,6 +16,7 @@
 #include "block.h"
 #include "button.h"
 #include "globals.h"
+#include "mouseListener.h"
 
 extern void beeper();
 extern volatile bool beepQueue;
@@ -35,6 +36,9 @@ class game : public state{
   protected:
 
   private:
+    // Generate map
+    void generate_map( int x, int y);
+
     // Creates the blocks on screen
     Block MyBlocks[14][14];
 
@@ -56,7 +60,6 @@ class game : public state{
     int flags;
     int gameScreen;
 
-    bool mousedown;
     bool firstPress;
     bool sound;
 

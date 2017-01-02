@@ -53,10 +53,10 @@ game::game(){
   f3 = extract_font_range( f1, 'A', 'Z');
   f4 = extract_font_range( f1, 'Z'+1, 'z');
 
-  //  Merge fonts
+  // Merge fonts
   font = merge_fonts( f4, f5 = merge_fonts(f2, f3));
 
-  //  Destroy temporary fonts
+  // Destroy temporary fonts
   destroy_font(f1);
   destroy_font(f2);
   destroy_font(f3);
@@ -70,7 +70,6 @@ game::game(){
   width = game_difficulty;
   height = game_difficulty;
 
-  mousedown = false;
   firstPress = false;
   sound = true;
   done = false;
@@ -81,18 +80,14 @@ game::game(){
   // Reset timer
   timeIn = 0;
 
+  // Cursor
+  select_mouse_cursor( MOUSE_CURSOR_ARROW);
+  show_mouse( screen);
+
+  // Init blocks
   // Sets blocks
   for( int i = 0; i < width; i++){
     for( int t = 0; t < height; t++){
-      // Mines
-      if( random(0, 7) == 0){
-        MyBlocks[i][t].SetType(9);
-        mines++;
-      }
-      else{
-        MyBlocks[i][t].SetType(0);
-      }
-
       // Set info
       MyBlocks[i][t].SetImages( "images/blocks/none.png");
       MyBlocks[i][t].SetWidth( playing_board -> w/width);
@@ -101,6 +96,38 @@ game::game(){
       // Set position
       MyBlocks[i][t].SetX( i * ( playing_board -> w/width));
       MyBlocks[i][t].SetY( t * ( playing_board -> h/height));
+    }
+  }
+}
+
+// Clean up
+game::~game(){
+  // Fade out
+  highcolor_fade_out(8);
+
+  // Destroy bitmaps
+  destroy_bitmap( buffer);
+  destroy_bitmap( menu);
+  destroy_bitmap( playing_board);
+
+  // Destroy sounds
+  destroy_sample( explode);
+  destroy_sample( timer);
+}
+
+// Generate minefield
+void game::generate_map( int x, int y){
+  // Sets blocks
+  for( int i = 0; i < width; i++){
+    for( int t = 0; t < height; t++){
+      // Mines
+      if( random(0, 6) == 0 && !(i == x && t == y)){
+        MyBlocks[i][t].SetType(9);
+        mines++;
+      }
+      else{
+        MyBlocks[i][t].SetType(0);
+      }
     }
   }
 
@@ -123,25 +150,6 @@ game::game(){
       }
     }
   }
-
-  // Cursor
-  select_mouse_cursor( MOUSE_CURSOR_ARROW);
-  show_mouse( screen);
-}
-
-// Clean up
-game::~game(){
-  // Fade out
-  highcolor_fade_out(8);
-
-  // Destroy bitmaps
-  destroy_bitmap( buffer);
-  destroy_bitmap( menu);
-  destroy_bitmap( playing_board);
-
-  // Destroy sounds
-  destroy_sample( explode);
-  destroy_sample( timer);
 }
 
 // All game logic goes on here
@@ -183,15 +191,21 @@ void game::update(){
 
 
     // Checks if mouse is in collision with object
-    if( mouse_b){
+    if( mouseListener::buttonPressed[1] || mouseListener::buttonPressed[2]){
       for( int i = 0; i < width; i++){
         for( int t = 0; t < height; t++){
           if( collisionAny( mouse_x, mouse_x, MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(), mouse_y, mouse_y, MyBlocks[i][t].GetY() + 60, MyBlocks[i][t].GetY() + 60 + MyBlocks[i][t].GetHeight())){
-            if( mouse_b & 1 && mousedown == false && MyBlocks[i][t].GetFlaged() == false){
+            if( mouseListener::buttonPressed[1] && MyBlocks[i][t].GetFlaged() == false){
+              // Generate on first click
+              if( !firstPress){
+                generate_map( i, t);
+                firstPress = true;
+              }
+
               MyBlocks[i][t].Change();
               MyBlocks[i][t].SetSelected(true);
               if( MyBlocks[i][t].GetType() == 9){
-                play_sample(explode,255,122,random(500, 1500),0);
+                play_sample( explode, 255, 122, random(500, 1500), 0);
                 // Reveal Map
                 for( int i = 0; i < width; i++){
                   for( int t = 0; t < height; t++){
@@ -201,9 +215,8 @@ void game::update(){
                 gameScreen = MINISTATE_LOSE;
                 done = true;
               }
-              mousedown=true;
             }
-            if( mouse_b & 2 && mousedown == false){
+            if( mouseListener::buttonPressed[2]){
               if( MyBlocks[i][t].GetSelected() == false){
                 if( MyBlocks[i][t].GetFlaged() == false){
                   MyBlocks[i][t].SetFlaged(true);
@@ -214,7 +227,6 @@ void game::update(){
                   flags--;
                 }
               }
-              mousedown = true;
             }
           }
         }
@@ -241,11 +253,6 @@ void game::update(){
         }
       }
     }
-
-    // Resets Mousdown
-    if( !mouse_b && !key[KEY_SPACE]){
-      mousedown = false;
-    }
   }
 
   // Win or lose
@@ -253,7 +260,7 @@ void game::update(){
     int newgame = 0;
 
     // Press buttons
-    if( mouse_b & 1){
+    if( mouseListener::buttonPressed[1]){
       if( menu_yes.get_hover()){
         set_next_state( STATE_GAME);
       }

@@ -38,7 +38,7 @@ menu::~menu(){
 // Update game
 void menu::update(){
   // Button presses
-  if( mouse_b & 1){
+  if( mouseListener::buttonPressed[1]){
     if( start_easy.get_hover()){
       game_difficulty = 8;
       set_next_state( STATE_GAME);
