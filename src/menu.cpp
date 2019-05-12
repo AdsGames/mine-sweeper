@@ -5,6 +5,9 @@ menu::menu(){
   buffer = create_bitmap(128, 128);
 
   // Load menu background
+  title = load_png("images/title.png", NULL);
+
+  // Load menu
   main_menu = load_png("images/main_menu.png", NULL);
 
   // Buttons
@@ -60,7 +63,8 @@ void menu::update(){
 // Draw to screen
 void menu::draw() {
   // Draw menu
-  draw_sprite(buffer, main_menu, 0, 0);
+  draw_sprite(buffer, title, 0, 0);
+  draw_sprite(buffer, main_menu, 14, 31);
 
   // Buttons
   start_easy.draw(buffer);

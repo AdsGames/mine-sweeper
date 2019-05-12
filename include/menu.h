@@ -27,6 +27,7 @@ class menu : public state{
 
   private:
     // Images
+    BITMAP* title;
     BITMAP* main_menu;
     BITMAP* buffer;
 

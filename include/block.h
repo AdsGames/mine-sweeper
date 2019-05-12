@@ -7,74 +7,66 @@
 
 #include <sstream>
 
-#include "tools.h"
+#define NUM_IMAGES 12
 
 // Block class!
 class Block{
   public:
     // Construct and deconstruct
     Block();
+    Block(int x, int y, int width, int height);
     ~Block();
 
-    // Set images for block
-    void SetImages(std::string new_image);
-
     // X / Y
-    int GetX() { return x; }
-    int GetY() { return y; }
+    int GetX();
+    int GetY();
 
     // Width / height
-    int GetHeight() { return height; }
-    int GetWidth() { return width; }
+    int GetHeight();
+    int GetWidth();
 
     // Returns type of block
-    int GetType() { return type; }
+    int GetType();
 
     // Mouse selected or not
-    bool GetSelected() { return selected; }
+    bool IsRevealed();
 
     // Is it flagged?
-    bool GetFlagged() { return flagged; }
+    bool IsFlagged();
 
     // Set the type
-    void SetType(int type) { this -> type = type; }
+    void SetType(int type);
 
     // Set whether already selected
-    void SetSelected(bool selected) { this -> selected = selected; }
+    void Reveal();
 
     // Set whether flagged or not
-    void SetFlagged(bool flagged) { this -> flagged = flagged; }
+    void Flag();
+    void Unflag();
 
-    // Set Position
-    void SetX(int x) { this -> x = x; }
-    void SetY(int y) { this -> y = y; }
-
-    // Set Size
-    void SetWidth(float width) { this -> width = width; }
-    void SetHeight(float height) { this -> height = height; }
-
-    // Change type
-    void Change();
+    // Mouse over
+    bool MouseOver();
 
     // Draw image to screen
-    void draw(BITMAP* tempBitmap);
+    void draw(BITMAP* buff);
+
   private:
     // Position
     int x;
     int y;
 
     // Size
-    float width;
-    float height;
+    int width;
+    int height;
 
     // Other flags
     int type;
-    bool selected;
+    bool revealed;
     bool flagged;
 
     // Images
-    BITMAP *image;
-    BITMAP *flag;
+    static BITMAP* images[NUM_IMAGES];
+    static int block_count;
 };
 
 #endif
