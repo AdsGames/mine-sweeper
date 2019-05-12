@@ -40,9 +40,9 @@ game::game(){
 
   // Buttons
   menu_yes.set_images( "images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
-  menu_yes.set_position( 156, 398);
-  menu_no.set_images( "images/buttons/button_no.png", "images/buttons/button_no_hover.png");
-  menu_no.set_position( 368, 398);
+  menu_yes.set_position(166, 398);
+  menu_no.set_images("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
+  menu_no.set_position(388, 398);
 
   // Fonts
   FONT *f1, *f2, *f3, *f4, *f5;
