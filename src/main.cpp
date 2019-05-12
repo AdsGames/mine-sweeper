@@ -6,7 +6,7 @@
  */
 
 #include <allegro.h>
-#include <alpng.h>
+#include <loadpng.h>
 #include <string>
 #include <time.h>
 
@@ -99,7 +99,6 @@ void change_state(){
 void setup(){
   // Initializing
   allegro_init();
-  alpng_init();
   install_keyboard();
   install_mouse();
   install_timer();

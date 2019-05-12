@@ -27,11 +27,11 @@ Block::~Block(){
 // Load 1 image
 void Block::SetImages( std::string new_image){
   // Load new images
-  image = load_bitmap(new_image.c_str(), NULL);
+  image = load_png(new_image.c_str(), NULL);
 
   // Only load flag if not done so already
   if( flag == NULL)
-    flag = load_bitmap("images/blocks/flag.png" , NULL);
+    flag = load_png("images/blocks/flag.png" , NULL);
 }
 
 // Load new image

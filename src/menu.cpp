@@ -5,7 +5,7 @@ menu::menu(){
   buffer = create_bitmap( 640, 640);
 
   // Load menu background
-  main_menu = load_bitmap( "images/main_menu.png", NULL);
+  main_menu = load_png( "images/main_menu.png", NULL);
 
   // Buttons
   start_easy.set_images( "images/buttons/start_easy.png", "images/buttons/start_easy_hover.png");
