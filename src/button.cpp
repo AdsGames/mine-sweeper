@@ -2,45 +2,50 @@
 
 #include <loadpng.h>
 
+#include "globals.h"
+
 using namespace std;
 
-Button::Button(){
-  button_height = 10;
-  button_width = 10;
+Button::Button() {
+  height = 0;
+  width = 0;
 
   images[0] = NULL;
   images[1] = NULL;
 }
 
-Button::~Button(){
+Button::~Button() {
   // Destroy bitmaps
-  destroy_bitmap( images[0]);
-  destroy_bitmap( images[1]);
+  destroy_bitmap(images[0]);
+  destroy_bitmap(images[1]);
 }
 
-void Button::set_images( std::string image1, std::string image2){
-  images[0] = load_png( image1.c_str(), NULL);
-  images[1] = load_png( image2.c_str(), NULL);
+void Button::set_images(std::string image1, std::string image2){
+  images[0] = load_png(image1.c_str(), NULL);
+  images[1] = load_png(image2.c_str(), NULL);
 
   // Get size from images
-  if( images[0] != NULL){
-    button_height = images[0] -> h;
-    button_width = images[0] -> w;
+  if(images[0] != NULL){
+    height = images[0] -> h;
+    width = images[0] -> w;
   }
 }
 
 bool Button::get_hover(){
-  if( mouse_x > x && mouse_x < x + button_width && mouse_y > y && mouse_y < y + button_height)
+  if(mouse_x / scale > x &&
+     mouse_x / scale < x + width &&
+     mouse_y / scale > y &&
+     mouse_y / scale < y + height)
     return true;
   return false;
 }
 
-void Button::set_position( int newX, int newY){
-  x = newX;
-  y = newY;
+void Button::set_position(int x, int y) {
+  this -> x = x;
+  this -> y = y;
 }
 
-int Button::get_x(){
+int Button::get_x() {
   return x;
 }
 
@@ -48,18 +53,18 @@ int Button::get_y(){
   return y;
 }
 
-void Button::draw( BITMAP* tempBitmap){
+void Button::draw(BITMAP* buff){
   // Check hover state
-  if(get_hover()){
-    if( images[1] != NULL)
-      draw_sprite(tempBitmap, images[1], x, y);
+  if(get_hover()) {
+    if(images[1] != NULL)
+      draw_sprite(buff, images[1], x, y);
     else
-      rectfill( tempBitmap, x, y, x + 10, y + 10, 0xFF0000);
+      rectfill(buff, x, y, x + 10, y + 10, 0xFF0000);
   }
-  else{
-    if( images[0] != NULL)
-      draw_sprite(tempBitmap, images[0], x, y);
+  else {
+    if(images[0] != NULL)
+      draw_sprite(buff, images[0], x, y);
     else
-      rectfill( tempBitmap, x, y, x + 10, y + 10, 0xFF0000);
+      rectfill(buff, x, y, x + 10, y + 10, 0xFF0000);
   }
 }

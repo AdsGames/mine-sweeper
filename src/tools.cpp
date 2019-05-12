@@ -50,7 +50,7 @@ bool collisionLeft(int xMin1, int xMax1, int xMin2, int xMax2){
 
 //Checks if file exists
 bool fexists(const char *filename){
-  ifstream ifile(filename);
+  std::ifstream ifile(filename);
   return !(ifile.fail());
 }
 
@@ -63,28 +63,28 @@ int random(int newLowest, int newHighest){
 }
 
 //Convert int to string
-string convertIntToString(int number){
-  stringstream ss;
+std::string convertIntToString(int number){
+  std::stringstream ss;
   ss << number;
   return ss.str();
 }
 
 //Convert double to string
-string convertDoubleToString(double number){
-  stringstream ss;
+std::string convertDoubleToString(double number){
+  std::stringstream ss;
   ss << number;
   return ss.str();
 }
 
 //Convert bool to string
-string convertBoolToString(bool boolean){
-  stringstream ss;
+std::string convertBoolToString(bool boolean){
+  std::stringstream ss;
   ss << boolean;
   return ss.str();
 }
 
 //Convert string to bool
-int convertStringToBool(string newString){
+int convertStringToBool(std::string newString){
   bool result;
   if( newString == "true"){
     return true;
@@ -93,22 +93,22 @@ int convertStringToBool(string newString){
 }
 
 // Convert radians to allegro units
-float convertRadiansToAllegro( float newRadians){
+float convertRadiansToAllegro(float newRadians){
   return newRadians * 40.5845104792;
 }
 
 // Convert allegro to radians units
-float convertAllegroToRaidans( float newAllegro){
+float convertAllegroToRaidans(float newAllegro){
   return newAllegro / 40.5845104792;
 }
 
 //Finds angle of point 2 relative to point 1 (radians)
-float find_angle( float x_1, float y_1, float x_2, float y_2){
+float find_angle(float x_1, float y_1, float x_2, float y_2){
   return atan2(y_1 - y_2, x_1 - x_2);
 }
 
 //Finds distance between 2 points
-float find_distance( float x_1, float y_1, float x_2, float y_2){
+float find_distance(float x_1, float y_1, float x_2, float y_2){
   return hypot(x_1 - x_2, y_1 - y_2);
 }
 
@@ -118,10 +118,10 @@ void highcolor_fade_in(BITMAP* bmp_orig, int speed){
   BITMAP* str_orig = create_bitmap( SCREEN_W, SCREEN_H);
   stretch_sprite( str_orig, bmp_orig, 0, 0, SCREEN_W, SCREEN_H);
 
-  if ( speed<=0)
+  if(speed<=0)
     speed=16;
 
-  for(int a=0; a<256; a+=speed){
+  for(int a=0; a<256; a+=speed) {
     clear( bmp_buff);
     set_trans_blender( 0, 0, 0, a);
     draw_trans_sprite( bmp_buff, str_orig, 0, 0);
@@ -132,15 +132,15 @@ void highcolor_fade_in(BITMAP* bmp_orig, int speed){
 }
 
 // Fade out
-void highcolor_fade_out(int speed){
+void highcolor_fade_out(int speed) {
   BITMAP* bmp_buff = create_bitmap(SCREEN_W,SCREEN_H);
   BITMAP *bmp_orig = create_bitmap( SCREEN_W, SCREEN_H);
   blit(screen,bmp_orig,0,0,0,0,SCREEN_W,SCREEN_H);
 
-  if ( speed<=0)
+  if(speed<=0)
     speed=16;
 
-  for( int a=255 - speed; a>0; a-=speed){
+  for(int a=255 - speed; a>0; a-=speed) {
     clear( bmp_buff);
     set_trans_blender( 0, 0, 0, a);
     draw_trans_sprite( bmp_buff, bmp_orig, 0, 0);
@@ -155,7 +155,7 @@ void highcolor_fade_out(int speed){
  *  ERROR REPORTING
  */
 void abort_on_error(const char *message){
-	 if (screen != NULL){
+	 if(screen != NULL) {
 	    set_gfx_mode(GFX_TEXT, 0, 0, 0, 0);
 	 }
 	 allegro_message("%s.\n %s\n", message, allegro_error);

@@ -12,10 +12,10 @@
 #define MINISTATE_LOSE 2
 
 #include "state.h"
-#include "tools.h"
+
 #include "block.h"
 #include "button.h"
-#include "globals.h"
+
 #include "mouseListener.h"
 
 extern void beeper();
@@ -40,12 +40,12 @@ class game : public state{
     void generate_map( int x, int y);
 
     // Creates the blocks on screen
-    Block MyBlocks[14][14];
+    Block MyBlocks[16][16];
 
     // Images
     BITMAP* buffer;
-    BITMAP* menu;
-    BITMAP* playing_board;
+    BITMAP* menu_win;
+    BITMAP* menu_lose;
 
     // Sounds
     SAMPLE* explode;
