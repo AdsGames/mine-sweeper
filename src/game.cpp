@@ -36,7 +36,7 @@ game::game(){
   timer = load_sample( "sounds/timer.wav" );
 
   // Sets menu
-  menu = load_bitmap( "images/menu.png", NULL);
+  menu = load_png( "images/menu.png", NULL);
 
   // Buttons
   menu_yes.set_images( "images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
