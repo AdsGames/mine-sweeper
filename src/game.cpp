@@ -36,28 +36,28 @@ game::game() {
   timer = load_sample("sounds/timer.wav" );
 
   // Sets menu
-  menu_win = load_png("images/menu_win.png", NULL);
-  menu_lose = load_png("images/menu_lose.png", NULL);
+  menu_win = load_png("images/menu_win.png", nullptr);
+  menu_lose = load_png("images/menu_lose.png", nullptr);
 
   // Buttons
   menu_yes.set_images("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
-  menu_yes.set_position(36, 76);
+  menu_yes.set_position(36, 73);
   menu_no.set_images("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
-  menu_no.set_position(68, 76);
-
-  // Sets Variables
-  mines = 0;
-  flags = 0;
+  menu_no.set_position(68, 72);
 
   width = game_difficulty;
   height = game_difficulty;
 
+  mines = game_difficulty;
+  tiles_left = game_difficulty * game_difficulty - mines;
+  flags = 0;
+
   firstPress = false;
-  sound = true;
   done = false;
+  sound = true;
 
   // Set to game
-  gameScreen = MINISTATE_GAME;
+  game_state = MINISTATE_GAME;
 
   // Reset timer
   timeIn = 0;
@@ -67,17 +67,12 @@ game::game() {
   show_mouse(screen);
 
   // Init blocks
-  // Sets blocks
   for(int i = 0; i < width; i++) {
     for(int t = 0; t < height; t++) {
-      // Set info
-      MyBlocks[i][t].SetImages("images/blocks/none.png");
-      MyBlocks[i][t].SetWidth(buffer -> w/width);
-      MyBlocks[i][t].SetHeight(buffer -> h/height);
-
-      // Set position
-      MyBlocks[i][t].SetX(i * (buffer -> w/width));
-      MyBlocks[i][t].SetY(t * (buffer -> h/height));
+      MyBlocks[i][t] = Block(i * (buffer -> w/width),
+                             t * (buffer -> h/height),
+                             buffer -> w/width,
+                             buffer -> h/height);
     }
   }
 }
@@ -99,17 +94,15 @@ game::~game() {
 
 // Generate minefield
 void game::generate_map(int x, int y) {
-  // Sets blocks
-  for(int i = 0; i < width; i++) {
-    for(int t = 0; t < height; t++) {
-      // Mines
-      if(random(0, 6) == 0 && !(i == x && t == y)) {
-        MyBlocks[i][t].SetType(9);
-        mines++;
-      }
-      else {
-        MyBlocks[i][t].SetType(0);
-      }
+  // Plant mines
+  int mines_left = mines;
+  while (mines_left > 0) {
+    int random_x = random(0, width - 1);
+    int random_y = random(0, height - 1);
+    if(MyBlocks[random_x][random_y].GetType() != 9 &&
+       random_x != x && random_y != y) {
+      MyBlocks[random_x][random_y].SetType(9);
+      mines_left --;
     }
   }
 
@@ -120,11 +113,11 @@ void game::generate_map(int x, int y) {
         int type = 0;
 
         // Surrounding 8 cells
-        for(int j = -1; j <= 1; j ++) {
-          for(int k = -1; k <= 1; k ++) {
-            if(((j < 0 && i > 0) || (j > 0 && i < width - 1) || j == 0) && ((k < 0 && t > 0) || (k > 0 && t < height - 1) || k == 0)) {
-              if(MyBlocks[i + j][t + k].GetType() == 9)
-                type ++;
+        for(int j = i - 1; j <= i + 1; j ++) {
+          for(int k = t - 1; k <= t + 1; k ++) {
+            if(j >= 0 && j < width &&
+               k >= 0 && k < height) {
+              type += MyBlocks[j][k].GetType() == 9;
             }
           }
         }
@@ -134,107 +127,91 @@ void game::generate_map(int x, int y) {
   }
 }
 
+// Reveal some blocks recursively
+void game::reveal_at(int x, int y) {
+  if (x < 0 || x >= width ||
+      y < 0 || y >= height ||
+      MyBlocks[x][y].IsRevealed() ||
+      MyBlocks[x][y].IsFlagged())
+    return;
+
+  MyBlocks[x][y].Reveal();
+  tiles_left--;
+
+  if (MyBlocks[x][y].GetType() == 0) {
+    for (int j = x - 1; j <= x + 1; j ++) {
+      for (int k = y - 1; k <= y + 1; k ++) {
+        if (!(j == x && k == y))
+          reveal_at(j, k);
+      }
+    }
+  }
+}
+
+void game::reveal_map() {
+  for (int i = 0; i < width; i++) {
+    for (int t = 0; t < height; t++) {
+      MyBlocks[i][t].Reveal();
+    }
+  }
+}
+
 // All game logic goes on here
 void game::update() {
   // Set title text
-  set_window_title((std::string("Mines Left: ") + convertIntToString(mines-flags) + " Time:" + convertIntToString(timeIn)).c_str());
+  set_window_title((std::string("Mines Left: ") + convertIntToString(mines - flags) + " Time:" + convertIntToString(timeIn) + " Tiles:" + convertIntToString(tiles_left)).c_str());
 
   // Game
-  if(gameScreen == MINISTATE_GAME) {
+  if (game_state == MINISTATE_GAME) {
     // Plays stressing timer sound
-    if(beepQueue && sound == true) {
+    if (beepQueue && sound == true) {
       play_sample(timer, 255, 122, 500, 0);
       beepQueue = false;
     }
 
-    // Checks for win
-    if(mines - flags == 0) {
-      int blocks = 0;
-      bool blanks = false;
-      for(int i = 0; i < width; i++) {
-        for(int t = 0; t < height; t++) {
-          if(MyBlocks[i][t].GetFlagged() == true && MyBlocks[i][t].GetType() == 9) {
-            blocks++;
-          }
-          if(MyBlocks[i][t].GetSelected() == false && MyBlocks[i][t].GetFlagged() == false && MyBlocks[i][t].GetType() != 9) {
-            blanks = true;
-          }
-        }
-      }
-
-      // Reveal Map
-      if(blocks == mines && !blanks) {
-        for(int i = 0; i < width; i++) {
-          for(int t = 0; t < height; t++) {
-            MyBlocks[i][t].Change();
-          }
-        }
-        gameScreen = MINISTATE_WIN;
-        done = true;
-      }
+    // Reveal Map
+    if (tiles_left == 0) {
+      reveal_map();
+      game_state = MINISTATE_WIN;
+      done = true;
     }
 
-
     // Checks if mouse is in collision with object
-    if(mouseListener::buttonPressed[1] || mouseListener::buttonPressed[2]) {
-      for(int i = 0; i < width; i++) {
-        for(int t = 0; t < height; t++) {
-          if(collisionAny(mouse_x / scale, mouse_x / scale,
-                          MyBlocks[i][t].GetX(), MyBlocks[i][t].GetX() + MyBlocks[i][t].GetWidth(),
-                          mouse_y / scale, mouse_y / scale,
-                          MyBlocks[i][t].GetY(), MyBlocks[i][t].GetY() + MyBlocks[i][t].GetHeight())){
-            if(mouseListener::buttonPressed[1] && MyBlocks[i][t].GetFlagged() == false){
+    if (mouseListener::buttonPressed[1] || mouseListener::buttonPressed[2]) {
+      for (int i = 0; i < width; i++) {
+        for (int t = 0; t < height; t++) {
+          if (MyBlocks[i][t].MouseOver()) {
+            // Revealing
+            if (mouseListener::buttonPressed[1] &&
+                MyBlocks[i][t].IsFlagged() == false) {
               // Generate on first click
-              if(!firstPress){
-                generate_map( i, t);
+              if (!firstPress) {
+                generate_map(i, t);
                 firstPress = true;
               }
 
-              MyBlocks[i][t].Change();
-              MyBlocks[i][t].SetSelected(true);
-              if( MyBlocks[i][t].GetType() == 9) {
-                play_sample( explode, 255, 122, random(500, 1500), 0);
-                // Reveal Map
-                for(int i = 0; i < width; i++) {
-                  for(int t = 0; t < height; t++) {
-                    MyBlocks[i][t].Change();
-                  }
-                }
-                gameScreen = MINISTATE_LOSE;
+              // Reveal some blocks
+              reveal_at(i, t);
+
+              // Lose and reveal map
+              if (MyBlocks[i][t].GetType() == 9) {
+                play_sample(explode, 255, 122, random(500, 1500), 0);
+                reveal_map();
+                game_state = MINISTATE_LOSE;
                 done = true;
               }
             }
-            if(mouseListener::buttonPressed[2]) {
-              if(MyBlocks[i][t].GetSelected() == false) {
-                if(MyBlocks[i][t].GetFlagged() == false) {
-                  MyBlocks[i][t].SetFlagged(true);
-                  flags++;
-                }
-                else {
-                  MyBlocks[i][t].SetFlagged(false);
-                  flags--;
-                }
+
+            // Flagging
+            else if (mouseListener::buttonPressed[2] &&
+                     !MyBlocks[i][t].IsRevealed()) {
+              if (!MyBlocks[i][t].IsFlagged()) {
+                MyBlocks[i][t].Flag();
+                flags++;
               }
-            }
-          }
-        }
-      }
-    }
-
-    // Checks near blocks and removes wrapping
-    for(int i = 0; i < width; i++) {
-      for(int t = 0; t < height; t++) {
-        if(MyBlocks[i][t].GetSelected() == true && MyBlocks[i][t].GetType() == 0) {
-          // Make it non updating
-          MyBlocks[i][t].SetType(10);
-          MyBlocks[i][t].Change();
-
-          // Surrounding 8 cells
-          for(int j = -1; j <= 1; j ++) {
-            for(int k = -1; k <= 1; k ++) {
-              if(((j < 0 && i > 0) || (j > 0 && i < width - 1) || j == 0) && ((k < 0 && t > 0) || (k > 0 && t < height - 1) || k == 0)) {
-                MyBlocks[i + j][t + k].Change();
-                MyBlocks[i + j][t + k].SetSelected(true);
+              else {
+                MyBlocks[i][t].Unflag();
+                flags--;
               }
             }
           }
@@ -244,7 +221,7 @@ void game::update() {
   }
 
   // Win or lose
-  else if(gameScreen == MINISTATE_WIN || gameScreen == MINISTATE_LOSE) {
+  else if(game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
     int newgame = 0;
 
     // Press buttons
@@ -257,7 +234,8 @@ void game::update() {
       }
     }
   }
-  if(key[KEY_SPACE])
+
+  if(key[KEY_Q])
     set_next_state(STATE_MENU);
 }
 
@@ -275,11 +253,11 @@ void game::draw() {
   }
 
   // Win and Lose menu text
-  if(gameScreen == MINISTATE_WIN || gameScreen == MINISTATE_LOSE) {
-    if(gameScreen == MINISTATE_WIN)
-      draw_sprite(buffer, menu_win, 25, 47);
-    else if(gameScreen == MINISTATE_LOSE)
-      draw_sprite(buffer, menu_lose, 25, 47);
+  if(game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
+    if(game_state == MINISTATE_WIN)
+      draw_sprite(buffer, menu_win, 25, 42);
+    else if(game_state == MINISTATE_LOSE)
+      draw_sprite(buffer, menu_lose, 25, 42);
 
     // Buttons
     menu_yes.draw(buffer);

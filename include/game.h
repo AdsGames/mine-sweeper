@@ -37,7 +37,13 @@ class game : public state{
 
   private:
     // Generate map
-    void generate_map( int x, int y);
+    void generate_map(int x, int y);
+
+    // Reveal map
+    void reveal_map();
+
+    // Reveal at
+    void reveal_at(int x, int y);
 
     // Creates the blocks on screen
     Block MyBlocks[16][16];
@@ -58,7 +64,8 @@ class game : public state{
     // Variables
     int mines;
     int flags;
-    int gameScreen;
+    int tiles_left;
+    int game_state;
 
     bool firstPress;
     bool sound;
