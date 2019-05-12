@@ -9,16 +9,16 @@ menu::menu(){
 
   // Buttons
   start_easy.set_images( "images/buttons/start_easy.png", "images/buttons/start_easy_hover.png");
-  start_easy.set_position( 166, 303);
+  start_easy.set_position( 116, 226);
 
   start_medium.set_images( "images/buttons/start_medium.png", "images/buttons/start_medium_hover.png");
-  start_medium.set_position( 339, 303);
+  start_medium.set_position( 116, 300);
 
   start_hard.set_images( "images/buttons/start_hard.png", "images/buttons/start_hard_hover.png");
-  start_hard.set_position( 166, 362);
+  start_hard.set_position( 116, 374);
 
   quit.set_images( "images/buttons/quit.png", "images/buttons/quit_hover.png");
-  quit.set_position( 339, 362);
+  quit.set_position( 116, 448);
 
   // Cursor
   enable_hardware_cursor();

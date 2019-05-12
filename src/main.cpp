@@ -106,7 +106,7 @@ void setup(){
   set_color_depth(32);
 
   // Creates a random number generator (based on time)
-  srand( time(NULL));
+  srand(time(NULL));
 
   // Setup for FPS system
   LOCK_VARIABLE(ticks);
