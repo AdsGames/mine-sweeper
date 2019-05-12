@@ -17,41 +17,41 @@ class Block{
     ~Block();
 
     // Set images for block
-    void SetImages( std::string new_image);
+    void SetImages(std::string new_image);
 
     // X / Y
-    int GetX(){ return x; }
-    int GetY(){ return y; }
+    int GetX() { return x; }
+    int GetY() { return y; }
 
     // Width / height
-    int GetHeight(){ return height; }
-    int GetWidth(){ return width; }
+    int GetHeight() { return height; }
+    int GetWidth() { return width; }
 
     // Returns type of block
-    int GetType(){ return type; }
+    int GetType() { return type; }
 
     // Mouse selected or not
-    bool GetSelected(){ return selected; }
+    bool GetSelected() { return selected; }
 
     // Is it flagged?
-    bool GetFlaged(){ return flaged; }
+    bool GetFlagged() { return flagged; }
 
     // Set the type
-    void SetType(int newType){ type = newType; }
+    void SetType(int type) { this -> type = type; }
 
     // Set whether already selected
-    void SetSelected(bool newSelected){ selected = newSelected; }
+    void SetSelected(bool selected) { this -> selected = selected; }
 
     // Set whether flagged or not
-    void SetFlaged(bool newFlag){ flaged = newFlag; }
+    void SetFlagged(bool flagged) { this -> flagged = flagged; }
 
     // Set Position
-    void SetX( int newValue){ x = newValue; }
-    void SetY( int newValue){ y = newValue; }
+    void SetX(int x) { this -> x = x; }
+    void SetY(int y) { this -> y = y; }
 
     // Set Size
-    void SetWidth( float newValue){ width = newValue; }
-    void SetHeight( float newValue){ height = newValue; }
+    void SetWidth(float width) { this -> width = width; }
+    void SetHeight(float height) { this -> height = height; }
 
     // Change type
     void Change();
@@ -70,7 +70,7 @@ class Block{
     // Other flags
     int type;
     bool selected;
-    bool flaged;
+    bool flagged;
 
     // Images
     BITMAP *image;
