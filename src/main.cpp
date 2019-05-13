@@ -58,16 +58,16 @@ END_OF_FUNCTION(close_button_handler)
 
 
 // Change game screen
-void change_state(){
+void change_state() {
   //If the state needs to be changed
-  if( nextState != STATE_NULL ){
+  if(nextState != STATE_NULL) {
     //Delete the current state
-    if( nextState != STATE_EXIT ){
+    if(nextState != STATE_EXIT) {
       delete currentState;
     }
 
     //Change the state
-    switch( nextState ){
+    switch(nextState) {
       case STATE_INIT:
         currentState = new init();
         break;
@@ -96,7 +96,7 @@ void change_state(){
 }
 
 // Sets up game
-void setup(){
+void setup() {
   // Initializing
   allegro_init();
   install_keyboard();
@@ -106,7 +106,7 @@ void setup(){
   set_color_depth(32);
 
   // Creates a random number generator (based on time)
-  srand( time(NULL));
+  srand(time(NULL));
 
   // Setup for FPS system
   LOCK_VARIABLE(ticks);
@@ -115,7 +115,7 @@ void setup(){
 
   LOCK_VARIABLE(game_time);
   LOCK_FUNCTION(game_time_ticker);
-  install_int_ex( game_time_ticker, BPS_TO_TIMER(10));
+  install_int_ex(game_time_ticker, BPS_TO_TIMER(10));
 
   // Close button
   LOCK_FUNCTION(close_button_handler);
@@ -138,9 +138,9 @@ int main(){
   currentState = new init();
 
   // Handles exit
-  while(!close_button_pressed && !key[KEY_ESC]){
+  while(!close_button_pressed && !key[KEY_ESC]) {
     // Runs FPS system
-    while(ticks == 0){
+    while(ticks == 0) {
       rest(1);
     }
     while(ticks > 0){
@@ -159,7 +159,7 @@ int main(){
         break;
       }
     }
-    if(game_time - old_time >= 10){
+    if(game_time - old_time >= 10) {
       fps = frames_done;
       frames_done = 0;
       old_time = game_time;
@@ -167,7 +167,6 @@ int main(){
     // Update every set amount of frames
     currentState -> draw();
   }
-
   return 0;
 }
-END_OF_MAIN();
+END_OF_MAIN()

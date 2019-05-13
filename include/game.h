@@ -12,11 +12,9 @@
 #define MINISTATE_LOSE 2
 
 #include "state.h"
-#include "tools.h"
+
 #include "block.h"
 #include "button.h"
-#include "globals.h"
-#include "mouseListener.h"
 
 extern void beeper();
 extern volatile bool beepQueue;
@@ -37,15 +35,21 @@ class game : public state{
 
   private:
     // Generate map
-    void generate_map( int x, int y);
+    void generate_map(int x, int y);
+
+    // Reveal map
+    void reveal_map();
+
+    // Reveal at
+    void reveal_at(int x, int y);
 
     // Creates the blocks on screen
-    Block MyBlocks[14][14];
+    Block MyBlocks[16][16];
 
     // Images
     BITMAP* buffer;
-    BITMAP* menu;
-    BITMAP* playing_board;
+    BITMAP* menu_win;
+    BITMAP* menu_lose;
 
     // Sounds
     SAMPLE* explode;
@@ -58,7 +62,8 @@ class game : public state{
     // Variables
     int mines;
     int flags;
-    int gameScreen;
+    int tiles_left;
+    int game_state;
 
     bool firstPress;
     bool sound;

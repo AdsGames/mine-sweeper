@@ -13,24 +13,18 @@
 class Button{
   public:
     Button();
+    Button(int x, int y);
     ~Button();
 
-    void set_images( std::string image1, std::string image2);
+    void setImages(std::string image1, std::string image2);
 
-    bool get_hover();
+    bool hovering();
 
-    void draw(BITMAP* tempBitmap);
+    void draw(BITMAP* buff);
 
-    void set_position( int newX, int newY);
-
-    void set_type(int newType);
-    void set_value(int newValue);
-
-    int get_x();
-    int get_y();
   private:
-    int button_height;
-    int button_width;
+    int height;
+    int width;
 
     int x;
     int y;

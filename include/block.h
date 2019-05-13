@@ -2,79 +2,67 @@
 #define BLOCK_H
 
 #include <allegro.h>
-#include <string>
-#include <time.h>
 
-#include <sstream>
-
-#include "tools.h"
+#define NUM_IMAGES 12
 
 // Block class!
 class Block{
   public:
     // Construct and deconstruct
     Block();
+    Block(int x, int y, int width, int height);
     ~Block();
 
-    // Set images for block
-    void SetImages( std::string new_image);
-
     // X / Y
-    int GetX(){ return x; }
-    int GetY(){ return y; }
+    int GetX();
+    int GetY();
 
     // Width / height
-    int GetHeight(){ return height; }
-    int GetWidth(){ return width; }
+    int GetHeight();
+    int GetWidth();
 
     // Returns type of block
-    int GetType(){ return type; }
+    int GetType();
 
     // Mouse selected or not
-    bool GetSelected(){ return selected; }
+    bool IsRevealed();
 
     // Is it flagged?
-    bool GetFlaged(){ return flaged; }
+    bool IsFlagged();
 
     // Set the type
-    void SetType(int newType){ type = newType; }
+    void SetType(int type);
 
     // Set whether already selected
-    void SetSelected(bool newSelected){ selected = newSelected; }
+    void Reveal();
 
     // Set whether flagged or not
-    void SetFlaged(bool newFlag){ flaged = newFlag; }
+    void Flag();
+    void Unflag();
 
-    // Set Position
-    void SetX( int newValue){ x = newValue; }
-    void SetY( int newValue){ y = newValue; }
-
-    // Set Size
-    void SetWidth( float newValue){ width = newValue; }
-    void SetHeight( float newValue){ height = newValue; }
-
-    // Change type
-    void Change();
+    // Mouse over
+    bool MouseOver();
 
     // Draw image to screen
-    void draw(BITMAP* tempBitmap);
+    void draw(BITMAP* buff);
+
   private:
     // Position
     int x;
     int y;
 
     // Size
-    float width;
-    float height;
+    int width;
+    int height;
 
     // Other flags
     int type;
-    bool selected;
-    bool flaged;
+    bool revealed;
+    bool flagged;
 
     // Images
-    BITMAP *image;
-    BITMAP *flag;
+    static BITMAP* images[NUM_IMAGES];
+    static int block_count;
 };
 
 #endif

@@ -9,9 +9,6 @@
 
 #include "state.h"
 #include "button.h"
-#include "globals.h"
-#include "tools.h"
-#include "mouseListener.h"
 
 class menu : public state{
   public:
@@ -23,10 +20,9 @@ class menu : public state{
     void update();
     void draw();
 
-  protected:
-
   private:
     // Images
+    BITMAP* title;
     BITMAP* main_menu;
     BITMAP* buffer;
 
