@@ -6,14 +6,12 @@
 
 // Constructor
 intro::intro() {
-  // Sets Starting Images
   img_title = load_png("images/title.png", NULL);
   img_intro = load_png("images/intro.png", NULL);
 }
 
 // Destructor
 intro::~intro() {
-  // Clean up images
   destroy_bitmap(img_intro);
   destroy_bitmap(img_title);
 }

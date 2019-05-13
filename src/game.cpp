@@ -43,10 +43,12 @@ game::game() {
   menu_lose = load_png("images/menu_lose.png", nullptr);
 
   // Buttons
-  menu_yes.set_images("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
-  menu_yes.set_position(36, 73);
-  menu_no.set_images("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
-  menu_no.set_position(68, 72);
+  menu_yes = Button(36, 73);
+  menu_yes.setImages("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
+
+  menu_no = Button(68, 72);
+  menu_no.setImages("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
+
 
   width = game_difficulty;
   height = game_difficulty;
@@ -225,14 +227,12 @@ void game::update() {
 
   // Win or lose
   else if(game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
-    int newgame = 0;
-
     // Press buttons
     if(mouseListener::buttonPressed[1]) {
-      if(menu_yes.get_hover()) {
+      if(menu_yes.hovering()) {
         set_next_state(STATE_GAME);
       }
-      else if(menu_no.get_hover()) {
+      else if(menu_no.hovering()) {
         set_next_state(STATE_MENU);
       }
     }
