@@ -1,6 +1,12 @@
 #include "menu.h"
 
-menu::menu(){
+#include <loadpng.h>
+
+#include "globals.h"
+#include "tools.h"
+#include "mouseListener.h"
+
+menu::menu() {
   // Creates a buffer
   buffer = create_bitmap(128, 128);
 
@@ -30,7 +36,7 @@ menu::menu(){
 }
 
 // Destructor
-menu::~menu(){
+menu::~menu() {
   highcolor_fade_out(8);
 
   // Destroy bitmaps
@@ -39,22 +45,22 @@ menu::~menu(){
 }
 
 // Update game
-void menu::update(){
+void menu::update() {
   // Button presses
-  if(mouseListener::buttonPressed[1]) {
-    if(start_easy.get_hover()) {
+  if (mouseListener::buttonPressed[1]) {
+    if (start_easy.get_hover()) {
       game_difficulty = 4;
       set_next_state(STATE_GAME);
     }
-    else if(start_medium.get_hover()) {
+    else if (start_medium.get_hover()) {
       game_difficulty = 8;
       set_next_state(STATE_GAME);
     }
-    else if(start_hard.get_hover()) {
+    else if (start_hard.get_hover()) {
       game_difficulty = 16;
       set_next_state(STATE_GAME);
     }
-    else if(quit.get_hover()) {
+    else if (quit.get_hover()) {
       set_next_state(STATE_EXIT);
     }
   }

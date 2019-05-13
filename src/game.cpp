@@ -1,7 +1,10 @@
 #include "game.h"
 
+#include <loadpng.h>
+
 #include "tools.h"
 #include "globals.h"
+#include "mouseListener.h"
 
 // Timer for beep
 void beeper() {
@@ -48,8 +51,8 @@ game::game() {
   width = game_difficulty;
   height = game_difficulty;
 
-  mines = game_difficulty;
-  tiles_left = game_difficulty * game_difficulty - mines;
+  mines = (width * height) / 4;
+  tiles_left = (width * height) - mines;
   flags = 0;
 
   firstPress = false;

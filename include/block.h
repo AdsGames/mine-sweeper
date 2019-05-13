@@ -2,10 +2,6 @@
 #define BLOCK_H
 
 #include <allegro.h>
-#include <string>
-#include <time.h>
-
-#include <sstream>
 
 #define NUM_IMAGES 12
 

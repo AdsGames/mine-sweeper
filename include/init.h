@@ -8,10 +8,8 @@
 #define INIT_H
 
 #include "state.h"
-#include "game.h"
-#include "block.h"
 
-class init : public state{
+class init : public state {
   public:
     // Construct/deconstruct
     init();

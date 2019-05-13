@@ -9,9 +9,6 @@
 
 #include "state.h"
 #include "button.h"
-#include "globals.h"
-#include "tools.h"
-#include "mouseListener.h"
 
 class menu : public state{
   public:
@@ -22,8 +19,6 @@ class menu : public state{
     // Override parent
     void update();
     void draw();
-
-  protected:
 
   private:
     // Images

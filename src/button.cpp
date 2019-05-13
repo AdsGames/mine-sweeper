@@ -4,8 +4,6 @@
 
 #include "globals.h"
 
-using namespace std;
-
 Button::Button() {
   height = 0;
   width = 0;

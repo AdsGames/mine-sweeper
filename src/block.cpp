@@ -1,4 +1,8 @@
 #include "block.h"
+
+#include <loadpng.h>
+#include <string>
+
 #include "globals.h"
 #include "tools.h"
 
@@ -90,6 +94,7 @@ bool Block::IsRevealed() {
 // Set revealed
 void Block::Reveal() {
   revealed = true;
+  flagged = false;
 }
 
 // Set whether flagged or not
@@ -103,8 +108,8 @@ void Block::Unflag() {
 
 // Mouse over
 bool Block::MouseOver() {
-  return collisionAny(mouse_x / scale, mouse_x / scale, x, x + width,
-                      mouse_y / scale, mouse_y / scale, y, y + height);
+  return collision((float)mouse_x / scale, (float)mouse_x / scale, x, x + width,
+                   (float)mouse_y / scale, (float)mouse_y / scale, y, y + height);
 }
 
 // Draw
