@@ -48,8 +48,9 @@ Block::Block(int x, int y, int width, int height) {
 // Destroy!
 Block::~Block() {
   block_count --;
-  if (block_count == 0)
-    for (int i = 0; i < NUM_IMAGES - 1; i++)
+
+  if (block_count <= 0)
+    for (int i = 0; i < NUM_IMAGES; i++)
       destroy_bitmap(images[i]);
 }
 

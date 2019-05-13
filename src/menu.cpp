@@ -17,17 +17,18 @@ menu::menu() {
   main_menu = load_png("images/main_menu.png", NULL);
 
   // Buttons
-  start_easy.set_images("images/buttons/start_easy.png", "images/buttons/start_easy_hover.png");
-  start_easy.set_position(25, 45);
+  start_easy = Button(25, 45);
+  start_easy.setImages("images/buttons/start_easy.png", "images/buttons/start_easy_hover.png");
 
-  start_medium.set_images("images/buttons/start_medium.png", "images/buttons/start_medium_hover.png");
-  start_medium.set_position(25, 60);
+  start_medium = Button(25, 60);
+  start_medium.setImages("images/buttons/start_medium.png", "images/buttons/start_medium_hover.png");
 
-  start_hard.set_images("images/buttons/start_hard.png", "images/buttons/start_hard_hover.png");
-  start_hard.set_position(25, 75);
+  start_hard = Button(25, 75);
+  start_hard.setImages("images/buttons/start_hard.png", "images/buttons/start_hard_hover.png");
 
-  quit.set_images("images/buttons/quit.png", "images/buttons/quit_hover.png");
-  quit.set_position(25, 90);
+  quit = Button(25, 90);
+  quit.setImages("images/buttons/quit.png", "images/buttons/quit_hover.png");
+
 
   // Cursor
   enable_hardware_cursor();
@@ -41,6 +42,7 @@ menu::~menu() {
 
   // Destroy bitmaps
   destroy_bitmap(main_menu);
+  destroy_bitmap(title);
   destroy_bitmap(buffer);
 }
 
@@ -48,19 +50,19 @@ menu::~menu() {
 void menu::update() {
   // Button presses
   if (mouseListener::buttonPressed[1]) {
-    if (start_easy.get_hover()) {
+    if (start_easy.hovering()) {
       game_difficulty = 4;
       set_next_state(STATE_GAME);
     }
-    else if (start_medium.get_hover()) {
+    else if (start_medium.hovering()) {
       game_difficulty = 8;
       set_next_state(STATE_GAME);
     }
-    else if (start_hard.get_hover()) {
+    else if (start_hard.hovering()) {
       game_difficulty = 16;
       set_next_state(STATE_GAME);
     }
-    else if (quit.get_hover()) {
+    else if (quit.hovering()) {
       set_next_state(STATE_EXIT);
     }
   }
