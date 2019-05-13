@@ -8,7 +8,6 @@
 #define INTRO_H
 
 #include "state.h"
-#include "tools.h"
 
 class intro : public state{
   public:
@@ -19,8 +18,6 @@ class intro : public state{
     // Override parent
     void update() {};
     void draw();
-
-  protected:
 
   private:
     BITMAP* img_intro;

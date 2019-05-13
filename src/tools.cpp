@@ -1,57 +1,13 @@
 #include "tools.h"
 
-//Iterates through the number of buttons in a joystick and returns true if any keys are pressed
-bool keyboard_keypressed(){
-  bool keypressed=false;
-  for(int i=0; i<125; i++)
-    if(key[i])keypressed=true;
-  return keypressed;
-}
-
-//Iterates through the number of buttons in a joystick and returns true if any buttons are pressed
-bool joy_buttonpressed(){
-  bool buttonpressed=false;
-  for(int i=0; i<joy[0].num_buttons; i++)
-    if(joy[0].button[i].b)buttonpressed=true;
-  return buttonpressed;
-}
+#include <sstream>
 
 //Collision
-bool collisionAny(int xMin1, int xMax1, int xMin2, int xMax2, int yMin1, int yMax1, int yMin2, int yMax2){
+bool collision(float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2){
   if (xMin1 < xMax2 && yMin1 < yMax2 && xMin2 < xMax1 && yMin2 < yMax1){
     return true;
   }
   return false;
-}
-bool collisionBottom(int yMin1, int yMax1, int yMin2, int yMax2){
-  if(yMin1 < yMax2 && yMax1 > yMax2){
-    return true;
-  }
-  return false;
-}
-bool collisionTop(int yMin1, int yMax1, int yMin2, int yMax2){
-  if(yMin2 < yMax1 && yMin1 < yMin2){
-    return true;
-  }
-  return false;
-}
-bool collisionRight(int xMin1, int xMax1, int xMin2, int xMax2){
-  if(xMin2 < xMax1 && xMin1 < xMin2){
-    return true;
-  }
-  return false;
-}
-bool collisionLeft(int xMin1, int xMax1, int xMin2, int xMax2){
-  if(xMin1 < xMax2 && xMax1 > xMax2){
-    return true;
-  }
-  return false;
-}
-
-//Checks if file exists
-bool fexists(const char *filename){
-  std::ifstream ifile(filename);
-  return !(ifile.fail());
 }
 
 //Random number generator. Use int random(lowest,highest);
@@ -67,49 +23,6 @@ std::string convertIntToString(int number){
   std::stringstream ss;
   ss << number;
   return ss.str();
-}
-
-//Convert double to string
-std::string convertDoubleToString(double number){
-  std::stringstream ss;
-  ss << number;
-  return ss.str();
-}
-
-//Convert bool to string
-std::string convertBoolToString(bool boolean){
-  std::stringstream ss;
-  ss << boolean;
-  return ss.str();
-}
-
-//Convert string to bool
-int convertStringToBool(std::string newString){
-  bool result;
-  if( newString == "true"){
-    return true;
-  }
-  return false;
-}
-
-// Convert radians to allegro units
-float convertRadiansToAllegro(float newRadians){
-  return newRadians * 40.5845104792;
-}
-
-// Convert allegro to radians units
-float convertAllegroToRaidans(float newAllegro){
-  return newAllegro / 40.5845104792;
-}
-
-//Finds angle of point 2 relative to point 1 (radians)
-float find_angle(float x_1, float y_1, float x_2, float y_2){
-  return atan2(y_1 - y_2, x_1 - x_2);
-}
-
-//Finds distance between 2 points
-float find_distance(float x_1, float y_1, float x_2, float y_2){
-  return hypot(x_1 - x_2, y_1 - y_2);
 }
 
 // Fade in
@@ -161,4 +74,3 @@ void abort_on_error(const char *message){
 	 allegro_message("%s.\n %s\n", message, allegro_error);
 	 exit(-1);
 }
-
