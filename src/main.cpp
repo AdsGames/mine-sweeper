@@ -102,7 +102,7 @@ void setup() {
   install_keyboard();
   install_mouse();
   install_timer();
-  install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,".");
+  install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, ".");
   set_color_depth(32);
 
   // Creates a random number generator (based on time)
@@ -111,7 +111,7 @@ void setup() {
   // Setup for FPS system
   LOCK_VARIABLE(ticks);
   LOCK_FUNCTION(ticker);
-  install_int_ex( ticker, BPS_TO_TIMER(updates_per_second));
+  install_int_ex(ticker, BPS_TO_TIMER(updates_per_second));
 
   LOCK_VARIABLE(game_time);
   LOCK_FUNCTION(game_time_ticker);

@@ -21,11 +21,6 @@ int done;
 
 // Init game state
 game::game() {
-  // Cursor
-  enable_hardware_cursor();
-  select_mouse_cursor(MOUSE_CURSOR_BUSY);
-  show_mouse(screen);
-
   // Timer for beeping
   LOCK_VARIABLE(beepQueue);
   LOCK_FUNCTION(beeper);
@@ -66,10 +61,6 @@ game::game() {
 
   // Reset timer
   timeIn = 0;
-
-  // Cursor
-  select_mouse_cursor(MOUSE_CURSOR_ARROW);
-  show_mouse(screen);
 
   // Init blocks
   for(int i = 0; i < width; i++) {

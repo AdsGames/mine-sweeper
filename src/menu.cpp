@@ -28,12 +28,6 @@ menu::menu() {
 
   quit = Button(25, 90);
   quit.setImages("images/buttons/quit.png", "images/buttons/quit_hover.png");
-
-
-  // Cursor
-  enable_hardware_cursor();
-  select_mouse_cursor(MOUSE_CURSOR_ARROW);
-  show_mouse(screen);
 }
 
 // Destructor

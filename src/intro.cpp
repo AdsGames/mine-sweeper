@@ -23,7 +23,7 @@ void intro::draw() {
   // A.D.S. Games Splash
   highcolor_fade_in(img_intro, 8);
   for (int i = 0; i < 100; i++) {
-    if (keypressed()) {
+    if (keypressed() || mouse_b & 1) {
       skip = true;
       break;
     }
@@ -35,7 +35,7 @@ void intro::draw() {
     highcolor_fade_out(8);
     highcolor_fade_in(img_title, 8);
     for (int i = 0; i < 100; i++) {
-      if (keypressed())
+      if (keypressed() || mouse_b & 1)
         break;
       rest(10);
     }
