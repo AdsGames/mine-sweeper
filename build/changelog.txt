@@ -11,6 +11,12 @@ Adsgames 2012-2016
 Changelog:
 -----------------------
 
+Version 1.7.1
+--------------
+-Added config file including scaling
+-Added mouse click to skip intro
+-Window runs in background
+
 Version 1.7
 --------------
 *Cleaned up code ALOT
