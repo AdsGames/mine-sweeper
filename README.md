@@ -16,17 +16,11 @@ Open code blocks project, select debug as the build target and build
 
 ```sudo apt-get install libloadpng4-dev```
 
-```sudo apt-get install liblogg4-dev```
-
 Open code blocks project, select debug-linux as the build target and build
 
 ## Linking
 In case you are not using the code blocks project provided
 ```
--llogg
--lvorbisfile
--lvorbis
--logg
 -lloadpng
 -lalleg44 or -lalleg
 ```
