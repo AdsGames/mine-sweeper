@@ -9,7 +9,7 @@
 
 #include "state.h"
 
-class intro : public state{
+class intro : public state {
   public:
     // Construct/deconstruct
     intro();
@@ -20,8 +20,8 @@ class intro : public state{
     void draw();
 
   private:
-    BITMAP* img_intro;
-    BITMAP* img_title;
+    BITMAP *img_intro;
+    BITMAP *img_title;
 };
 
 #endif // INTRO_H

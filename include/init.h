@@ -20,7 +20,7 @@ class init : public state {
     ~init() {};
 
     // Defaults graphics mode
-    int set_graphics(int max_scale);
+    int set_graphics (int max_scale);
 
     // Override parent
     void update();

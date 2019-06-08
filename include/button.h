@@ -10,17 +10,17 @@
 #include <allegro.h>
 #include <string>
 
-class Button{
+class Button {
   public:
     Button();
-    Button(int x, int y);
+    Button (int x, int y);
     ~Button();
 
-    void setImages(std::string image1, std::string image2);
+    void setImages (std::string image1, std::string image2);
 
     bool hovering();
 
-    void draw(BITMAP* buff);
+    void draw (BITMAP *buff);
 
   private:
     int height;

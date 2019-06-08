@@ -7,16 +7,16 @@
 #include "tools.h"
 
 // Shared images
-BITMAP* Block::images[NUM_IMAGES] = { nullptr };
+BITMAP *Block::images[NUM_IMAGES] = { nullptr };
 int Block::block_count = 0;
 
 Block::Block() :
-  Block(0, 0, 0, 0) {
+  Block (0, 0, 0, 0) {
 
 }
 
 // Create
-Block::Block(int x, int y, int width, int height) {
+Block::Block (int x, int y, int width, int height) {
   // Position
   this -> x = x;
   this -> y = y;
@@ -33,11 +33,12 @@ Block::Block(int x, int y, int width, int height) {
   // Load images
   if (block_count == 0) {
     std::string directory = "images/blocks/";
+
     if (game_difficulty == 16)
       directory = "images/blocks_small/";
 
     for (int i = 0; i < NUM_IMAGES; i++) {
-      images[i] = load_png((directory + convertIntToString(i) + ".png").c_str(), nullptr);
+      images[i] = load_png ( (directory + convertIntToString (i) + ".png").c_str(), nullptr);
     }
   }
 
@@ -51,7 +52,7 @@ Block::~Block() {
 
   if (block_count <= 0)
     for (int i = 0; i < NUM_IMAGES; i++)
-      destroy_bitmap(images[i]);
+      destroy_bitmap (images[i]);
 }
 
 // X / Y
@@ -83,7 +84,7 @@ bool Block::IsFlagged() {
 }
 
 // Set the type
-void Block::SetType(int type) {
+void Block::SetType (int type) {
   this -> type = type;
 }
 
@@ -109,16 +110,18 @@ void Block::Unflag() {
 
 // Mouse over
 bool Block::MouseOver() {
-  return collision((float)mouse_x / scale, (float)mouse_x / scale, x, x + width,
-                   (float)mouse_y / scale, (float)mouse_y / scale, y, y + height);
+  return collision ( (float) mouse_x / scale, (float) mouse_x / scale, x, x + width,
+                     (float) mouse_y / scale, (float) mouse_y / scale, y, y + height);
 }
 
 // Draw
-void Block::draw(BITMAP* buff) {
+void Block::draw (BITMAP *buff) {
   if (flagged && images[10])
-    stretch_sprite(buff, images[10], x, y, width, height);
-  else if (!revealed && images[11])
-    stretch_sprite(buff, images[11], x, y, width, height);
-  else if (images[type])
-    stretch_sprite(buff, images[type], x, y, width, height);
+    stretch_sprite (buff, images[10], x, y, width, height);
+  else
+    if (!revealed && images[11])
+      stretch_sprite (buff, images[11], x, y, width, height);
+    else
+      if (images[type])
+        stretch_sprite (buff, images[type], x, y, width, height);
 }

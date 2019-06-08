@@ -6,11 +6,11 @@
 #define NUM_IMAGES 12
 
 // Block class!
-class Block{
+class Block {
   public:
     // Construct and deconstruct
     Block();
-    Block(int x, int y, int width, int height);
+    Block (int x, int y, int width, int height);
     ~Block();
 
     // X / Y
@@ -31,7 +31,7 @@ class Block{
     bool IsFlagged();
 
     // Set the type
-    void SetType(int type);
+    void SetType (int type);
 
     // Set whether already selected
     void Reveal();
@@ -44,7 +44,7 @@ class Block{
     bool MouseOver();
 
     // Draw image to screen
-    void draw(BITMAP* buff);
+    void draw (BITMAP *buff);
 
   private:
     // Position
@@ -61,7 +61,7 @@ class Block{
     bool flagged;
 
     // Images
-    static BITMAP* images[NUM_IMAGES];
+    static BITMAP *images[NUM_IMAGES];
     static int block_count;
 };
 

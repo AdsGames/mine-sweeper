@@ -21,7 +21,7 @@ extern volatile bool beepQueue;
 extern volatile int timeIn;
 extern int done;
 
-class game : public state{
+class game : public state {
   public:
     // Construct/deconstruct
     game();
@@ -35,25 +35,25 @@ class game : public state{
 
   private:
     // Generate map
-    void generate_map(int x, int y);
+    void generate_map (int x, int y);
 
     // Reveal map
     void reveal_map();
 
     // Reveal at
-    void reveal_at(int x, int y);
+    void reveal_at (int x, int y);
 
     // Creates the blocks on screen
     Block MyBlocks[16][16];
 
     // Images
-    BITMAP* buffer;
-    BITMAP* menu_win;
-    BITMAP* menu_lose;
+    BITMAP *buffer;
+    BITMAP *menu_win;
+    BITMAP *menu_lose;
 
     // Sounds
-    SAMPLE* explode;
-    SAMPLE* timer;
+    SAMPLE *explode;
+    SAMPLE *timer;
 
     // Buttons
     Button menu_yes;

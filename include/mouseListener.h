@@ -15,7 +15,7 @@
 #include <allegro.h>
 //#include <iostream>
 
-class mouseListener{
+class mouseListener {
   public:
     mouseListener();
     virtual ~mouseListener();

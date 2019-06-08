@@ -10,7 +10,7 @@
 #include "state.h"
 #include "button.h"
 
-class menu : public state{
+class menu : public state {
   public:
     // Construct/deconstruct
     menu();
@@ -22,9 +22,9 @@ class menu : public state{
 
   private:
     // Images
-    BITMAP* title;
-    BITMAP* main_menu;
-    BITMAP* buffer;
+    BITMAP *title;
+    BITMAP *main_menu;
+    BITMAP *buffer;
 
     // Buttons
     Button start_easy;

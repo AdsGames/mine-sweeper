@@ -5,7 +5,7 @@ int stateID;
 int nextState;
 
 // Set next state
-void set_next_state(int newState) {
+void set_next_state (int newState) {
   if (nextState != STATE_EXIT) {
     nextState = newState;
   }
