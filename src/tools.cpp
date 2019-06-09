@@ -3,6 +3,9 @@
 #include <sstream>
 #include <random>
 
+// Random device
+std::random_device dev;
+
 //Collision
 bool collision (float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2) {
   if (xMin1 < xMax2 && yMin1 < yMax2 && xMin2 < xMax1 && yMin2 < yMax1) {
@@ -14,10 +17,8 @@ bool collision (float xMin1, float xMax1, float xMin2, float xMax2, float yMin1,
 
 //Random number generator. Use int random(lowest,highest);
 int random (int low, int high) {
-  std::random_device dev;
   std::mt19937 rng (dev() );
   std::uniform_int_distribution<std::mt19937::result_type> dist6 (low, high); // distribution in range [1, 6]
-
   return dist6 (rng);
 }
 
