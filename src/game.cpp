@@ -202,18 +202,17 @@ void game::update() {
             }
 
             // Flagging
-            else
-              if (mouseListener::buttonPressed[2] &&
-                  !MyBlocks[i][t].IsRevealed() ) {
-                if (!MyBlocks[i][t].IsFlagged() ) {
-                  MyBlocks[i][t].Flag();
-                  flags++;
-                }
-                else {
-                  MyBlocks[i][t].Unflag();
-                  flags--;
-                }
+            else if (mouseListener::buttonPressed[2] &&
+                     !MyBlocks[i][t].IsRevealed() ) {
+              if (!MyBlocks[i][t].IsFlagged() ) {
+                MyBlocks[i][t].Flag();
+                flags++;
               }
+              else {
+                MyBlocks[i][t].Unflag();
+                flags--;
+              }
+            }
           }
         }
       }
@@ -221,19 +220,17 @@ void game::update() {
   }
 
   // Win or lose
-  else
-    if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
-      // Press buttons
-      if (mouseListener::buttonPressed[1]) {
-        if (menu_yes.hovering() ) {
-          set_next_state (STATE_GAME);
-        }
-        else
-          if (menu_no.hovering() ) {
-            set_next_state (STATE_MENU);
-          }
+  else if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
+    // Press buttons
+    if (mouseListener::buttonPressed[1]) {
+      if (menu_yes.hovering() ) {
+        set_next_state (STATE_GAME);
+      }
+      else if (menu_no.hovering() ) {
+        set_next_state (STATE_MENU);
       }
     }
+  }
 
   if (key[KEY_Q])
     set_next_state (STATE_MENU);
@@ -256,9 +253,8 @@ void game::draw() {
   if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
     if (game_state == MINISTATE_WIN)
       draw_sprite (buffer, menu_win, 25, 42);
-    else
-      if (game_state == MINISTATE_LOSE)
-        draw_sprite (buffer, menu_lose, 25, 42);
+    else if (game_state == MINISTATE_LOSE)
+      draw_sprite (buffer, menu_lose, 25, 42);
 
     // Buttons
     menu_yes.draw (buffer);

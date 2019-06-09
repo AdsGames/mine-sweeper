@@ -48,20 +48,17 @@ void menu::update() {
       game_difficulty = 4;
       set_next_state (STATE_GAME);
     }
-    else
-      if (start_medium.hovering() ) {
-        game_difficulty = 8;
-        set_next_state (STATE_GAME);
-      }
-      else
-        if (start_hard.hovering() ) {
-          game_difficulty = 16;
-          set_next_state (STATE_GAME);
-        }
-        else
-          if (quit.hovering() ) {
-            set_next_state (STATE_EXIT);
-          }
+    else if (start_medium.hovering() ) {
+      game_difficulty = 8;
+      set_next_state (STATE_GAME);
+    }
+    else if (start_hard.hovering() ) {
+      game_difficulty = 16;
+      set_next_state (STATE_GAME);
+    }
+    else if (quit.hovering() ) {
+      set_next_state (STATE_EXIT);
+    }
   }
 }
 

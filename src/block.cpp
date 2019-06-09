@@ -118,10 +118,8 @@ bool Block::MouseOver() {
 void Block::draw (BITMAP *buff) {
   if (flagged && images[10])
     stretch_sprite (buff, images[10], x, y, width, height);
-  else
-    if (!revealed && images[11])
-      stretch_sprite (buff, images[11], x, y, width, height);
-    else
-      if (images[type])
-        stretch_sprite (buff, images[type], x, y, width, height);
+  else if (!revealed && images[11])
+    stretch_sprite (buff, images[11], x, y, width, height);
+  else if (images[type])
+    stretch_sprite (buff, images[type], x, y, width, height);
 }
