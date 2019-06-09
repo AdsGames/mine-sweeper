@@ -42,9 +42,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-*.o
+output/
 *.depend
 *.layout
 *.exe
 *.res
-build/Minesweeper
+build/Minesweeper*
