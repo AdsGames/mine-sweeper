@@ -4,7 +4,7 @@ A remake of the classic windows game "Minesweeper". Clear the board of mines by 
 ## Compiling
 
 ### Windows
-You must install allegro 4, lib ogg and the allegro loadpng addon:
+You must install allegro 4 and the allegro loadpng addon:
 - [Allegro 4](http://liballeg.org/api.html)
 
 
