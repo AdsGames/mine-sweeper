@@ -47,4 +47,5 @@ output/
 *.layout
 *.exe
 *.res
+*.dll
 build/Minesweeper*
