@@ -1,10 +1,10 @@
-#include "block.h"
+#include "Block.h"
 
 #include <string>
 
 #include "globals.h"
 #include "tools.h"
-#include "mouseListener.h"
+#include "MouseListener.h"
 
 // Shared images
 BITMAP *Block::images[NUM_IMAGES] = { nullptr };

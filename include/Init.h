@@ -7,7 +7,7 @@
 #ifndef INIT_H
 #define INIT_H
 
-#include "state.h"
+#include "State.h"
 
 #define BUFFER_WIDTH 128
 #define BUFFER_HEIGHT 128

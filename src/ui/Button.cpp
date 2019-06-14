@@ -1,7 +1,7 @@
 #include "ui/Button.h"
 
 #include "tools.h"
-#include "mouseListener.h"
+#include "MouseListener.h"
 
 Button::Button ()
   : Button(0, 0) {

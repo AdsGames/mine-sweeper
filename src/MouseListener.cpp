@@ -1,4 +1,4 @@
-#include "mouseListener.h"
+#include "MouseListener.h"
 #include "globals.h"
 
 bool mouseListener::buttonPressed[MAX_MOUSE_BUTTONS] = { false};

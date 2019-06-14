@@ -127,28 +127,28 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
 		</Compiler>
-		<Unit filename="include/block.h" />
-		<Unit filename="include/game.h" />
+		<Unit filename="include/Block.h" />
+		<Unit filename="include/Game.h" />
+		<Unit filename="include/Init.h" />
+		<Unit filename="include/Intro.h" />
+		<Unit filename="include/Menu.h" />
+		<Unit filename="include/MouseListener.h" />
+		<Unit filename="include/State.h" />
 		<Unit filename="include/globals.h" />
-		<Unit filename="include/init.h" />
-		<Unit filename="include/intro.h" />
-		<Unit filename="include/menu.h" />
-		<Unit filename="include/mouseListener.h" />
-		<Unit filename="include/state.h" />
 		<Unit filename="include/tools.h" />
 		<Unit filename="include/ui/Button.h" />
 		<Unit filename="res/resources.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="src/block.cpp" />
-		<Unit filename="src/game.cpp" />
+		<Unit filename="src/Block.cpp" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Init.cpp" />
+		<Unit filename="src/Intro.cpp" />
+		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/MouseListener.cpp" />
+		<Unit filename="src/State.cpp" />
 		<Unit filename="src/globals.cpp" />
-		<Unit filename="src/init.cpp" />
-		<Unit filename="src/intro.cpp" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/menu.cpp" />
-		<Unit filename="src/mouseListener.cpp" />
-		<Unit filename="src/state.cpp" />
 		<Unit filename="src/tools.cpp" />
 		<Unit filename="src/ui/Button.cpp" />
 		<Extensions>

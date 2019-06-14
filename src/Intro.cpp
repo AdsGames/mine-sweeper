@@ -1,4 +1,4 @@
-#include "intro.h"
+#include "Intro.h"
 
 #include "tools.h"
 

@@ -7,7 +7,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "state.h"
+#include "State.h"
 #include "ui/Button.h"
 
 class menu : public state {

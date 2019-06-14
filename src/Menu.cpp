@@ -1,8 +1,8 @@
-#include "menu.h"
+#include "Menu.h"
 
 #include "globals.h"
 #include "tools.h"
-#include "mouseListener.h"
+#include "MouseListener.h"
 
 
 menu::menu() {

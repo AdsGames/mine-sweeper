@@ -11,9 +11,9 @@
 #define MINISTATE_WIN 1
 #define MINISTATE_LOSE 2
 
-#include "state.h"
+#include "State.h"
 
-#include "block.h"
+#include "Block.h"
 #include "ui/Button.h"
 
 extern void beeper();

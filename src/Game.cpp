@@ -1,8 +1,8 @@
-#include "game.h"
+#include "Game.h"
 
 #include "tools.h"
 #include "globals.h"
-#include "mouseListener.h"
+#include "MouseListener.h"
 
 // Timer for beep
 void beeper() {

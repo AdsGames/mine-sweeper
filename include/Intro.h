@@ -7,7 +7,7 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "state.h"
+#include "State.h"
 
 class intro : public state {
   public:

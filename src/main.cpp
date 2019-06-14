@@ -12,13 +12,13 @@
 #include <string>
 #include <time.h>
 
-#include "mouseListener.h"
+#include "MouseListener.h"
 
-#include "state.h"
-#include "init.h"
-#include "intro.h"
-#include "menu.h"
-#include "game.h"
+#include "State.h"
+#include "Init.h"
+#include "Intro.h"
+#include "Menu.h"
+#include "Game.h"
 
 // FPS System
 volatile int ticks = 0;
