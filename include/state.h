@@ -14,7 +14,7 @@ extern int stateID;
 extern int nextState;
 
 // Set next state
-extern void set_next_state ( int newState );
+extern void set_next_state (int newState);
 
 //Game states
 enum programStates {

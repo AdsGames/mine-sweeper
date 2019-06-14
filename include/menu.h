@@ -8,17 +8,17 @@
 #define MENU_H
 
 #include "state.h"
-#include "button.h"
+#include "ui/Button.h"
 
 class menu : public state {
   public:
     // Construct/deconstruct
     menu();
-    ~menu();
+    virtual ~menu();
 
     // Override parent
-    void update();
-    void draw();
+    virtual void update() override;
+    virtual void draw() override;
 
   private:
     // Images

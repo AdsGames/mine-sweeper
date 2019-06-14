@@ -1,3 +1,6 @@
+// *** ADDED BY HEADER FIXUP ***
+#include <ctime>
+// *** END ***
 /*
  * Minesweeper
  * Allan Legemaate
@@ -6,7 +9,6 @@
  */
 
 #include <allegro.h>
-#include <loadpng.h>
 #include <string>
 #include <time.h>
 
@@ -39,14 +41,6 @@ END_OF_FUNCTION (ticker)
 
 // Current state object
 state *currentState = NULL;
-
-// Mouse listener
-mouseListener mouse_check;
-
-// Delete game state and free state resources
-void clean_up() {
-  delete currentState;
-}
 
 // Close button handler
 volatile int close_button_pressed = FALSE;
@@ -111,16 +105,16 @@ void setup() {
   set_color_depth (32);
 
   // Creates a random number generator (based on time)
-  srand (time (nullptr) );
+  srand (time (nullptr));
 
   // Setup for FPS system
   LOCK_VARIABLE (ticks);
   LOCK_FUNCTION (ticker);
-  install_int_ex (ticker, BPS_TO_TIMER (updates_per_second) );
+  install_int_ex (ticker, BPS_TO_TIMER (updates_per_second));
 
   LOCK_VARIABLE (game_time);
   LOCK_FUNCTION (game_time_ticker);
-  install_int_ex (game_time_ticker, BPS_TO_TIMER (10) );
+  install_int_ex (game_time_ticker, BPS_TO_TIMER (10));
 
   // Close button
   LOCK_FUNCTION (close_button_handler);
@@ -155,7 +149,7 @@ int main() {
       change_state();
 
       // Check mice
-      mouse_check.update();
+      mouseListener::update();
 
       // Update always
       currentState -> update();

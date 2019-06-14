@@ -10,25 +10,23 @@
 #ifndef MOUSELISTENER_H
 #define MOUSELISTENER_H
 
-#define MAX_MOUSE_BUTTONS 3
-
 #include <allegro.h>
-//#include <iostream>
+
+enum MOUSE_BUTTONS {
+  MOUSE_LEFT = 1,
+  MOUSE_RIGHT = 2,
+  MOUSE_MIDDLE = 3,
+  MAX_MOUSE_BUTTONS
+};
 
 class mouseListener {
   public:
-    mouseListener();
-    virtual ~mouseListener();
-
-    void update();
-
+    static void update();
     static bool buttonPressed[MAX_MOUSE_BUTTONS];
     static bool buttonReleased[MAX_MOUSE_BUTTONS];
     static bool lastTicksButton[MAX_MOUSE_BUTTONS];
-
-  protected:
-
-  private:
+    static unsigned int x;
+    static unsigned int y;
 };
 
 #endif // MOUSELISTENER_H

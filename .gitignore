@@ -49,3 +49,4 @@ output/
 *.res
 *.dll
 build/Minesweeper*
+CppCheckResults.xml

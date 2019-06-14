@@ -1,13 +1,11 @@
 #include "intro.h"
 
-#include <loadpng.h>
-
 #include "tools.h"
 
 // Constructor
 intro::intro() {
-  img_title = load_png ("images/title.png", nullptr);
-  img_intro = load_png ("images/intro.png", nullptr);
+  img_title = load_png_ex ("images/title.png");
+  img_intro = load_png_ex ("images/intro.png");
 }
 
 // Destructor
@@ -47,5 +45,5 @@ void intro::draw() {
 
   highcolor_fade_out (8);
 
-  set_next_state ( STATE_MENU);
+  set_next_state (STATE_MENU);
 }

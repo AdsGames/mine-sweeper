@@ -17,14 +17,14 @@ class init : public state {
   public:
     // Construct/deconstruct
     init();
-    ~init() {};
-
-    // Defaults graphics mode
-    int set_graphics (int max_scale);
+    virtual ~init() {};
 
     // Override parent
-    void update();
-    void draw() {};
+    virtual void update() override;
+    virtual void draw() override {};
+
+    // Defaults graphics mode
+    static int set_graphics (int max_scale);
 };
 
 #endif // INIT_H

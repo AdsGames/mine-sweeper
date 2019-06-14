@@ -1,7 +1,5 @@
 #include "game.h"
 
-#include <loadpng.h>
-
 #include "tools.h"
 #include "globals.h"
 #include "mouseListener.h"
@@ -24,25 +22,31 @@ game::game() {
   // Timer for beeping
   LOCK_VARIABLE (beepQueue);
   LOCK_FUNCTION (beeper);
-  install_int_ex (beeper, BPS_TO_TIMER (1) );
+  install_int_ex (beeper, BPS_TO_TIMER (1));
 
   // Creates a buffer
   buffer = create_bitmap (128, 128);
 
   // Sets Sounds
-  explode = load_sample ("sounds/explode.wav" );
-  timer = load_sample ("sounds/timer.wav" );
+  explode = load_sample_ex ("sounds/explode.wav");
+  timer = load_sample_ex ("sounds/timer.wav");
 
   // Sets menu
-  menu_win = load_png ("images/menu_win.png", nullptr);
-  menu_lose = load_png ("images/menu_lose.png", nullptr);
+  menu_win = load_png_ex ("images/menu_win.png");
+  menu_lose = load_png_ex ("images/menu_lose.png");
 
   // Buttons
   menu_yes = Button (36, 73);
-  menu_yes.setImages ("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
+  menu_yes.SetImages ("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
+  menu_yes.SetOnClick([this]() {
+    set_next_state (STATE_GAME);
+  });
 
   menu_no = Button (68, 72);
-  menu_no.setImages ("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
+  menu_no.SetImages ("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
+  menu_no.SetOnClick([this]() {
+    set_next_state (STATE_MENU);
+  });
 
 
   width = game_difficulty;
@@ -131,7 +135,7 @@ void game::reveal_at (int x, int y) {
   if (x < 0 || x >= width ||
       y < 0 || y >= height ||
       MyBlocks[x][y].IsRevealed() ||
-      MyBlocks[x][y].IsFlagged() )
+      MyBlocks[x][y].IsFlagged())
     return;
 
   MyBlocks[x][y].Reveal();
@@ -140,7 +144,7 @@ void game::reveal_at (int x, int y) {
   if (MyBlocks[x][y].GetType() == 0) {
     for (int j = x - 1; j <= x + 1; j ++) {
       for (int k = y - 1; k <= y + 1; k ++) {
-        if (! (j == x && k == y) )
+        if (! (j == x && k == y))
           reveal_at (j, k);
       }
     }
@@ -158,7 +162,7 @@ void game::reveal_map() {
 // All game logic goes on here
 void game::update() {
   // Set title text
-  set_window_title ( (std::string ("Mines Left: ") + convertIntToString (mines - flags) + " Time:" + convertIntToString (timeIn) + " Tiles:" + convertIntToString (tiles_left) ).c_str() );
+  set_window_title ((std::string ("Mines Left: ") + std::to_string (mines - flags) + " Time:" + std::to_string (timeIn) + " Tiles:" + std::to_string (tiles_left)).c_str());
 
   // Game
   if (game_state == MINISTATE_GAME) {
@@ -176,12 +180,12 @@ void game::update() {
     }
 
     // Checks if mouse is in collision with object
-    if (mouseListener::buttonPressed[1] || mouseListener::buttonPressed[2]) {
+    if (mouseListener::buttonPressed[MOUSE_LEFT] || mouseListener::buttonPressed[MOUSE_RIGHT]) {
       for (int i = 0; i < width; i++) {
         for (int t = 0; t < height; t++) {
-          if (MyBlocks[i][t].MouseOver() ) {
+          if (MyBlocks[i][t].MouseOver()) {
             // Revealing
-            if (mouseListener::buttonPressed[1] &&
+            if (mouseListener::buttonPressed[MOUSE_LEFT] &&
                 MyBlocks[i][t].IsFlagged() == false) {
               // Generate on first click
               if (!firstPress) {
@@ -202,9 +206,9 @@ void game::update() {
             }
 
             // Flagging
-            else if (mouseListener::buttonPressed[2] &&
-                     !MyBlocks[i][t].IsRevealed() ) {
-              if (!MyBlocks[i][t].IsFlagged() ) {
+            else if (mouseListener::buttonPressed[MOUSE_RIGHT] &&
+                     !MyBlocks[i][t].IsRevealed()) {
+              if (!MyBlocks[i][t].IsFlagged()) {
                 MyBlocks[i][t].Flag();
                 flags++;
               }
@@ -221,15 +225,8 @@ void game::update() {
 
   // Win or lose
   else if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
-    // Press buttons
-    if (mouseListener::buttonPressed[1]) {
-      if (menu_yes.hovering() ) {
-        set_next_state (STATE_GAME);
-      }
-      else if (menu_no.hovering() ) {
-        set_next_state (STATE_MENU);
-      }
-    }
+    menu_no.Update();
+    menu_yes.Update();
   }
 
   if (key[KEY_Q])
@@ -257,8 +254,8 @@ void game::draw() {
       draw_sprite (buffer, menu_lose, 25, 42);
 
     // Buttons
-    menu_yes.draw (buffer);
-    menu_no.draw (buffer);
+    menu_yes.Draw (buffer);
+    menu_no.Draw (buffer);
   }
 
   // Draws buffer

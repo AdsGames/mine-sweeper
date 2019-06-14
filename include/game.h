@@ -14,7 +14,7 @@
 #include "state.h"
 
 #include "block.h"
-#include "button.h"
+#include "ui/Button.h"
 
 extern void beeper();
 extern volatile bool beepQueue;
@@ -25,13 +25,11 @@ class game : public state {
   public:
     // Construct/deconstruct
     game();
-    ~game();
+    virtual ~game();
 
     // Override parent
-    void update();
-    void draw();
-
-  protected:
+    virtual void update() override;
+    virtual void draw() override;
 
   private:
     // Generate map
@@ -48,16 +46,14 @@ class game : public state {
 
     // Images
     BITMAP *buffer;
-    BITMAP *menu_win;
-    BITMAP *menu_lose;
+    BITMAP *menu_win, *menu_lose;
 
     // Sounds
     SAMPLE *explode;
     SAMPLE *timer;
 
     // Buttons
-    Button menu_yes;
-    Button menu_no;
+    Button menu_yes, menu_no;
 
     // Variables
     int mines;

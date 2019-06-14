@@ -13,22 +13,14 @@ class Block {
     Block (int x, int y, int width, int height);
     ~Block();
 
-    // X / Y
-    int GetX();
-    int GetY();
-
-    // Width / height
-    int GetHeight();
-    int GetWidth();
-
     // Returns type of block
-    int GetType();
+    int GetType() const;
 
     // Mouse selected or not
-    bool IsRevealed();
+    bool IsRevealed() const;
 
     // Is it flagged?
-    bool IsFlagged();
+    bool IsFlagged() const;
 
     // Set the type
     void SetType (int type);
@@ -41,19 +33,17 @@ class Block {
     void Unflag();
 
     // Mouse over
-    bool MouseOver();
+    bool MouseOver() const;
 
     // Draw image to screen
     void draw (BITMAP *buff);
 
   private:
     // Position
-    int x;
-    int y;
+    int x, y;
 
     // Size
-    int width;
-    int height;
+    int width, height;
 
     // Other flags
     int type;

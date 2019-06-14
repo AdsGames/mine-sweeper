@@ -13,11 +13,11 @@ class intro : public state {
   public:
     // Construct/deconstruct
     intro();
-    ~intro();
+    virtual ~intro();
 
     // Override parent
-    void update() {};
-    void draw();
+    virtual void update() override {};
+    virtual void draw() override;
 
   private:
     BITMAP *img_intro;

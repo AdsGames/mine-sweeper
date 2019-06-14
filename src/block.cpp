@@ -1,10 +1,10 @@
 #include "block.h"
 
-#include <loadpng.h>
 #include <string>
 
 #include "globals.h"
 #include "tools.h"
+#include "mouseListener.h"
 
 // Shared images
 BITMAP *Block::images[NUM_IMAGES] = { nullptr };
@@ -16,19 +16,14 @@ Block::Block() :
 }
 
 // Create
-Block::Block (int x, int y, int width, int height) {
-  // Position
-  this -> x = x;
-  this -> y = y;
-
-  // Size
-  this -> width = width;
-  this -> height = height;
-
-  // Other flags
-  type = 0;
-  revealed = false;
-  flagged = false;
+Block::Block (int x, int y, int width, int height)
+  : x(x),
+    y(y),
+    width(width),
+    height(height),
+    type(0),
+    revealed(false),
+    flagged(false) {
 
   // Load images
   if (block_count == 0) {
@@ -38,7 +33,7 @@ Block::Block (int x, int y, int width, int height) {
       directory = "images/blocks_small/";
 
     for (int i = 0; i < NUM_IMAGES; i++) {
-      images[i] = load_png ( (directory + convertIntToString (i) + ".png").c_str(), nullptr);
+      images[i] = load_png_ex (directory + std::to_string(i) + ".png");
     }
   }
 
@@ -55,31 +50,13 @@ Block::~Block() {
       destroy_bitmap (images[i]);
 }
 
-// X / Y
-int Block::GetX() {
-  return x;
-}
-
-int Block::GetY() {
-  return y;
-}
-
-// Width / height
-int Block::GetHeight() {
-  return height;
-}
-
-int Block::GetWidth() {
-  return width;
-}
-
 // Returns type of block
-int Block::GetType() {
+int Block::GetType()  const {
   return type;
 }
 
 // Is it flagged?
-bool Block::IsFlagged() {
+bool Block::IsFlagged()  const {
   return flagged;
 }
 
@@ -89,7 +66,7 @@ void Block::SetType (int type) {
 }
 
 // Get revealed state
-bool Block::IsRevealed() {
+bool Block::IsRevealed()  const {
   return revealed;
 }
 
@@ -109,9 +86,9 @@ void Block::Unflag() {
 }
 
 // Mouse over
-bool Block::MouseOver() {
-  return collision ( (float) mouse_x / scale, (float) mouse_x / scale, x, x + width,
-                     (float) mouse_y / scale, (float) mouse_y / scale, y, y + height);
+bool Block::MouseOver() const {
+  return collision (mouseListener::x, mouseListener::x, x, x + width,
+                    mouseListener::y, mouseListener::y, y, y + height);
 }
 
 // Draw
