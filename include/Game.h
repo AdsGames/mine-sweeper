@@ -4,67 +4,58 @@
  * 30/12/2016
  * Main program here
  */
+
 #ifndef GAME_H
 #define GAME_H
 
-#define MINISTATE_GAME 0
-#define MINISTATE_WIN 1
-#define MINISTATE_LOSE 2
-
 #include "State.h"
 
-#include "Block.h"
+#include "utility/Timer.h"
 #include "ui/Button.h"
 
-extern void beeper();
-extern volatile bool beepQueue;
-extern volatile int timeIn;
-extern int done;
+#include "Minefield.h"
 
-class game : public state {
+class Game : public State {
   public:
-    // Construct/deconstruct
-    game();
-    virtual ~game();
+    // Construct/destruct
+    Game();
+    virtual ~Game();
 
     // Override parent
     virtual void update() override;
     virtual void draw() override;
 
   private:
-    // Generate map
-    void generate_map (int x, int y);
+    // Disallow copy
+    Game (const Game &);
+    Game &operator= (const Game &);
 
-    // Reveal map
-    void reveal_map();
-
-    // Reveal at
-    void reveal_at (int x, int y);
-
-    // Creates the blocks on screen
-    Block MyBlocks[16][16];
-
-    // Images
-    BITMAP *buffer;
-    BITMAP *menu_win, *menu_lose;
+    // Bitmaps
+    BITMAP *buffer, *menu_win, *menu_lose;
 
     // Sounds
-    SAMPLE *explode;
-    SAMPLE *timer;
+    SAMPLE *explode, *beep;
+
+    // Minefield
+    Minefield field;
 
     // Buttons
     Button menu_yes, menu_no;
 
-    // Variables
-    int mines;
-    int flags;
-    int tiles_left;
+    // Game timer
+    Timer game_time;
+    int last_beep_time;
+
+    // Mini state in game
     int game_state;
+    enum game_states {
+      game,
+      win,
+      lose
+    };
 
-    bool firstPress;
+    // Sound enabled
     bool sound;
-
-    int width, height;
 };
 
 #endif // GAME_H

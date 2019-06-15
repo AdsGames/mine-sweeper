@@ -1,17 +1,21 @@
-#ifndef BLOCK_H
-#define BLOCK_H
+/*
+ * Cell
+ * Allan Legemaate
+ * 15/06/2019
+ * An individual cell contained in minefield
+ */
+
+#ifndef CELL_H
+#define CELL_H
 
 #include <allegro.h>
 
-#define NUM_IMAGES 12
-
-// Block class!
-class Block {
+class Cell {
   public:
     // Construct and deconstruct
-    Block();
-    Block (int x, int y, int width, int height);
-    ~Block();
+    Cell();
+    Cell (int x, int y, int width, int height);
+    ~Cell();
 
     // Returns type of block
     int GetType() const;
@@ -29,14 +33,13 @@ class Block {
     void Reveal();
 
     // Set whether flagged or not
-    void Flag();
-    void Unflag();
+    int ToggleFlag();
 
-    // Mouse over
-    bool MouseOver() const;
+    // Point over
+    bool CollisionAt (int x, int y) const;
 
     // Draw image to screen
-    void draw (BITMAP *buff);
+    void Draw (BITMAP *buffer);
 
   private:
     // Position
@@ -51,7 +54,7 @@ class Block {
     bool flagged;
 
     // Images
-    static BITMAP *images[NUM_IMAGES];
+    static BITMAP *images[12];
     static int block_count;
 };
 

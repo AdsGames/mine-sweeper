@@ -8,18 +8,24 @@
 #define INTRO_H
 
 #include "State.h"
+#include <allegro.h>
 
-class intro : public state {
+class Intro : public State {
   public:
     // Construct/deconstruct
-    intro();
-    virtual ~intro();
+    Intro();
+    virtual ~Intro();
 
     // Override parent
     virtual void update() override {};
     virtual void draw() override;
 
   private:
+    // Disallow copy
+    Intro (const Intro &);
+    Intro &operator= (const Intro &);
+
+    // Images
     BITMAP *img_intro;
     BITMAP *img_title;
 };

@@ -1,51 +1,51 @@
 #include "Menu.h"
 
 #include "globals.h"
-#include "tools.h"
-#include "MouseListener.h"
+#include "utility/tools.h"
+#include "utility/MouseListener.h"
 
 
-menu::menu() {
-  // Creates a buffer
-  buffer = create_bitmap (128, 128);
+Menu::Menu()
+  : buffer (create_bitmap (128, 128)),
+    title (load_png_ex ("images/title.png")),
+    main_menu (load_png_ex ("images/main_menu.png")),
+    start_easy (Button (25, 45)),
+    start_medium (Button (25, 60)),
+    start_hard (Button (25, 75)),
+    quit (Button (25, 90))
+{
 
-  // Load menu background
-  title = load_png_ex ("images/title.png");
-
-  // Load menu
-  main_menu = load_png_ex ("images/main_menu.png");
+  // Title
+  set_window_title ("Minesweeper - A.D.S. Games");
 
   // Buttons
-  start_easy = Button (25, 45);
   start_easy.SetImages ("images/buttons/start_easy.png", "images/buttons/start_easy_hover.png");
-  start_easy.SetOnClick([this]() {
-    game_difficulty = 4;
+  start_easy.SetOnClick ([this]() {
+    game_difficulty = 0;
     set_next_state (STATE_GAME);
   });
 
-  start_medium = Button (25, 60);
   start_medium.SetImages ("images/buttons/start_medium.png", "images/buttons/start_medium_hover.png");
-  start_medium.SetOnClick([this]() {
-    game_difficulty = 8;
+  start_medium.SetOnClick ([this]() {
+    game_difficulty = 1;
     set_next_state (STATE_GAME);
   });
 
-  start_hard = Button (25, 75);
   start_hard.SetImages ("images/buttons/start_hard.png", "images/buttons/start_hard_hover.png");
-  start_hard.SetOnClick([this]() {
-    game_difficulty = 16;
+  start_hard.SetOnClick ([this]() {
+    game_difficulty = 2;
     set_next_state (STATE_GAME);
   });
 
-  quit = Button (25, 90);
+
   quit.SetImages ("images/buttons/quit.png", "images/buttons/quit_hover.png");
-  quit.SetOnClick([this]() {
+  quit.SetOnClick ([this]() {
     set_next_state (STATE_EXIT);
   });
 }
 
 // Destructor
-menu::~menu() {
+Menu::~Menu() {
   highcolor_fade_out (8);
 
   // Destroy bitmaps
@@ -55,15 +55,18 @@ menu::~menu() {
 }
 
 // Update game
-void menu::update() {
+void Menu::update() {
   start_easy.Update();
   start_medium.Update();
   start_hard.Update();
   quit.Update();
+
+  if (key[KEY_ESC])
+    set_next_state (STATE_EXIT);
 }
 
 // Draw to screen
-void menu::draw() {
+void Menu::draw() {
   // Draw menu
   draw_sprite (buffer, title, 0, 0);
   draw_sprite (buffer, main_menu, 14, 31);

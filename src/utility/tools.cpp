@@ -1,27 +1,16 @@
-#include "tools.h"
+#include "utility/tools.h"
 
 #include <sstream>
 #include <random>
-
 #include <loadpng.h>
 
 // Random device
-std::random_device dev;
-
-//Collision
-bool collision (float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2) {
-  if (xMin1 < xMax2 && yMin1 < yMax2 && xMin2 < xMax1 && yMin2 < yMax1) {
-    return true;
-  }
-
-  return false;
-}
+std::mt19937 rng (time (nullptr));
 
 //Random number generator. Use int random(lowest,highest);
 int random (int low, int high) {
-  std::mt19937 rng (dev());
-  std::uniform_int_distribution<std::mt19937::result_type> dist6 (low, high); // distribution in range [1, 6]
-  return dist6 (rng);
+  std::uniform_int_distribution<int> dist (low, high); // distribution in range [1, 6]
+  return dist (rng);
 }
 
 // Fade in
@@ -82,7 +71,7 @@ void abort_on_error (std::string message) {
 BITMAP *load_png_ex (std::string path) {
   BITMAP *temp = nullptr;
 
-  if (!(temp = load_png (path.c_str(), nullptr)))
+  if (! (temp = load_png (path.c_str(), nullptr)))
     abort_on_error ("Cannot find image (" + path + ") \n Please check your files and try again");
 
   return temp;
@@ -92,7 +81,7 @@ BITMAP *load_png_ex (std::string path) {
 SAMPLE *load_sample_ex (std::string path) {
   SAMPLE *temp = nullptr;
 
-  if (!(temp = load_sample (path.c_str())))
+  if (! (temp = load_sample (path.c_str())))
     abort_on_error ("Cannot find image (" + path + ") \n Please check your files and try again");
 
   return temp;

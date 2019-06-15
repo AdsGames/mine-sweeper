@@ -4,9 +4,6 @@
 #include <string>
 #include <allegro.h>
 
-//Collision
-extern bool collision (float xMin1, float xMax1, float xMin2, float xMax2, float yMin1, float yMax1, float yMin2, float yMax2);
-
 //Random number generator
 extern int random (int low, int high);
 

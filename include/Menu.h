@@ -7,24 +7,28 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "State.h"
 #include "ui/Button.h"
+#include "State.h"
 
-class menu : public state {
+class Menu : public State {
   public:
     // Construct/deconstruct
-    menu();
-    virtual ~menu();
+    Menu();
+    virtual ~Menu();
 
     // Override parent
     virtual void update() override;
     virtual void draw() override;
 
   private:
+    // Disallow copy
+    Menu (const Menu &);
+    Menu &operator= (const Menu &);
+
     // Images
+    BITMAP *buffer;
     BITMAP *title;
     BITMAP *main_menu;
-    BITMAP *buffer;
 
     // Buttons
     Button start_easy;

@@ -1,84 +1,53 @@
 #include "Game.h"
 
-#include "tools.h"
+#include "utility/MouseListener.h"
+#include "utility/tools.h"
 #include "globals.h"
-#include "MouseListener.h"
-
-// Timer for beep
-void beeper() {
-  if (!done) {
-    beepQueue = true;
-    timeIn ++;
-  }
-}
-END_OF_FUNCTION (ticker)
-
-volatile bool beepQueue = false;
-volatile int timeIn = 0;
-int done;
 
 // Init game state
-game::game() {
-  // Timer for beeping
-  LOCK_VARIABLE (beepQueue);
-  LOCK_FUNCTION (beeper);
-  install_int_ex (beeper, BPS_TO_TIMER (1));
-
-  // Creates a buffer
-  buffer = create_bitmap (128, 128);
-
-  // Sets Sounds
-  explode = load_sample_ex ("sounds/explode.wav");
-  timer = load_sample_ex ("sounds/timer.wav");
-
-  // Sets menu
-  menu_win = load_png_ex ("images/menu_win.png");
-  menu_lose = load_png_ex ("images/menu_lose.png");
+Game::Game()
+  : buffer (create_bitmap (128, 128)),
+    menu_win (load_png_ex ("images/menu_win.png")),
+    menu_lose (load_png_ex ("images/menu_lose.png")),
+    explode (load_sample_ex ("sounds/explode.wav")),
+    beep (load_sample_ex ("sounds/timer.wav")),
+    field (Minefield()),
+    menu_yes (Button (36, 73)),
+    menu_no (Button (68, 72)),
+    game_time (Timer()),
+    last_beep_time (0),
+    game_state (game_states::game),
+    sound (true) {
 
   // Buttons
-  menu_yes = Button (36, 73);
   menu_yes.SetImages ("images/buttons/button_yes.png", "images/buttons/button_yes_hover.png");
-  menu_yes.SetOnClick([this]() {
+  menu_yes.SetOnClick ([this]() {
     set_next_state (STATE_GAME);
   });
 
-  menu_no = Button (68, 72);
   menu_no.SetImages ("images/buttons/button_no.png", "images/buttons/button_no_hover.png");
-  menu_no.SetOnClick([this]() {
+  menu_no.SetOnClick ([this]() {
     set_next_state (STATE_MENU);
   });
 
+  // Create minefield
+  switch (game_difficulty) {
+    case 2:
+      field = Minefield (16, 16, 40);
+      break;
 
-  width = game_difficulty;
-  height = game_difficulty;
+    case 1:
+      field = Minefield (12, 12, 19);
+      break;
 
-  mines = (width * height) / 4;
-  tiles_left = (width * height) - mines;
-  flags = 0;
-
-  firstPress = false;
-  done = false;
-  sound = true;
-
-  // Set to game
-  game_state = MINISTATE_GAME;
-
-  // Reset timer
-  timeIn = 0;
-
-  // Init blocks
-  for (int i = 0; i < width; i++) {
-    for (int t = 0; t < height; t++) {
-      MyBlocks[i][t] = Block (i * (buffer -> w / width),
-                              t * (buffer -> h / height),
-                              buffer -> w / width,
-                              buffer -> h / height);
-    }
+    default:
+      field = Minefield (8, 8, 8);
+      break;
   }
 }
 
 // Clean up
-game::~game() {
+Game::~Game() {
   // Fade out
   highcolor_fade_out (8);
 
@@ -89,168 +58,82 @@ game::~game() {
 
   // Destroy sounds
   destroy_sample (explode);
-  destroy_sample (timer);
+  destroy_sample (beep);
 }
 
-// Generate minefield
-void game::generate_map (int x, int y) {
-  // Plant mines
-  int mines_left = mines;
 
-  while (mines_left > 0) {
-    int random_x = random (0, width - 1);
-    int random_y = random (0, height - 1);
-
-    if (MyBlocks[random_x][random_y].GetType() != 9 &&
-        random_x != x && random_y != y) {
-      MyBlocks[random_x][random_y].SetType (9);
-      mines_left --;
-    }
-  }
-
-  // Number based on surrounding mines
-  for (int i = 0; i < width; i++) {
-    for (int t = 0; t < height; t++) {
-      if (MyBlocks[i][t].GetType() != 9) {
-        int type = 0;
-
-        // Surrounding 8 cells
-        for (int j = i - 1; j <= i + 1; j ++) {
-          for (int k = t - 1; k <= t + 1; k ++) {
-            if (j >= 0 && j < width &&
-                k >= 0 && k < height) {
-              type += MyBlocks[j][k].GetType() == 9;
-            }
-          }
-        }
-
-        MyBlocks[i][t].SetType (type);
-      }
-    }
-  }
-}
-
-// Reveal some blocks recursively
-void game::reveal_at (int x, int y) {
-  if (x < 0 || x >= width ||
-      y < 0 || y >= height ||
-      MyBlocks[x][y].IsRevealed() ||
-      MyBlocks[x][y].IsFlagged())
-    return;
-
-  MyBlocks[x][y].Reveal();
-  tiles_left--;
-
-  if (MyBlocks[x][y].GetType() == 0) {
-    for (int j = x - 1; j <= x + 1; j ++) {
-      for (int k = y - 1; k <= y + 1; k ++) {
-        if (! (j == x && k == y))
-          reveal_at (j, k);
-      }
-    }
-  }
-}
-
-void game::reveal_map() {
-  for (int i = 0; i < width; i++) {
-    for (int t = 0; t < height; t++) {
-      MyBlocks[i][t].Reveal();
-    }
-  }
-}
 
 // All game logic goes on here
-void game::update() {
+void Game::update() {
   // Set title text
-  set_window_title ((std::string ("Mines Left: ") + std::to_string (mines - flags) + " Time:" + std::to_string (timeIn) + " Tiles:" + std::to_string (tiles_left)).c_str());
+  set_window_title (
+    (std::string ("Mines Left: ") + std::to_string (field.getNumMines() - field.getNumFlagged()) +
+     " Unknown Cells:" + std::to_string (field.getNumUnknown()) +
+     " Time:" + std::to_string (int (game_time.GetElapsedTime<seconds>()))
+    ).c_str());
 
   // Game
-  if (game_state == MINISTATE_GAME) {
+  if (game_state == game_states::game) {
     // Plays stressing timer sound
-    if (beepQueue && sound == true) {
-      play_sample (timer, 255, 122, 500, 0);
-      beepQueue = false;
+    if (game_time.GetElapsedTime<seconds>() > last_beep_time && sound == true) {
+      play_sample (beep, 255, 122, 500, 0);
+      last_beep_time++;
+    }
+
+    // Revealing
+    if (MouseListener::mouse_pressed & 1) {
+      int type = field.reveal (MouseListener::x, MouseListener::y);
+
+      // Start timer
+      if (!game_time.IsRunning()) {
+        game_time.Start();
+      }
+
+      // Lose and reveal map
+      if (type == 9) {
+        play_sample (explode, 255, 122, random (500, 1500), 0);
+        game_state = game_states::lose;
+        game_time.Stop();
+      }
+    }
+
+    // Flagging
+    else if (MouseListener::mouse_pressed & 2) {
+      field.toggleFlag (MouseListener::x, MouseListener::y);
     }
 
     // Reveal Map
-    if (tiles_left == 0) {
-      reveal_map();
-      game_state = MINISTATE_WIN;
-      done = true;
-    }
-
-    // Checks if mouse is in collision with object
-    if (mouseListener::buttonPressed[MOUSE_LEFT] || mouseListener::buttonPressed[MOUSE_RIGHT]) {
-      for (int i = 0; i < width; i++) {
-        for (int t = 0; t < height; t++) {
-          if (MyBlocks[i][t].MouseOver()) {
-            // Revealing
-            if (mouseListener::buttonPressed[MOUSE_LEFT] &&
-                MyBlocks[i][t].IsFlagged() == false) {
-              // Generate on first click
-              if (!firstPress) {
-                generate_map (i, t);
-                firstPress = true;
-              }
-
-              // Reveal some blocks
-              reveal_at (i, t);
-
-              // Lose and reveal map
-              if (MyBlocks[i][t].GetType() == 9) {
-                play_sample (explode, 255, 122, random (500, 1500), 0);
-                reveal_map();
-                game_state = MINISTATE_LOSE;
-                done = true;
-              }
-            }
-
-            // Flagging
-            else if (mouseListener::buttonPressed[MOUSE_RIGHT] &&
-                     !MyBlocks[i][t].IsRevealed()) {
-              if (!MyBlocks[i][t].IsFlagged()) {
-                MyBlocks[i][t].Flag();
-                flags++;
-              }
-              else {
-                MyBlocks[i][t].Unflag();
-                flags--;
-              }
-            }
-          }
-        }
-      }
+    if (field.getNumUnknown() == 0) {
+      field.revealMap();
+      game_state = game_states::win;
+      game_time.Stop();
     }
   }
 
   // Win or lose
-  else if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
+  else if (game_state == game_states::win || game_state == game_states::lose) {
     menu_no.Update();
     menu_yes.Update();
   }
 
-  if (key[KEY_Q])
+  if (key[KEY_ESC])
     set_next_state (STATE_MENU);
 }
 
 
 // All drawing goes on here
-void game::draw() {
+void Game::draw() {
   // Draws background
   clear_to_color (buffer, 0x000000);
 
-  // Draw blocks
-  for (int i = 0; i < width; i++) {
-    for (int t = 0; t < height; t++) {
-      MyBlocks[i][t].draw (buffer);
-    }
-  }
+  // Draw field
+  field.draw (buffer);
 
   // Win and Lose menu text
-  if (game_state == MINISTATE_WIN || game_state == MINISTATE_LOSE) {
-    if (game_state == MINISTATE_WIN)
+  if (game_state == game_states::win || game_state == game_states::lose) {
+    if (game_state == game_states::win)
       draw_sprite (buffer, menu_win, 25, 42);
-    else if (game_state == MINISTATE_LOSE)
+    else if (game_state == game_states::lose)
       draw_sprite (buffer, menu_lose, 25, 42);
 
     // Buttons

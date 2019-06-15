@@ -1,11 +1,12 @@
 #include "Init.h"
 
+#include <allegro.h>
 #include "globals.h"
 
 // Defaults graphics mode
-int init::set_graphics (int max_scale) {
+int Init::set_graphics (int max_scale) {
   while (max_scale > 0) {
-    if (!set_gfx_mode (GFX_AUTODETECT_WINDOWED, max_scale * BUFFER_WIDTH, max_scale * BUFFER_HEIGHT, 0, 0))
+    if (!set_gfx_mode (GFX_AUTODETECT_WINDOWED, max_scale * NATIVE_SCREEN_W, max_scale * NATIVE_SCREEN_H, 0, 0))
       return max_scale;
 
     max_scale -= 1;
@@ -15,7 +16,7 @@ int init::set_graphics (int max_scale) {
 }
 
 // Construct state
-init::init() {
+Init::Init() {
   // Load config
   int count;
   push_config_state();
@@ -50,6 +51,6 @@ init::init() {
 }
 
 // Update
-void init::update() {
+void Init::update() {
   set_next_state (STATE_INTRO);
 }

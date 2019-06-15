@@ -7,8 +7,6 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <allegro.h>
-
 //State variables
 extern int stateID;
 extern int nextState;
@@ -27,16 +25,21 @@ enum programStates {
 };
 
 // State
-class state {
+class State {
   public:
-    // Deconstructor
-    virtual ~state() {};
+    State() {};
+    virtual ~State() {};
 
     // Draw to screen
     virtual void draw() = 0;
 
     // Update logic
     virtual void update() = 0;
+
+  private:
+    // Disallow copy
+    State (const State &);
+    State &operator= (const State &);
 };
 
 #endif // STATE_H

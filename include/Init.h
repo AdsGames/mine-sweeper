@@ -8,16 +8,13 @@
 #define INIT_H
 
 #include "State.h"
+#include "globals.h"
 
-#define BUFFER_WIDTH 128
-#define BUFFER_HEIGHT 128
-#define DEFAULT_SCALE 4
-
-class init : public state {
+class Init : public State {
   public:
     // Construct/deconstruct
-    init();
-    virtual ~init() {};
+    Init();
+    virtual ~Init() {};
 
     // Override parent
     virtual void update() override;
