@@ -11,51 +11,51 @@
 #include <allegro.h>
 
 class Cell {
-  public:
-    // Construct and deconstruct
-    Cell();
-    Cell (int x, int y, int width, int height);
-    ~Cell();
+ public:
+  // Construct and deconstruct
+  Cell();
+  Cell(int x, int y, int width, int height);
+  ~Cell();
 
-    // Returns type of block
-    int GetType() const;
+  // Returns type of block
+  int GetType() const;
 
-    // Mouse selected or not
-    bool IsRevealed() const;
+  // Mouse selected or not
+  bool IsRevealed() const;
 
-    // Is it flagged?
-    bool IsFlagged() const;
+  // Is it flagged?
+  bool IsFlagged() const;
 
-    // Set the type
-    void SetType (int type);
+  // Set the type
+  void SetType(int type);
 
-    // Set whether already selected
-    void Reveal();
+  // Set whether already selected
+  void Reveal();
 
-    // Set whether flagged or not
-    int ToggleFlag();
+  // Set whether flagged or not
+  int ToggleFlag();
 
-    // Point over
-    bool CollisionAt (int x, int y) const;
+  // Point over
+  bool CollisionAt(int x, int y) const;
 
-    // Draw image to screen
-    void Draw (BITMAP *buffer);
+  // Draw image to screen
+  void Draw(BITMAP* buffer);
 
-  private:
-    // Position
-    int x, y;
+ private:
+  // Position
+  int x, y;
 
-    // Size
-    int width, height;
+  // Size
+  int width, height;
 
-    // Other flags
-    int type;
-    bool revealed;
-    bool flagged;
+  // Other flags
+  int type;
+  bool revealed;
+  bool flagged;
 
-    // Images
-    static BITMAP *images[12];
-    static int block_count;
+  // Images
+  static BITMAP* images[12];
+  static int block_count;
 };
 
 #endif

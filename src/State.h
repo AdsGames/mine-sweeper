@@ -7,14 +7,14 @@
 #ifndef STATE_H
 #define STATE_H
 
-//State variables
+// State variables
 extern int stateID;
 extern int nextState;
 
 // Set next state
-extern void set_next_state (int newState);
+extern void set_next_state(int newState);
 
-//Game states
+// Game states
 enum programStates {
   STATE_NULL,
   STATE_INIT,
@@ -26,20 +26,20 @@ enum programStates {
 
 // State
 class State {
-  public:
-    State() {};
-    virtual ~State() {};
+ public:
+  State(){};
+  virtual ~State(){};
 
-    // Draw to screen
-    virtual void draw() = 0;
+  // Draw to screen
+  virtual void draw() = 0;
 
-    // Update logic
-    virtual void update() = 0;
+  // Update logic
+  virtual void update() = 0;
 
-  private:
-    // Disallow copy
-    State (const State &);
-    State &operator= (const State &);
+ private:
+  // Disallow copy
+  State(const State&);
+  State& operator=(const State&);
 };
 
-#endif // STATE_H
+#endif  // STATE_H

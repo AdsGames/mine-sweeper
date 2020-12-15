@@ -11,17 +11,17 @@
 #include "globals.h"
 
 class Init : public State {
-  public:
-    // Construct/deconstruct
-    Init();
-    virtual ~Init() {};
+ public:
+  // Construct/deconstruct
+  Init();
+  virtual ~Init(){};
 
-    // Override parent
-    virtual void update() override;
-    virtual void draw() override {};
+  // Override parent
+  virtual void update() override;
+  virtual void draw() override{};
 
-    // Defaults graphics mode
-    static int set_graphics (int max_scale);
+  // Defaults graphics mode
+  static int set_graphics(int max_scale);
 };
 
-#endif // INIT_H
+#endif  // INIT_H

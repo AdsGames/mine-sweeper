@@ -10,52 +10,48 @@
 
 #include "State.h"
 
-#include "utility/Timer.h"
 #include "ui/Button.h"
+#include "utility/Timer.h"
 
 #include "Minefield.h"
 
 class Game : public State {
-  public:
-    // Construct/destruct
-    Game();
-    virtual ~Game();
+ public:
+  // Construct/destruct
+  Game();
+  virtual ~Game();
 
-    // Override parent
-    virtual void update() override;
-    virtual void draw() override;
+  // Override parent
+  virtual void update() override;
+  virtual void draw() override;
 
-  private:
-    // Disallow copy
-    Game (const Game &);
-    Game &operator= (const Game &);
+ private:
+  // Disallow copy
+  Game(const Game&);
+  Game& operator=(const Game&);
 
-    // Bitmaps
-    BITMAP *buffer, *menu_win, *menu_lose;
+  // Bitmaps
+  BITMAP *buffer, *menu_win, *menu_lose;
 
-    // Sounds
-    SAMPLE *explode, *beep;
+  // Sounds
+  SAMPLE *explode, *beep;
 
-    // Minefield
-    Minefield field;
+  // Minefield
+  Minefield field;
 
-    // Buttons
-    Button menu_yes, menu_no;
+  // Buttons
+  Button menu_yes, menu_no;
 
-    // Game timer
-    Timer game_time;
-    int last_beep_time;
+  // Game timer
+  Timer game_time;
+  int last_beep_time;
 
-    // Mini state in game
-    int game_state;
-    enum game_states {
-      game,
-      win,
-      lose
-    };
+  // Mini state in game
+  int game_state;
+  enum game_states { game, win, lose };
 
-    // Sound enabled
-    bool sound;
+  // Sound enabled
+  bool sound;
 };
 
-#endif // GAME_H
+#endif  // GAME_H
