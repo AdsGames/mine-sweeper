@@ -1,26 +1,59 @@
 # MineSweeper
+
 A remake of the classic windows game "Minesweeper". Clear the board of mines by marking each one to ensure that the area is safe.
 
-## Compiling
+## Getting started
 
-### Windows
-You must install allegro 4 and the allegro loadpng addon:
-- [Allegro 4](http://liballeg.org/api.html)
+### Windows (MSYS2)
 
+#### Install Libraries
 
-Open code blocks project, select debug as the build target and build
+```bash
+https://www.allegro.cc/files/?v=4.4
+```
 
+#### Build
+
+```bash
+cmake -G "MSYS Makefiles" .
+```
+
+```bash
+make
+```
+
+### Mac OS
+
+#### Install Libraries
+
+```bash
+https://github.com/msikma/liballeg.4.4.2-osx
+```
+
+#### Build
+
+```bash
+cmake -G "Unix Makefiles" .
+```
+
+```bash
+make
+```
 
 ### Linux
-```sudo apt-get install liballegro4-dev```
 
-```sudo apt-get install libloadpng4-dev```
+#### Install Libraries
 
-Open code blocks project, select debug-linux as the build target and build
-
-## Linking
-In case you are not using the code blocks project provided
+```bash
+sudo apt-get install liballegro4-dev libloadpng4-dev liblogg4-dev
 ```
--lloadpng
--lalleg44 or -lalleg
+
+#### Build
+
+```bash
+cmake -G "Unix Makefiles" .
+```
+
+```bash
+make
 ```

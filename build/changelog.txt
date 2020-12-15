@@ -52,7 +52,6 @@ Version 1.5
 *Sizeable maps
 *Fixed bugs
 
-
 Version 1.3
 --------------
 *Now running on FPS system (smoother gameplay)
