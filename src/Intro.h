@@ -7,9 +7,10 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
+#include <asw/util/Timer.h>
+
 #include "State.h"
-#include "utility/Timer.h"
 
 class Intro : public State {
  public:
@@ -19,12 +20,12 @@ class Intro : public State {
   virtual void init() override;
   virtual void update() override;
   virtual void draw() override;
-  virtual void cleanup() override;
+  virtual void cleanup() override{};
 
  private:
   // Images
-  aar::Texture* img_intro;
-  aar::Texture* img_title;
+  asw::Texture img_intro;
+  asw::Texture img_title;
 
   Timer timer;
 };

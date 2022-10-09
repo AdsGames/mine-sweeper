@@ -1,20 +1,21 @@
 #include "Menu.h"
 
+#include <asw/util/KeyListener.h>
+#include <asw/util/MouseListener.h>
+
 #include "globals.h"
-#include "utility/KeyListener.h"
-#include "utility/MouseListener.h"
 #include "utility/tools.h"
 
 void Menu::init() {
-  title = aar::load::bitmap("assets/images/title.png");
-  main_menu = aar::load::bitmap("assets/images/main_menu.png");
+  title = asw::load::texture("assets/images/title.png");
+  main_menu = asw::load::texture("assets/images/main_menu.png");
   start_easy = Button(25, 45);
   start_medium = Button(25, 60);
   start_hard = Button(25, 75);
   quit = Button(25, 90);
 
   // Title
-  aar::display::setTitle("Minesweeper - A.D.S. Games");
+  asw::display::setTitle("Minesweeper - A.D.S. Games");
 
   // Buttons
   start_easy.SetImages("assets/images/buttons/start_easy.png",
@@ -43,13 +44,6 @@ void Menu::init() {
   quit.SetOnClick([this]() { setNextState(StateEngine::STATE_EXIT); });
 }
 
-// Destructor
-void Menu::cleanup() {
-  // Destroy bitmaps
-  aar::load::destroyTexture(main_menu);
-  aar::load::destroyTexture(title);
-}
-
 // Update game
 void Menu::update() {
   start_easy.Update();
@@ -57,7 +51,7 @@ void Menu::update() {
   start_hard.Update();
   quit.Update();
 
-  if (KeyListener::keyDown[SDL_SCANCODE_ESCAPE]) {
+  if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
     setNextState(StateEngine::STATE_EXIT);
   }
 }
@@ -65,8 +59,8 @@ void Menu::update() {
 // Draw to screen
 void Menu::draw() {
   // Draw menu
-  aar::draw::sprite(title, 0, 0);
-  aar::draw::sprite(main_menu, 14, 31);
+  asw::draw::sprite(title, 0, 0);
+  asw::draw::sprite(main_menu, 14, 31);
 
   // Buttons
   start_easy.Draw();

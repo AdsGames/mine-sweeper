@@ -1,17 +1,17 @@
 #include "Init.h"
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
 #include "globals.h"
 
 // Construct state
 void Init::init() {
-  aar::util::init(128, 128, 4);
+  asw::util::init(128, 128, 4);
 
-  aar::display::setTitle("Loading...");
+  asw::display::setTitle("Loading...");
 
-  aar::display::setIcon("assets/images/icon.png");
+  asw::display::setIcon("assets/images/icon.png");
 
-  aar::display::setTitle("Minesweeper - A.D.S. Games");
+  asw::display::setTitle("Minesweeper - A.D.S. Games");
 }
 
 // Update

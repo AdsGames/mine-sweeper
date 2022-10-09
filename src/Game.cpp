@@ -1,18 +1,19 @@
 #include "Game.h"
 
+#include <asw/util/KeyListener.h>
+#include <asw/util/MouseListener.h>
+
 #include "globals.h"
-#include "utility/KeyListener.h"
-#include "utility/MouseListener.h"
 #include "utility/tools.h"
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
 
 // Init game state
 void Game::init() {
-  menu_win = aar::load::bitmap("assets/images/menu_win.png");
-  menu_lose = aar::load::bitmap("assets/images/menu_lose.png");
-  explode = aar::load::sample("assets/sounds/explode.wav");
-  beep = aar::load::sample("assets/sounds/timer.wav");
+  menu_win = asw::load::texture("assets/images/menu_win.png");
+  menu_lose = asw::load::texture("assets/images/menu_lose.png");
+  explode = asw::load::sample("assets/sounds/explode.wav");
+  beep = asw::load::sample("assets/sounds/timer.wav");
   field = Minefield();
   menu_yes = Button(36, 73);
   menu_no = Button(68, 72);
@@ -46,21 +47,10 @@ void Game::init() {
   }
 }
 
-// Clean up
-void Game::cleanup() {
-  // Destroy bitmaps
-  aar::load::destroyTexture(menu_win);
-  aar::load::destroyTexture(menu_lose);
-
-  // Destroy sounds
-  aar::load::destroySample(explode);
-  aar::load::destroySample(beep);
-}
-
 // All game logic goes on here
 void Game::update() {
   // Set title text
-  aar::display::setTitle(
+  asw::display::setTitle(
       (std::string("Mines Left: ") +
        std::to_string(field.getNumMines() - field.getNumFlagged()) +
        " Unknown Cells:" + std::to_string(field.getNumUnknown()) +
@@ -70,7 +60,7 @@ void Game::update() {
   if (game_state == GameStates::game) {
     // Plays stressing timer sound
     if (game_time.GetElapsedTime<seconds>() > last_beep_time && sound == true) {
-      aar::sound::play(beep, 255, 122);  // , 500
+      asw::sound::play(beep, 255, 122);  // , 500
       last_beep_time++;
     }
 
@@ -85,7 +75,7 @@ void Game::update() {
 
       // Lose and reveal map
       if (type == 9) {
-        aar::sound::play(explode, 255, 122);  // , random(500, 1500)
+        asw::sound::play(explode, 255, 122);  // , random(500, 1500)
         game_state = GameStates::lose;
         game_time.Stop();
       }
@@ -110,7 +100,7 @@ void Game::update() {
     menu_yes.Update();
   }
 
-  if (KeyListener::keyDown[SDL_SCANCODE_ESCAPE]) {
+  if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
     setNextState(StateEngine::STATE_MENU);
   }
 }
@@ -123,9 +113,9 @@ void Game::draw() {
   // Win and Lose menu text
   if (game_state == GameStates::win || game_state == GameStates::lose) {
     if (game_state == GameStates::win) {
-      aar::draw::sprite(menu_win, 25, 42);
+      asw::draw::sprite(menu_win, 25, 42);
     } else if (game_state == GameStates::lose) {
-      aar::draw::sprite(menu_lose, 25, 42);
+      asw::draw::sprite(menu_lose, 25, 42);
     }
 
     // Buttons

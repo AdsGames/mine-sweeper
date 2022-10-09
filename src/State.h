@@ -10,7 +10,8 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
+#include <memory>
 
 // Class
 class State;
@@ -56,7 +57,7 @@ class StateEngine {
   int currentState = STATE_NULL;
 
   // Stores states
-  State* state;
+  std::unique_ptr<State> state;
 };
 
 /*********
@@ -66,6 +67,8 @@ class State {
  public:
   // Constructor
   explicit State(StateEngine& engine) : engine(engine){};
+
+  virtual ~State() = default;
 
   // Init the state
   virtual void init() = 0;

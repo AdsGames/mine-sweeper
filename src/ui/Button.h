@@ -1,18 +1,17 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <asw/asw.h>
 #include <functional>
-#include "../lib/aar/aar.h"
 
 class Button {
  public:
   Button();
   Button(int x, int y);
-  ~Button();
 
   void Update();
 
-  void SetImages(const char* image1, const char* image2);
+  void SetImages(const std::string& image1, const std::string& image2);
 
   void SetOnClick(std::function<void()> func);
 
@@ -21,12 +20,13 @@ class Button {
   bool Hover() const;
 
  private:
-  std::function<void(void)> OnClick;
+  std::function<void(void)> OnClick{nullptr};
 
   int x, y;
-  int width, height;
+  int width{10};
+  int height{10};
 
-  aar::Texture* images[2];
+  asw::Texture images[2]{nullptr};
 };
 
 #endif

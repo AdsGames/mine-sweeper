@@ -5,11 +5,11 @@
  * Simple minesweeper game
  */
 // Includes
+#include <asw/asw.h>
 #include <chrono>
-#include "./lib/aar/aar.h"
 
-#include "./utility/KeyListener.h"
-#include "./utility/MouseListener.h"
+#include <asw/util/KeyListener.h>
+#include <asw/util/MouseListener.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -47,14 +47,14 @@ void update() {
   KeyListener::update();
   MouseListener::update();
 
-  aar::core::update();
+  asw::core::update();
 
   // Do state logic
   game_state->update();
 
   // Handle exit
   if (game_state->getStateId() == StateEngine::STATE_EXIT) {
-    aar::core::exit = true;
+    asw::core::exit = true;
   }
 }
 
@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
   nanoseconds lag(0ns);
   auto time_start = clock::now();
 
-  while (!KeyListener::keyDown[SDL_SCANCODE_ESCAPE] && !aar::core::exit) {
+  while (!asw::core::exit) {
     auto delta_time = clock::now() - time_start;
     time_start = clock::now();
     lag += duration_cast<nanoseconds>(delta_time);

@@ -21,12 +21,12 @@ StateEngine::StateEngine()
 void StateEngine::draw() {
   if (state) {
     // Clear screen
-    SDL_RenderClear(aar::display::renderer);
+    SDL_RenderClear(asw::display::renderer);
 
     state->draw();
 
     // Update screen
-    SDL_RenderPresent(aar::display::renderer);
+    SDL_RenderPresent(asw::display::renderer);
   }
 }
 
@@ -65,22 +65,22 @@ void StateEngine::changeState() {
   // Change the state
   switch (nextState) {
     case STATE_GAME:
-      state = new Game(*this);
+      state = std::make_unique<Game>(*this);
       std::cout << ("Switched state to game.\n");
       break;
 
     case STATE_MENU:
-      state = new Menu(*this);
+      state = std::make_unique<Menu>(*this);
       std::cout << ("Switched state to main menu.\n");
       break;
 
     case STATE_INIT:
-      state = new Init(*this);
+      state = std::make_unique<Init>(*this);
       std::cout << ("Switched state to init.\n");
       break;
 
     case STATE_INTRO:
-      state = new Intro(*this);
+      state = std::make_unique<Intro>(*this);
       std::cout << ("Switched state to intro.\n");
       break;
 
