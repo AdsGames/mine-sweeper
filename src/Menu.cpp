@@ -22,26 +22,26 @@ void Menu::init() {
                        "assets/images/buttons/start_easy_hover.png");
   start_easy.SetOnClick([this]() {
     game_difficulty = 0;
-    setNextState(StateEngine::STATE_GAME);
+    setNextState(ProgramState::STATE_GAME);
   });
 
   start_medium.SetImages("assets/images/buttons/start_medium.png",
                          "assets/images/buttons/start_medium_hover.png");
   start_medium.SetOnClick([this]() {
     game_difficulty = 1;
-    setNextState(StateEngine::STATE_GAME);
+    setNextState(ProgramState::STATE_GAME);
   });
 
   start_hard.SetImages("assets/images/buttons/start_hard.png",
                        "assets/images/buttons/start_hard_hover.png");
   start_hard.SetOnClick([this]() {
     game_difficulty = 2;
-    setNextState(StateEngine::STATE_GAME);
+    setNextState(ProgramState::STATE_GAME);
   });
 
   quit.SetImages("assets/images/buttons/quit.png",
                  "assets/images/buttons/quit_hover.png");
-  quit.SetOnClick([this]() { setNextState(StateEngine::STATE_EXIT); });
+  quit.SetOnClick([this]() { setNextState(ProgramState::STATE_EXIT); });
 }
 
 // Update game
@@ -52,7 +52,7 @@ void Menu::update() {
   quit.Update();
 
   if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
-    setNextState(StateEngine::STATE_EXIT);
+    setNextState(ProgramState::STATE_EXIT);
   }
 }
 

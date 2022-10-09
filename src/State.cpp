@@ -13,8 +13,8 @@
 
 // Init
 StateEngine::StateEngine()
-    : nextState(StateEngine::STATE_NULL),
-      currentState(StateEngine::STATE_NULL),
+    : nextState(ProgramState::STATE_NULL),
+      currentState(ProgramState::STATE_NULL),
       state(nullptr) {}
 
 // Draw
@@ -40,19 +40,19 @@ void StateEngine::update() {
 }
 
 // Set next state
-void StateEngine::setNextState(const int state) {
+void StateEngine::setNextState(const ProgramState state) {
   nextState = state;
 }
 
 // Get state id
-int StateEngine::getStateId() const {
+ProgramState StateEngine::getStateId() const {
   return currentState;
 }
 
 // Change game screen
 void StateEngine::changeState() {
   // If the state needs to be changed
-  if (nextState == STATE_NULL) {
+  if (nextState == ProgramState::STATE_NULL) {
     return;
   }
 
@@ -64,22 +64,22 @@ void StateEngine::changeState() {
 
   // Change the state
   switch (nextState) {
-    case STATE_GAME:
+    case ProgramState::STATE_GAME:
       state = std::make_unique<Game>(*this);
       std::cout << ("Switched state to game.\n");
       break;
 
-    case STATE_MENU:
+    case ProgramState::STATE_MENU:
       state = std::make_unique<Menu>(*this);
       std::cout << ("Switched state to main menu.\n");
       break;
 
-    case STATE_INIT:
+    case ProgramState::STATE_INIT:
       state = std::make_unique<Init>(*this);
       std::cout << ("Switched state to init.\n");
       break;
 
-    case STATE_INTRO:
+    case ProgramState::STATE_INTRO:
       state = std::make_unique<Intro>(*this);
       std::cout << ("Switched state to intro.\n");
       break;
@@ -95,7 +95,7 @@ void StateEngine::changeState() {
   currentState = nextState;
 
   // NULL the next state ID
-  nextState = STATE_NULL;
+  nextState = ProgramState::STATE_NULL;
 }
 
 /*********
@@ -103,6 +103,6 @@ void StateEngine::changeState() {
  *********/
 
 // Change state
-void State::setNextState(const int state) {
+void State::setNextState(const ProgramState state) {
   this->engine.setNextState(state);
 }

@@ -20,6 +20,11 @@ jobs:
           fetch-depth: 0
           submodules: "recursive"
 
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
+          version: 1.0
+
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -43,9 +48,7 @@ jobs:
           echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
 
       - name: Setup project
-        run: |
-          sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev libsdl2-gfx-dev
-          cmake .
+        run: cmake .
 
       - name: Run build-wrapper
         run: |

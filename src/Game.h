@@ -15,6 +15,8 @@
 #include "Minefield.h"
 #include "ui/Button.h"
 
+enum class GameState { GAME, WIN, LOSE };
+
 class Game : public State {
  public:
   explicit Game(StateEngine& engine) : State(engine) {}
@@ -43,8 +45,7 @@ class Game : public State {
   int last_beep_time;
 
   // Mini state in game
-  int game_state;
-  enum GameStates { game, win, lose };
+  GameState game_state;
 
   // Sound enabled
   bool sound;
