@@ -19,17 +19,17 @@ void Game::init() {
   menu_no = Button(68, 72);
   game_time = Timer();
   last_beep_time = 0;
-  game_state = GameStates::game;
+  game_state = GameState::GAME;
   sound = true;
 
   // Buttons
   menu_yes.SetImages("assets/images/buttons/button_yes.png",
                      "assets/images/buttons/button_yes_hover.png");
-  menu_yes.SetOnClick([this]() { setNextState(StateEngine::STATE_GAME); });
+  menu_yes.SetOnClick([this]() { setNextState(ProgramState::STATE_GAME); });
 
   menu_no.SetImages("assets/images/buttons/button_no.png",
                     "assets/images/buttons/button_no_hover.png");
-  menu_no.SetOnClick([this]() { setNextState(StateEngine::STATE_MENU); });
+  menu_no.SetOnClick([this]() { setNextState(ProgramState::STATE_MENU); });
 
   // Create minefield
   switch (game_difficulty) {
@@ -57,7 +57,7 @@ void Game::update() {
        " Time:" + std::to_string(int(game_time.GetElapsedTime<seconds>()))));
 
   // Game
-  if (game_state == GameStates::game) {
+  if (game_state == GameState::GAME) {
     // Plays stressing timer sound
     if (game_time.GetElapsedTime<seconds>() > last_beep_time && sound == true) {
       asw::sound::play(beep, 255, 122);  // , 500
@@ -76,7 +76,7 @@ void Game::update() {
       // Lose and reveal map
       if (type == 9) {
         asw::sound::play(explode, 255, 122);  // , random(500, 1500)
-        game_state = GameStates::lose;
+        game_state = GameState::LOSE;
         game_time.Stop();
       }
     }
@@ -89,19 +89,19 @@ void Game::update() {
     // Reveal Map
     if (field.getNumUnknown() == 0) {
       field.revealMap();
-      game_state = GameStates::win;
+      game_state = GameState::WIN;
       game_time.Stop();
     }
   }
 
   // Win or lose
-  else if (game_state == GameStates::win || game_state == GameStates::lose) {
+  else if (game_state == GameState::WIN || game_state == GameState::LOSE) {
     menu_no.Update();
     menu_yes.Update();
   }
 
   if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
-    setNextState(StateEngine::STATE_MENU);
+    setNextState(ProgramState::STATE_MENU);
   }
 }
 
@@ -111,10 +111,10 @@ void Game::draw() {
   field.draw();
 
   // Win and Lose menu text
-  if (game_state == GameStates::win || game_state == GameStates::lose) {
-    if (game_state == GameStates::win) {
+  if (game_state == GameState::WIN || game_state == GameState::LOSE) {
+    if (game_state == GameState::WIN) {
       asw::draw::sprite(menu_win, 25, 42);
-    } else if (game_state == GameStates::lose) {
+    } else if (game_state == GameState::LOSE) {
       asw::draw::sprite(menu_lose, 25, 42);
     }
 

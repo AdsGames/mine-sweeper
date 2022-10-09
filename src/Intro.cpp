@@ -16,7 +16,7 @@ void Intro::update() {
   auto time = timer.GetElapsedTime<milliseconds>();
 
   if (time > 3000 || KeyListener::anyKeyPressed) {
-    setNextState(StateEngine::STATE_MENU);
+    setNextState(ProgramState::STATE_MENU);
   }
 }
 

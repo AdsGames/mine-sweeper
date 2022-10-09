@@ -16,5 +16,5 @@ void Init::init() {
 
 // Update
 void Init::update() {
-  setNextState(StateEngine::STATE_INTRO);
+  setNextState(ProgramState::STATE_INTRO);
 }
