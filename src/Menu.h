@@ -12,23 +12,18 @@
 
 class Menu : public State {
  public:
-  // Construct/deconstruct
-  Menu();
-  virtual ~Menu();
+  explicit Menu(StateEngine& engine) : State(engine) {}
 
   // Override parent
+  virtual void init() override;
   virtual void update() override;
   virtual void draw() override;
+  virtual void cleanup() override;
 
  private:
-  // Disallow copy
-  Menu(const Menu&);
-  Menu& operator=(const Menu&);
-
   // Images
-  BITMAP* buffer;
-  BITMAP* title;
-  BITMAP* main_menu;
+  aar::Texture* title;
+  aar::Texture* main_menu;
 
   // Buttons
   Button start_easy;

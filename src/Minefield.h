@@ -8,7 +8,7 @@
 #ifndef MINEFIELD_H
 #define MINEFIELD_H
 
-#include <allegro.h>
+#include "./lib/aar/aar.h"
 #include "Cell.h"
 
 class Minefield {
@@ -33,7 +33,7 @@ class Minefield {
   void toggleFlag(int x, int y);
 
   // Draw map
-  void draw(BITMAP* buffer);
+  void draw();
 
  private:
   // Reveal relative

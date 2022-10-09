@@ -12,13 +12,13 @@
 
 class Init : public State {
  public:
-  // Construct/deconstruct
-  Init();
-  virtual ~Init(){};
+  explicit Init(StateEngine& engine) : State(engine) {}
 
   // Override parent
+  virtual void init() override;
   virtual void update() override;
   virtual void draw() override{};
+  virtual void cleanup() override{};
 
   // Defaults graphics mode
   static int set_graphics(int max_scale);

@@ -1,15 +1,13 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <allegro.h>
 #include <functional>
+#include "../lib/aar/aar.h"
 
 class Button {
  public:
   Button();
   Button(int x, int y);
-  Button(const Button& b);
-  Button& operator=(const Button& b);
   ~Button();
 
   void Update();
@@ -18,7 +16,7 @@ class Button {
 
   void SetOnClick(std::function<void()> func);
 
-  void Draw(BITMAP* buffer);
+  void Draw();
 
   bool Hover() const;
 
@@ -28,7 +26,7 @@ class Button {
   int x, y;
   int width, height;
 
-  BITMAP* images[2];
+  aar::Texture* images[2];
 };
 
 #endif

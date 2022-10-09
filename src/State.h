@@ -1,45 +1,89 @@
-/*
- * State for machine
+/**
+ * State for machine and State Engine
  * Allan Legemaate
  * 30/12/2016
- * Compartmentalize program
+ * Compartmentalize program into states
+ *   which can handle only their own logic,
+ *   drawing and transitions
  */
+
 #ifndef STATE_H
 #define STATE_H
 
-// State variables
-extern int stateID;
-extern int nextState;
+#include "./lib/aar/aar.h"
 
-// Set next state
-extern void set_next_state(int newState);
+// Class
+class State;
 
-// Game states
-enum programStates {
-  STATE_NULL,
-  STATE_INIT,
-  STATE_INTRO,
-  STATE_MENU,
-  STATE_GAME,
-  STATE_EXIT,
+/*****************
+ * STATE ENGINE
+ *****************/
+class StateEngine {
+ public:
+  // Init
+  StateEngine();
+
+  // Update
+  void update();
+
+  // Draw
+  void draw();
+
+  // Set next state
+  void setNextState(const int newState);
+
+  // Get state id
+  int getStateId() const;
+
+  // Game states
+  enum ProgramStates {
+    STATE_NULL,
+    STATE_INIT,
+    STATE_INTRO,
+    STATE_MENU,
+    STATE_GAME,
+    STATE_EXIT,
+  };
+
+ private:
+  // Change state
+  void changeState();
+
+  // Next state
+  int nextState = STATE_NULL;
+
+  // State id
+  int currentState = STATE_NULL;
+
+  // Stores states
+  State* state;
 };
 
-// State
+/*********
+ * STATE
+ *********/
 class State {
  public:
-  State(){};
-  virtual ~State(){};
+  // Constructor
+  explicit State(StateEngine& engine) : engine(engine){};
+
+  // Init the state
+  virtual void init() = 0;
 
   // Draw to screen
   virtual void draw() = 0;
 
+  // Cleanup
+  virtual void cleanup() = 0;
+
   // Update logic
   virtual void update() = 0;
 
+  // Change state
+  void setNextState(int state);
+
  private:
-  // Disallow copy
-  State(const State&);
-  State& operator=(const State&);
+  StateEngine& engine;
 };
 
 #endif  // STATE_H
