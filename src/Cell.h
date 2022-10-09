@@ -8,14 +8,13 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
 
 class Cell {
  public:
   // Construct and deconstruct
   Cell();
   Cell(int x, int y, int width, int height);
-  ~Cell();
 
   // Returns type of block
   int GetType() const;
@@ -54,8 +53,7 @@ class Cell {
   bool flagged;
 
   // Images
-  static aar::Texture* images[12];
-  static int block_count;
+  static asw::Texture images[12];
 };
 
 #endif

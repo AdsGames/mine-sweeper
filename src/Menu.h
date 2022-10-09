@@ -18,12 +18,12 @@ class Menu : public State {
   virtual void init() override;
   virtual void update() override;
   virtual void draw() override;
-  virtual void cleanup() override;
+  virtual void cleanup() override{};
 
  private:
   // Images
-  aar::Texture* title;
-  aar::Texture* main_menu;
+  asw::Texture title;
+  asw::Texture main_menu;
 
   // Buttons
   Button start_easy;

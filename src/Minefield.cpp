@@ -20,7 +20,7 @@ Minefield::Minefield(int width, int height, int num_mines)
     height = 1;
 
   // Init blocks
-  auto screenSize = aar::display::getLogicalSize();
+  auto screenSize = asw::display::getLogicalSize();
   int cell_size = screenSize.x / width;
   int offset = (screenSize.x % cell_size) / 2;
 
@@ -149,11 +149,13 @@ Cell* Minefield::getCellAt(int x, int y, int* pos_x, int* pos_y) {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
       if (cells[i][t].CollisionAt(x, y)) {
-        if (pos_x)
+        if (pos_x) {
           *pos_x = i;
+        }
 
-        if (pos_y)
+        if (pos_y) {
           *pos_y = t;
+        }
 
         return &cells[i][t];
       }

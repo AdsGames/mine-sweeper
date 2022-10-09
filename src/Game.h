@@ -10,10 +10,10 @@
 
 #include "State.h"
 
-#include "ui/Button.h"
-#include "utility/Timer.h"
+#include <asw/util/Timer.h>
 
 #include "Minefield.h"
+#include "ui/Button.h"
 
 class Game : public State {
  public:
@@ -23,14 +23,14 @@ class Game : public State {
   virtual void init() override;
   virtual void update() override;
   virtual void draw() override;
-  virtual void cleanup() override;
+  virtual void cleanup() override{};
 
  private:
   // Bitmaps
-  aar::Texture *menu_win, *menu_lose;
+  asw::Texture menu_win, menu_lose;
 
   // Sounds
-  aar::Sample *explode, *beep;
+  asw::Sample explode, beep;
 
   // Minefield
   Minefield field;

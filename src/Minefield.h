@@ -8,7 +8,7 @@
 #ifndef MINEFIELD_H
 #define MINEFIELD_H
 
-#include "./lib/aar/aar.h"
+#include <asw/asw.h>
 #include "Cell.h"
 
 class Minefield {
