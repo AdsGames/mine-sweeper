@@ -31,13 +31,13 @@ class StateEngine {
   void draw();
 
   // Set next state
-  void setNextState(const int newState);
+  void setNextState(const int state);
 
   // Get state id
   int getStateId() const;
 
   // Game states
-  enum ProgramStates {
+  enum ProgramState {
     STATE_NULL,
     STATE_INIT,
     STATE_INTRO,
@@ -83,7 +83,7 @@ class State {
   virtual void update() = 0;
 
   // Change state
-  void setNextState(int state);
+  void setNextState(const int state);
 
  private:
   StateEngine& engine;

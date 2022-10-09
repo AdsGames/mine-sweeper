@@ -40,8 +40,8 @@ void StateEngine::update() {
 }
 
 // Set next state
-void StateEngine::setNextState(const int newState) {
-  nextState = newState;
+void StateEngine::setNextState(const int state) {
+  nextState = state;
 }
 
 // Get state id
@@ -103,6 +103,6 @@ void StateEngine::changeState() {
  *********/
 
 // Change state
-void State::setNextState(int state) {
+void State::setNextState(const int state) {
   this->engine.setNextState(state);
 }
