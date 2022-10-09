@@ -49,7 +49,8 @@ class Minefield {
   Cell cells[16][16];
 
   // Variables
-  int width, height;
+  int width;
+  int height;
 
   // Counters
   int num_mines;

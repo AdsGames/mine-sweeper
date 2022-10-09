@@ -22,7 +22,9 @@ class Button {
  private:
   std::function<void(void)> OnClick{nullptr};
 
-  int x, y;
+  int x;
+  int y;
+
   int width{10};
   int height{10};
 

@@ -14,13 +14,7 @@ Cell::Cell() : Cell(0, 0, 0, 0) {}
 
 // Create
 Cell::Cell(int x, int y, int width, int height)
-    : x(x),
-      y(y),
-      width(width),
-      height(height),
-      type(0),
-      revealed(false),
-      flagged(false) {
+    : x(x), y(y), width(width), height(height) {
   // Load images
   if (!images[0].get()) {
     std::string directory = "assets/images/blocks_small/";
@@ -35,45 +29,45 @@ Cell::Cell(int x, int y, int width, int height)
 }
 
 // Returns type of block
-int Cell::GetType() const {
+int Cell::getType() const {
   return type;
 }
 
 // Is it flagged?
-bool Cell::IsFlagged() const {
+bool Cell::isFlagged() const {
   return flagged;
 }
 
 // Set the type
-void Cell::SetType(int type) {
+void Cell::setType(int type) {
   this->type = type;
 }
 
 // Get revealed state
-bool Cell::IsRevealed() const {
+bool Cell::isRevealed() const {
   return revealed;
 }
 
 // Set revealed
-void Cell::Reveal() {
+void Cell::reveal() {
   revealed = true;
   flagged = false;
 }
 
 // Set whether flagged or not
-int Cell::ToggleFlag() {
+int Cell::toggleFlag() {
   flagged = !flagged;
   return flagged;
 }
 
 // Point over
-bool Cell::CollisionAt(int x, int y) const {
+bool Cell::collisionAt(int x, int y) const {
   return (x >= this->x && x < this->x + width && y >= this->y &&
           y < this->y + height);
 }
 
 // Draw
-void Cell::Draw() {
+void Cell::draw() const {
   if (flagged) {
     asw::draw::stretchSprite(images[10], x, y, width, height);
   } else if (!revealed) {

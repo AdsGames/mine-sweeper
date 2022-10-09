@@ -14,13 +14,13 @@
 
 class Intro : public State {
  public:
-  explicit Intro(StateEngine& engine) : State(engine) {}
+  using State::State;
 
   // Override parent
-  virtual void init() override;
-  virtual void update() override;
-  virtual void draw() override;
-  virtual void cleanup() override{};
+  void init() override;
+  void update() override;
+  void draw() override;
+  void cleanup() override{};
 
  private:
   // Images
