@@ -6,8 +6,10 @@
 #include "utility/MouseListener.h"
 #include "utility/tools.h"
 
+#include "./lib/aar/aar.h"
+
 // Shared images
-BITMAP* Cell::images[12] = {nullptr};
+aar::Texture* Cell::images[12] = {nullptr};
 int Cell::block_count = 0;
 
 Cell::Cell() : Cell(0, 0, 0, 0) {}
@@ -23,13 +25,13 @@ Cell::Cell(int x, int y, int width, int height)
       flagged(false) {
   // Load images
   if (block_count == 0) {
-    std::string directory = "images/blocks_small/";
+    std::string directory = "assets/images/blocks_small/";
 
     if (game_difficulty == 0)
-      directory = "images/blocks/";
+      directory = "assets/images/blocks/";
 
     for (int i = 0; i < 12; i++) {
-      images[i] = load_png_ex(directory + std::to_string(i) + ".png");
+      images[i] = aar::load::bitmap(directory + std::to_string(i) + ".png");
     }
   }
 
@@ -41,9 +43,11 @@ Cell::Cell(int x, int y, int width, int height)
 Cell::~Cell() {
   block_count--;
 
-  if (block_count <= 0)
-    for (int i = 0; i < 12; i++)
-      destroy_bitmap(images[i]);
+  if (block_count <= 0) {
+    for (int i = 0; i < 12; i++) {
+      aar::load::destroyTexture(images[i]);
+    }
+  }
 }
 
 // Returns type of block
@@ -85,11 +89,12 @@ bool Cell::CollisionAt(int x, int y) const {
 }
 
 // Draw
-void Cell::Draw(BITMAP* buffer) {
-  if (flagged && images[10])
-    stretch_sprite(buffer, images[10], x, y, width, height);
-  else if (!revealed && images[11])
-    stretch_sprite(buffer, images[11], x, y, width, height);
-  else if (images[type])
-    stretch_sprite(buffer, images[type], x, y, width, height);
+void Cell::Draw() {
+  if (flagged && images[10]) {
+    aar::draw::stretchSprite(images[10], x, y, width, height);
+  } else if (!revealed && images[11]) {
+    aar::draw::stretchSprite(images[11], x, y, width, height);
+  } else if (images[type]) {
+    aar::draw::stretchSprite(images[type], x, y, width, height);
+  }
 }

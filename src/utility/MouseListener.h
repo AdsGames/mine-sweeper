@@ -1,17 +1,18 @@
-/*
+/**
  * Mouse Listener
  * Allan Legemaate
  * Listens for mouse buttons JUST pressed or JUST released
  *   since the last tick
  * 18/01/2017
- */
+ **/
 
-#include <allegro.h>
+//#include <iostream>
+#include "../lib/aar/aar.h"
 
 #ifndef MouseListener_H
 #define MouseListener_H
 
-#define MAX_MOUSE_BUTTONS 3
+#define MAX_MOUSE_BUTTONS 4
 
 class MouseListener {
  public:

@@ -17,24 +17,20 @@
 
 class Game : public State {
  public:
-  // Construct/destruct
-  Game();
-  virtual ~Game();
+  explicit Game(StateEngine& engine) : State(engine) {}
 
   // Override parent
+  virtual void init() override;
   virtual void update() override;
   virtual void draw() override;
+  virtual void cleanup() override;
 
  private:
-  // Disallow copy
-  Game(const Game&);
-  Game& operator=(const Game&);
-
   // Bitmaps
-  BITMAP *buffer, *menu_win, *menu_lose;
+  aar::Texture *menu_win, *menu_lose;
 
   // Sounds
-  SAMPLE *explode, *beep;
+  aar::Sample *explode, *beep;
 
   // Minefield
   Minefield field;
@@ -48,7 +44,7 @@ class Game : public State {
 
   // Mini state in game
   int game_state;
-  enum game_states { game, win, lose };
+  enum GameStates { game, win, lose };
 
   // Sound enabled
   bool sound;

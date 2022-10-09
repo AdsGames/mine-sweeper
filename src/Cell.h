@@ -8,7 +8,7 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include <allegro.h>
+#include "./lib/aar/aar.h"
 
 class Cell {
  public:
@@ -39,7 +39,7 @@ class Cell {
   bool CollisionAt(int x, int y) const;
 
   // Draw image to screen
-  void Draw(BITMAP* buffer);
+  void Draw();
 
  private:
   // Position
@@ -54,7 +54,7 @@ class Cell {
   bool flagged;
 
   // Images
-  static BITMAP* images[12];
+  static aar::Texture* images[12];
   static int block_count;
 };
 

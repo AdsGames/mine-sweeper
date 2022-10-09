@@ -7,27 +7,26 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include <allegro.h>
+#include "./lib/aar/aar.h"
 #include "State.h"
+#include "utility/Timer.h"
 
 class Intro : public State {
  public:
-  // Construct/deconstruct
-  Intro();
-  virtual ~Intro();
+  explicit Intro(StateEngine& engine) : State(engine) {}
 
   // Override parent
-  virtual void update() override{};
+  virtual void init() override;
+  virtual void update() override;
   virtual void draw() override;
+  virtual void cleanup() override;
 
  private:
-  // Disallow copy
-  Intro(const Intro&);
-  Intro& operator=(const Intro&);
-
   // Images
-  BITMAP* img_intro;
-  BITMAP* img_title;
+  aar::Texture* img_intro;
+  aar::Texture* img_title;
+
+  Timer timer;
 };
 
 #endif  // INTRO_H

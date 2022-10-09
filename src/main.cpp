@@ -4,125 +4,90 @@
  * 2012
  * Simple minesweeper game
  */
+// Includes
+#include <chrono>
+#include "./lib/aar/aar.h"
 
-#include <allegro.h>
-#include <time.h>
-#include <string>
+#include "./utility/KeyListener.h"
+#include "./utility/MouseListener.h"
 
-#include "utility/MouseListener.h"
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
 
-#include "Game.h"
-#include "Init.h"
-#include "Intro.h"
-#include "Menu.h"
+// For state engine
 #include "State.h"
+#include "globals.h"
 
-// FPS System
 using namespace std::chrono_literals;
 using namespace std::chrono;
 constexpr nanoseconds timestep(16ms);
 
+// State engine
+StateEngine* game_state;
+
+// Functions
+void setup();
+void draw();
+void update();
+
+// FPS system
 int fps = 0;
 int frames_done = 0;
 
-// Current state object
-State* currentState = nullptr;
-
-// Close button handler
-volatile int close_button_pressed = FALSE;
-void close_button_handler(void) {
-  close_button_pressed = TRUE;
+// Setup game
+void setup() {
+  game_state = new StateEngine();
 }
-END_OF_FUNCTION(close_button_handler)
 
-// Change game screen
-void change_state() {
-  // If the state needs to be changed
-  if (nextState != STATE_NULL) {
-    // Delete the current state
-    if (nextState != STATE_EXIT) {
-      delete currentState;
-    }
+// Update
+void update() {
+  // Update listeners
+  KeyListener::update();
+  MouseListener::update();
 
-    // Change the state
-    switch (nextState) {
-      case STATE_INIT:
-        currentState = new Init();
-        break;
+  aar::core::update();
 
-      case STATE_INTRO:
-        currentState = new Intro();
-        break;
+  // Do state logic
+  game_state->update();
 
-      case STATE_MENU:
-        currentState = new Menu();
-        break;
-
-      case STATE_GAME:
-        currentState = new Game();
-        break;
-
-      default:
-      case STATE_EXIT:
-        close_button_pressed = true;
-        break;
-    }
-
-    // Change the current state ID
-    stateID = nextState;
-
-    // NULL the next state ID
-    nextState = STATE_NULL;
+  // Handle exit
+  if (game_state->getStateId() == StateEngine::STATE_EXIT) {
+    aar::core::exit = true;
   }
 }
 
-// Sets up game
-void setup() {
-  // Initializing
-  allegro_init();
-  install_keyboard();
-  install_mouse();
-  install_timer();
-  install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, ".");
-  set_color_depth(32);
-
-  // Close button
-  LOCK_FUNCTION(close_button_handler);
-  set_close_button_callback(close_button_handler);
-
-  // Game state
-  stateID = STATE_NULL;
-  nextState = STATE_NULL;
-}
-
-// Update game
-void update() {
-  change_state();
-  MouseListener::update();
-  currentState->update();
-}
-
-// Draw game
+// Do state rendering
 void draw() {
-  currentState->draw();
+  game_state->draw();
 }
 
-// main function of program
-int main() {
+// Loop (emscripten compatibility)
+#ifdef __EMSCRIPTEN__
+void loop() {
+  update();
+  draw();
+}
+#endif
+
+// Main function*/
+int main(int argc, char* argv[]) {
   // Setup basic functionality
   setup();
 
   // Set the current state ID
-  stateID = STATE_INIT;
+  game_state->setNextState(StateEngine::STATE_INIT);
 
-  // Set the current game state object
-  currentState = new Init();
+#ifdef __EMSCRIPTEN__
+  emscripten_set_main_loop(loop, 0, 1);
+#else
 
   using clock = high_resolution_clock;
   nanoseconds lag(0ns);
   auto time_start = clock::now();
 
-  while (!key[KEY_ESC] && !close_button_pressed) {
+  while (!KeyListener::keyDown[SDL_SCANCODE_ESCAPE] && !aar::core::exit) {
     auto delta_time = clock::now() - time_start;
     time_start = clock::now();
     lag += duration_cast<nanoseconds>(delta_time);
@@ -135,7 +100,7 @@ int main() {
     draw();
     frames_done++;
   }
+#endif
 
   return 0;
 }
-END_OF_MAIN()

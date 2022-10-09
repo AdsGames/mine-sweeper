@@ -20,8 +20,9 @@ Minefield::Minefield(int width, int height, int num_mines)
     height = 1;
 
   // Init blocks
-  int cell_size = NATIVE_SCREEN_W / width;
-  int offset = (NATIVE_SCREEN_W % cell_size) / 2;
+  auto screenSize = aar::display::getLogicalSize();
+  int cell_size = screenSize.x / width;
+  int offset = (screenSize.x % cell_size) / 2;
 
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
@@ -163,10 +164,10 @@ Cell* Minefield::getCellAt(int x, int y, int* pos_x, int* pos_y) {
 }
 
 // Draw map
-void Minefield::draw(BITMAP* buffer) {
+void Minefield::draw() {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
-      cells[i][t].Draw(buffer);
+      cells[i][t].Draw();
     }
   }
 }
