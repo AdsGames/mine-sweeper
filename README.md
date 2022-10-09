@@ -4,7 +4,7 @@ A remake of the classic windows game "Minesweeper". Clear the board of mines by 
 
 ## Demo
 
-[Web Demo](https://adsgames.github.io/MineSweeper)
+[Web Demo](https://adsgames.github.io/MineSweeper/)
 
 ## Setup
 
