@@ -50,3 +50,4 @@ bin
 docs
 build/
 *.ninja*
+compile_commands.json
