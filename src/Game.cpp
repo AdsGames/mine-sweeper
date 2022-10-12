@@ -10,8 +10,8 @@
 
 // Init game state
 void Game::init() {
-  menuWin = asw::load::texture("assets/images/menuWin.png");
-  menuLose = asw::load::texture("assets/images/menuLose.png");
+  menuWin = asw::load::texture("assets/images/menu_win.png");
+  menuLose = asw::load::texture("assets/images/menu_lose.png");
   explode = asw::load::sample("assets/sounds/explode.wav");
   beep = asw::load::sample("assets/sounds/timer.wav");
   field = Minefield();
@@ -60,7 +60,7 @@ void Game::update() {
   if (gameState == GameState::GAME) {
     // Plays stressing timer sound
     if (gameTime.GetElapsedTime<seconds>() > lastBeepTime && sound == true) {
-      asw::sound::play(beep, 255, 122);  // , 500
+      asw::sound::play(beep, 127);  // , 500
       lastBeepTime++;
     }
 
@@ -75,7 +75,7 @@ void Game::update() {
 
       // Lose and reveal map
       if (type == 9) {
-        asw::sound::play(explode, 255, 122);  // , random(500, 1500)
+        asw::sound::play(explode, 255);  // , random(500, 1500)
         gameState = GameState::LOSE;
         gameTime.Stop();
       }
