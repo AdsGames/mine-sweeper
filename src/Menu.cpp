@@ -18,38 +18,38 @@ void Menu::init() {
   asw::display::setTitle("Minesweeper - A.D.S. Games");
 
   // Buttons
-  start_easy.SetImages("assets/images/buttons/start_easy.png",
+  start_easy.setImages("assets/images/buttons/start_easy.png",
                        "assets/images/buttons/start_easy_hover.png");
-  start_easy.SetOnClick([this]() {
+  start_easy.setOnClick([this]() {
     game_difficulty = 0;
     setNextState(ProgramState::STATE_GAME);
   });
 
-  start_medium.SetImages("assets/images/buttons/start_medium.png",
+  start_medium.setImages("assets/images/buttons/start_medium.png",
                          "assets/images/buttons/start_medium_hover.png");
-  start_medium.SetOnClick([this]() {
+  start_medium.setOnClick([this]() {
     game_difficulty = 1;
     setNextState(ProgramState::STATE_GAME);
   });
 
-  start_hard.SetImages("assets/images/buttons/start_hard.png",
+  start_hard.setImages("assets/images/buttons/start_hard.png",
                        "assets/images/buttons/start_hard_hover.png");
-  start_hard.SetOnClick([this]() {
+  start_hard.setOnClick([this]() {
     game_difficulty = 2;
     setNextState(ProgramState::STATE_GAME);
   });
 
-  quit.SetImages("assets/images/buttons/quit.png",
+  quit.setImages("assets/images/buttons/quit.png",
                  "assets/images/buttons/quit_hover.png");
-  quit.SetOnClick([this]() { setNextState(ProgramState::STATE_EXIT); });
+  quit.setOnClick([this]() { setNextState(ProgramState::STATE_EXIT); });
 }
 
 // Update game
 void Menu::update() {
-  start_easy.Update();
-  start_medium.Update();
-  start_hard.Update();
-  quit.Update();
+  start_easy.update();
+  start_medium.update();
+  start_hard.update();
+  quit.update();
 
   if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
     setNextState(ProgramState::STATE_EXIT);
@@ -63,8 +63,8 @@ void Menu::draw() {
   asw::draw::sprite(main_menu, 14, 31);
 
   // Buttons
-  start_easy.Draw();
-  start_medium.Draw();
-  start_hard.Draw();
-  quit.Draw();
+  start_easy.draw();
+  start_medium.draw();
+  start_hard.draw();
+  quit.draw();
 }

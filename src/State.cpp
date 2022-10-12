@@ -11,12 +11,6 @@
  * STATE ENGINE
  *****************/
 
-// Init
-StateEngine::StateEngine()
-    : nextState(ProgramState::STATE_NULL),
-      currentState(ProgramState::STATE_NULL),
-      state(nullptr) {}
-
 // Draw
 void StateEngine::draw() {
   if (state) {
@@ -66,26 +60,26 @@ void StateEngine::changeState() {
   switch (nextState) {
     case ProgramState::STATE_GAME:
       state = std::make_unique<Game>(*this);
-      std::cout << ("Switched state to game.\n");
+      std::cout << "Switched state to game" << std::endl;
       break;
 
     case ProgramState::STATE_MENU:
       state = std::make_unique<Menu>(*this);
-      std::cout << ("Switched state to main menu.\n");
+      std::cout << "Switched state to main menu" << std::endl;
       break;
 
     case ProgramState::STATE_INIT:
       state = std::make_unique<Init>(*this);
-      std::cout << ("Switched state to init.\n");
+      std::cout << "Switched state to init" << std::endl;
       break;
 
     case ProgramState::STATE_INTRO:
       state = std::make_unique<Intro>(*this);
-      std::cout << ("Switched state to intro.\n");
+      std::cout << "Switched state to intro" << std::endl;
       break;
 
     default:
-      std::cout << ("Exiting program.");
+      std::cout << "Exiting program" << std::endl;
       break;
   }
 

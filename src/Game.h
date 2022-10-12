@@ -19,33 +19,36 @@ enum class GameState { GAME, WIN, LOSE };
 
 class Game : public State {
  public:
-  explicit Game(StateEngine& engine) : State(engine) {}
+  using State::State;
 
   // Override parent
-  virtual void init() override;
-  virtual void update() override;
-  virtual void draw() override;
-  virtual void cleanup() override{};
+  void init() override;
+  void update() override;
+  void draw() override;
+  void cleanup() override{};
 
  private:
   // Bitmaps
-  asw::Texture menu_win, menu_lose;
+  asw::Texture menuWin;
+  asw::Texture menuLose;
 
   // Sounds
-  asw::Sample explode, beep;
+  asw::Sample explode;
+  asw::Sample beep;
 
   // Minefield
   Minefield field;
 
   // Buttons
-  Button menu_yes, menu_no;
+  Button menuYes;
+  Button menuNo;
 
   // Game timer
-  Timer game_time;
-  int last_beep_time;
+  Timer gameTime;
+  int lastBeepTime;
 
   // Mini state in game
-  GameState game_state;
+  GameState gameState;
 
   // Sound enabled
   bool sound;

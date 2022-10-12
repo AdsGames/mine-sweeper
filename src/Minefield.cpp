@@ -56,9 +56,9 @@ void Minefield::generateMap(int x, int y) {
     int random_x = random(0, width - 1);
     int random_y = random(0, height - 1);
 
-    if (cells[random_x][random_y].GetType() != 9 && random_x != x &&
+    if (cells[random_x][random_y].getType() != 9 && random_x != x &&
         random_y != y) {
-      cells[random_x][random_y].SetType(9);
+      cells[random_x][random_y].setType(9);
       num_placed++;
     }
   }
@@ -66,19 +66,19 @@ void Minefield::generateMap(int x, int y) {
   // Number based on surrounding mines
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
-      if (cells[i][t].GetType() != 9) {
+      if (cells[i][t].getType() != 9) {
         int type = 0;
 
         // Surrounding 8 cells
         for (int j = i - 1; j <= i + 1; j++) {
           for (int k = t - 1; k <= t + 1; k++) {
             if (j >= 0 && j < width && k >= 0 && k < height) {
-              type += cells[j][k].GetType() == 9;
+              type += cells[j][k].getType() == 9;
             }
           }
         }
 
-        cells[i][t].SetType(type);
+        cells[i][t].setType(type);
       }
     }
   }
@@ -108,29 +108,29 @@ int Minefield::revealRelative(int x, int y) {
 
   Cell* temp = &cells[x][y];
 
-  if (!temp || temp->IsRevealed() || temp->IsFlagged())
+  if (!temp || temp->isRevealed() || temp->isFlagged())
     return -1;
 
-  temp->Reveal();
+  temp->reveal();
   num_unknown--;
 
-  if (temp->GetType() == 0) {
+  if (temp->getType() == 0) {
     for (int j = x - 1; j <= x + 1; j++) {
       for (int k = y - 1; k <= y + 1; k++) {
-        if (!(j == x && k == y) && cells[j][k].GetType() != 9) {
+        if (!(j == x && k == y) && cells[j][k].getType() != 9) {
           revealRelative(j, k);
         }
       }
     }
   }
 
-  return temp->GetType();
+  return temp->getType();
 }
 
 void Minefield::revealMap() {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
-      cells[i][t].Reveal();
+      cells[i][t].reveal();
     }
   }
 }
@@ -138,17 +138,17 @@ void Minefield::revealMap() {
 void Minefield::toggleFlag(int x, int y) {
   Cell* temp = getCellAt(x, y);
 
-  if (!temp || temp->IsRevealed())
+  if (!temp || temp->isRevealed())
     return;
 
-  num_flagged += (temp->ToggleFlag() * 2) - 1;
+  num_flagged += (temp->toggleFlag() * 2) - 1;
 }
 
 // Get cell at screen position
 Cell* Minefield::getCellAt(int x, int y, int* pos_x, int* pos_y) {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
-      if (cells[i][t].CollisionAt(x, y)) {
+      if (cells[i][t].collisionAt(x, y)) {
         if (pos_x) {
           *pos_x = i;
         }
@@ -166,10 +166,10 @@ Cell* Minefield::getCellAt(int x, int y, int* pos_x, int* pos_y) {
 }
 
 // Draw map
-void Minefield::draw() {
+void Minefield::draw() const {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
-      cells[i][t].Draw();
+      cells[i][t].draw();
     }
   }
 }

@@ -33,7 +33,7 @@ class Minefield {
   void toggleFlag(int x, int y);
 
   // Draw map
-  void draw();
+  void draw() const;
 
  private:
   // Reveal relative
@@ -49,7 +49,8 @@ class Minefield {
   Cell cells[16][16];
 
   // Variables
-  int width, height;
+  int width;
+  int height;
 
   // Counters
   int num_mines;

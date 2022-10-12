@@ -9,6 +9,7 @@
 #define CELL_H
 
 #include <asw/asw.h>
+#include <array>
 
 class Cell {
  public:
@@ -17,43 +18,47 @@ class Cell {
   Cell(int x, int y, int width, int height);
 
   // Returns type of block
-  int GetType() const;
+  int getType() const;
 
   // Mouse selected or not
-  bool IsRevealed() const;
+  bool isRevealed() const;
 
   // Is it flagged?
-  bool IsFlagged() const;
+  bool isFlagged() const;
 
   // Set the type
-  void SetType(int type);
+  void setType(int type);
 
   // Set whether already selected
-  void Reveal();
+  void reveal();
 
   // Set whether flagged or not
-  int ToggleFlag();
+  int toggleFlag();
 
   // Point over
-  bool CollisionAt(int x, int y) const;
+  bool collisionAt(int x, int y) const;
 
   // Draw image to screen
-  void Draw();
+  void draw() const;
 
  private:
   // Position
-  int x, y;
+  int x;
+  int y;
 
   // Size
-  int width, height;
+  int width;
+  int height;
+
+  // Type of cell
+  int type{0};
 
   // Other flags
-  int type;
-  bool revealed;
-  bool flagged;
+  bool revealed{false};
+  bool flagged{false};
 
   // Images
-  static asw::Texture images[12];
+  static std::array<asw::Texture, 12> images;
 };
 
 #endif

@@ -8,77 +8,71 @@
 #include "utility/tools.h"
 
 // Shared images
-asw::Texture Cell::images[12] = {nullptr};
+std::array<asw::Texture, 12> Cell::images = {nullptr};
 
 Cell::Cell() : Cell(0, 0, 0, 0) {}
 
 // Create
 Cell::Cell(int x, int y, int width, int height)
-    : x(x),
-      y(y),
-      width(width),
-      height(height),
-      type(0),
-      revealed(false),
-      flagged(false) {
+    : x(x), y(y), width(width), height(height) {
   // Load images
-  if (!images[0].get()) {
+  if (!images.at(0).get()) {
     std::string directory = "assets/images/blocks_small/";
 
     if (game_difficulty == 0)
       directory = "assets/images/blocks/";
 
     for (int i = 0; i < 12; i++) {
-      images[i] = asw::load::texture(directory + std::to_string(i) + ".png");
+      images.at(i) = asw::load::texture(directory + std::to_string(i) + ".png");
     }
   }
 }
 
 // Returns type of block
-int Cell::GetType() const {
+int Cell::getType() const {
   return type;
 }
 
 // Is it flagged?
-bool Cell::IsFlagged() const {
+bool Cell::isFlagged() const {
   return flagged;
 }
 
 // Set the type
-void Cell::SetType(int type) {
+void Cell::setType(int type) {
   this->type = type;
 }
 
 // Get revealed state
-bool Cell::IsRevealed() const {
+bool Cell::isRevealed() const {
   return revealed;
 }
 
 // Set revealed
-void Cell::Reveal() {
+void Cell::reveal() {
   revealed = true;
   flagged = false;
 }
 
 // Set whether flagged or not
-int Cell::ToggleFlag() {
+int Cell::toggleFlag() {
   flagged = !flagged;
   return flagged;
 }
 
 // Point over
-bool Cell::CollisionAt(int x, int y) const {
+bool Cell::collisionAt(int x, int y) const {
   return (x >= this->x && x < this->x + width && y >= this->y &&
           y < this->y + height);
 }
 
 // Draw
-void Cell::Draw() {
+void Cell::draw() const {
   if (flagged) {
-    asw::draw::stretchSprite(images[10], x, y, width, height);
+    asw::draw::stretchSprite(images.at(10), x, y, width, height);
   } else if (!revealed) {
-    asw::draw::stretchSprite(images[11], x, y, width, height);
+    asw::draw::stretchSprite(images.at(11), x, y, width, height);
   } else {
-    asw::draw::stretchSprite(images[type], x, y, width, height);
+    asw::draw::stretchSprite(images.at(type), x, y, width, height);
   }
 }
