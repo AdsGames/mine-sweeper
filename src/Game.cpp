@@ -10,26 +10,26 @@
 
 // Init game state
 void Game::init() {
-  menu_win = asw::load::texture("assets/images/menu_win.png");
-  menu_lose = asw::load::texture("assets/images/menu_lose.png");
+  menuWin = asw::load::texture("assets/images/menuWin.png");
+  menuLose = asw::load::texture("assets/images/menuLose.png");
   explode = asw::load::sample("assets/sounds/explode.wav");
   beep = asw::load::sample("assets/sounds/timer.wav");
   field = Minefield();
-  menu_yes = Button(36, 73);
-  menu_no = Button(68, 72);
-  game_time = Timer();
-  last_beep_time = 0;
-  game_state = GameState::GAME;
+  menuYes = Button(36, 73);
+  menuNo = Button(68, 72);
+  gameTime = Timer();
+  lastBeepTime = 0;
+  gameState = GameState::GAME;
   sound = true;
 
   // Buttons
-  menu_yes.SetImages("assets/images/buttons/button_yes.png",
-                     "assets/images/buttons/button_yes_hover.png");
-  menu_yes.SetOnClick([this]() { setNextState(ProgramState::STATE_GAME); });
+  menuYes.setImages("assets/images/buttons/button_yes.png",
+                    "assets/images/buttons/button_yes_hover.png");
+  menuYes.setOnClick([this]() { setNextState(ProgramState::STATE_GAME); });
 
-  menu_no.SetImages("assets/images/buttons/button_no.png",
-                    "assets/images/buttons/button_no_hover.png");
-  menu_no.SetOnClick([this]() { setNextState(ProgramState::STATE_MENU); });
+  menuNo.setImages("assets/images/buttons/button_no.png",
+                   "assets/images/buttons/button_no_hover.png");
+  menuNo.setOnClick([this]() { setNextState(ProgramState::STATE_MENU); });
 
   // Create minefield
   switch (game_difficulty) {
@@ -54,14 +54,14 @@ void Game::update() {
       (std::string("Mines Left: ") +
        std::to_string(field.getNumMines() - field.getNumFlagged()) +
        " Unknown Cells:" + std::to_string(field.getNumUnknown()) +
-       " Time:" + std::to_string(int(game_time.GetElapsedTime<seconds>()))));
+       " Time:" + std::to_string(int(gameTime.GetElapsedTime<seconds>()))));
 
   // Game
-  if (game_state == GameState::GAME) {
+  if (gameState == GameState::GAME) {
     // Plays stressing timer sound
-    if (game_time.GetElapsedTime<seconds>() > last_beep_time && sound == true) {
+    if (gameTime.GetElapsedTime<seconds>() > lastBeepTime && sound == true) {
       asw::sound::play(beep, 255, 122);  // , 500
-      last_beep_time++;
+      lastBeepTime++;
     }
 
     // Revealing
@@ -69,15 +69,15 @@ void Game::update() {
       int type = field.reveal(MouseListener::x, MouseListener::y);
 
       // Start timer
-      if (!game_time.IsRunning()) {
-        game_time.Start();
+      if (!gameTime.IsRunning()) {
+        gameTime.Start();
       }
 
       // Lose and reveal map
       if (type == 9) {
         asw::sound::play(explode, 255, 122);  // , random(500, 1500)
-        game_state = GameState::LOSE;
-        game_time.Stop();
+        gameState = GameState::LOSE;
+        gameTime.Stop();
       }
     }
 
@@ -89,15 +89,15 @@ void Game::update() {
     // Reveal Map
     if (field.getNumUnknown() == 0) {
       field.revealMap();
-      game_state = GameState::WIN;
-      game_time.Stop();
+      gameState = GameState::WIN;
+      gameTime.Stop();
     }
   }
 
   // Win or lose
-  else if (game_state == GameState::WIN || game_state == GameState::LOSE) {
-    menu_no.Update();
-    menu_yes.Update();
+  else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
+    menuNo.update();
+    menuYes.update();
   }
 
   if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
@@ -111,15 +111,15 @@ void Game::draw() {
   field.draw();
 
   // Win and Lose menu text
-  if (game_state == GameState::WIN || game_state == GameState::LOSE) {
-    if (game_state == GameState::WIN) {
-      asw::draw::sprite(menu_win, 25, 42);
-    } else if (game_state == GameState::LOSE) {
-      asw::draw::sprite(menu_lose, 25, 42);
+  if (gameState == GameState::WIN || gameState == GameState::LOSE) {
+    if (gameState == GameState::WIN) {
+      asw::draw::sprite(menuWin, 25, 42);
+    } else if (gameState == GameState::LOSE) {
+      asw::draw::sprite(menuLose, 25, 42);
     }
 
     // Buttons
-    menu_yes.Draw();
-    menu_no.Draw();
+    menuYes.draw();
+    menuNo.draw();
   }
 }

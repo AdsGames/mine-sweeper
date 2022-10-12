@@ -6,10 +6,10 @@
  */
 // Includes
 #include <asw/asw.h>
-#include <chrono>
-
 #include <asw/util/KeyListener.h>
 #include <asw/util/MouseListener.h>
+#include <chrono>
+#include <memory>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -25,7 +25,7 @@ using namespace std::chrono;
 constexpr nanoseconds timestep(16ms);
 
 // State engine
-StateEngine* game_state;
+std::unique_ptr<StateEngine> gameState;
 
 // Functions
 void setup();
@@ -38,7 +38,7 @@ int frames_done = 0;
 
 // Setup game
 void setup() {
-  game_state = new StateEngine();
+  gameState = std::make_unique<StateEngine>();
 }
 
 // Update
@@ -50,17 +50,17 @@ void update() {
   asw::core::update();
 
   // Do state logic
-  game_state->update();
+  gameState->update();
 
   // Handle exit
-  if (game_state->getStateId() == ProgramState::STATE_EXIT) {
+  if (gameState->getStateId() == ProgramState::STATE_EXIT) {
     asw::core::exit = true;
   }
 }
 
 // Do state rendering
 void draw() {
-  game_state->draw();
+  gameState->draw();
 }
 
 // Loop (emscripten compatibility)
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
   setup();
 
   // Set the current state ID
-  game_state->setNextState(ProgramState::STATE_INIT);
+  gameState->setNextState(ProgramState::STATE_INIT);
 
 #ifdef __EMSCRIPTEN__
   emscripten_set_main_loop(loop, 0, 1);

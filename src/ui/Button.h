@@ -9,18 +9,18 @@ class Button {
   Button();
   Button(int x, int y);
 
-  void Update();
+  void update() const;
 
-  void SetImages(const std::string& image1, const std::string& image2);
+  void setImages(const std::string& image1, const std::string& image2);
 
-  void SetOnClick(std::function<void()> func);
+  void setOnClick(std::function<void()> func);
 
-  void Draw();
+  void draw() const;
 
-  bool Hover() const;
+  bool isHovering() const;
 
  private:
-  std::function<void(void)> OnClick{nullptr};
+  std::function<void(void)> onClick{nullptr};
 
   int x;
   int y;
@@ -28,7 +28,8 @@ class Button {
   int width{10};
   int height{10};
 
-  asw::Texture images[2]{nullptr};
+  asw::Texture image{nullptr};
+  asw::Texture imageHover{nullptr};
 };
 
 #endif

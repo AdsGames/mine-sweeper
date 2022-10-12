@@ -32,7 +32,7 @@ enum class ProgramState {
 class StateEngine {
  public:
   // Init
-  StateEngine();
+  StateEngine(){};
 
   // Update
   void update();
@@ -51,13 +51,13 @@ class StateEngine {
   void changeState();
 
   // Next state
-  ProgramState nextState = ProgramState::STATE_NULL;
+  ProgramState nextState{ProgramState::STATE_NULL};
 
   // State id
-  ProgramState currentState = ProgramState::STATE_NULL;
+  ProgramState currentState{ProgramState::STATE_NULL};
 
   // Stores states
-  std::unique_ptr<State> state;
+  std::unique_ptr<State> state{nullptr};
 };
 
 /*********
