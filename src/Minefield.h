@@ -33,7 +33,7 @@ class Minefield {
   void toggleFlag(int x, int y);
 
   // Draw map
-  void draw();
+  void draw() const;
 
  private:
   // Reveal relative

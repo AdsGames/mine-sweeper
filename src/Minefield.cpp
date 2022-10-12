@@ -166,7 +166,7 @@ Cell* Minefield::getCellAt(int x, int y, int* pos_x, int* pos_y) {
 }
 
 // Draw map
-void Minefield::draw() {
+void Minefield::draw() const {
   for (int i = 0; i < width; i++) {
     for (int t = 0; t < height; t++) {
       cells[i][t].draw();

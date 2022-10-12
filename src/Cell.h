@@ -9,6 +9,7 @@
 #define CELL_H
 
 #include <asw/asw.h>
+#include <array>
 
 class Cell {
  public:
@@ -57,7 +58,7 @@ class Cell {
   bool flagged{false};
 
   // Images
-  static asw::Texture images[12];
+  static std::array<asw::Texture, 12> images;
 };
 
 #endif

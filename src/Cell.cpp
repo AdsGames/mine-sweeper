@@ -8,7 +8,7 @@
 #include "utility/tools.h"
 
 // Shared images
-asw::Texture Cell::images[12] = {nullptr};
+std::array<asw::Texture, 12> Cell::images = {nullptr};
 
 Cell::Cell() : Cell(0, 0, 0, 0) {}
 
@@ -16,14 +16,14 @@ Cell::Cell() : Cell(0, 0, 0, 0) {}
 Cell::Cell(int x, int y, int width, int height)
     : x(x), y(y), width(width), height(height) {
   // Load images
-  if (!images[0].get()) {
+  if (!images.at(0).get()) {
     std::string directory = "assets/images/blocks_small/";
 
     if (game_difficulty == 0)
       directory = "assets/images/blocks/";
 
     for (int i = 0; i < 12; i++) {
-      images[i] = asw::load::texture(directory + std::to_string(i) + ".png");
+      images.at(i) = asw::load::texture(directory + std::to_string(i) + ".png");
     }
   }
 }
@@ -69,10 +69,10 @@ bool Cell::collisionAt(int x, int y) const {
 // Draw
 void Cell::draw() const {
   if (flagged) {
-    asw::draw::stretchSprite(images[10], x, y, width, height);
+    asw::draw::stretchSprite(images.at(10), x, y, width, height);
   } else if (!revealed) {
-    asw::draw::stretchSprite(images[11], x, y, width, height);
+    asw::draw::stretchSprite(images.at(11), x, y, width, height);
   } else {
-    asw::draw::stretchSprite(images[type], x, y, width, height);
+    asw::draw::stretchSprite(images.at(type), x, y, width, height);
   }
 }

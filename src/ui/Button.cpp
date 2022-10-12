@@ -35,11 +35,9 @@ void Button::update() const {
 }
 
 void Button::draw() const {
-  const auto hovering = isHovering();
-
-  if (hovering && imageHover) {
+  if (isHovering() && imageHover) {
     asw::draw::sprite(imageHover, x, y);
-  } else if (!hovering && image) {
+  } else if (!isHovering() && image) {
     asw::draw::sprite(image, x, y);
   } else {
     asw::draw::primRectFill(x, y, x + width, y + height,

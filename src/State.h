@@ -31,9 +31,6 @@ enum class ProgramState {
  *****************/
 class StateEngine {
  public:
-  // Init
-  StateEngine(){};
-
   // Update
   void update();
 
