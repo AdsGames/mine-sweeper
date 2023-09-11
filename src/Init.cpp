@@ -5,7 +5,7 @@
 
 // Construct state
 void Init::init() {
-  asw::util::init(128, 128, 4);
+  asw::core::init(128, 128, 4);
 
   asw::display::setTitle("Loading...");
 

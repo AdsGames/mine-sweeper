@@ -1,7 +1,6 @@
 #include "Cell.h"
 
 #include <asw/asw.h>
-#include <asw/util/MouseListener.h>
 #include <string>
 
 #include "globals.h"
@@ -23,7 +22,8 @@ Cell::Cell(int x, int y, int width, int height)
       directory = "assets/images/blocks/";
 
     for (int i = 0; i < 12; i++) {
-      images.at(i) = asw::load::texture(directory + std::to_string(i) + ".png");
+      images.at(i) =
+          asw::assets::loadTexture(directory + std::to_string(i) + ".png");
     }
   }
 }
