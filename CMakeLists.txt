@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -11,14 +11,11 @@ project (MineSweeper)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/lib/*.cpp)
 file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h ${CMAKE_CURRENT_SOURCE_DIR}/lib/*.h)
 
-add_executable (${PROJECT_NAME} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 
-target_include_directories(
-  ${PROJECT_NAME} PRIVATE
-  lib/asw
-)
+add_subdirectory(lib/asw)
 
 # Find libs
 if(NOT EMSCRIPTEN)
@@ -57,12 +54,13 @@ if(EMSCRIPTEN)
     -sSDL2_IMAGE_FORMATS=["png"] 
     -sDEMANGLE_SUPPORT=1
     -sTOTAL_MEMORY=512MB
+    asw
   )
   set_target_properties(
     ${PROJECT_NAME} 
     PROPERTIES 
     LINK_FLAGS
-    "--preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@/assets --use-preload-plugins"
+    "--preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@/assets --use-preload-plugins --shell-file ${CMAKE_CURRENT_LIST_DIR}/index.html"
   )
 
 # Run of the mill executable
@@ -79,6 +77,7 @@ else(EMSCRIPTEN)
     ${SDL_IMAGE_LIBRARY} 
     ${SDL_TTF_LIBRARY} 
     ${SDL_GFX_LIBRARY} 
+    asw
   )
 endif(EMSCRIPTEN)
 

@@ -1,8 +1,5 @@
 #include "Game.h"
 
-#include <asw/util/KeyListener.h>
-#include <asw/util/MouseListener.h>
-
 #include "globals.h"
 #include "utility/tools.h"
 
@@ -10,10 +7,10 @@
 
 // Init game state
 void Game::init() {
-  menuWin = asw::load::texture("assets/images/menu_win.png");
-  menuLose = asw::load::texture("assets/images/menu_lose.png");
-  explode = asw::load::sample("assets/sounds/explode.wav");
-  beep = asw::load::sample("assets/sounds/timer.wav");
+  menuWin = asw::assets::loadTexture("assets/images/menu_win.png");
+  menuLose = asw::assets::loadTexture("assets/images/menu_lose.png");
+  explode = asw::assets::loadSample("assets/sounds/explode.wav");
+  beep = asw::assets::loadSample("assets/sounds/timer.wav");
   field = Minefield();
   menuYes = Button(36, 73);
   menuNo = Button(68, 72);
@@ -53,44 +50,45 @@ void Game::update() {
   asw::display::setTitle(
       (std::string("Mines Left: ") +
        std::to_string(field.getNumMines() - field.getNumFlagged()) +
-       " Unknown Cells:" + std::to_string(field.getNumUnknown()) +
-       " Time:" + std::to_string(int(gameTime.GetElapsedTime<seconds>()))));
+       " Unknown Cells:" + std::to_string(field.getNumUnknown()) + " Time:" +
+       std::to_string(int(gameTime.getElapsedTime<std::chrono::seconds>()))));
 
   // Game
   if (gameState == GameState::GAME) {
     // Plays stressing timer sound
-    if (gameTime.GetElapsedTime<seconds>() > lastBeepTime && sound == true) {
+    if (gameTime.getElapsedTime<std::chrono::seconds>() > lastBeepTime &&
+        sound == true) {
       asw::sound::play(beep, 127);  // , 500
       lastBeepTime++;
     }
 
     // Revealing
-    if (MouseListener::mouse_pressed & 1) {
-      int type = field.reveal(MouseListener::x, MouseListener::y);
+    if (asw::input::mouse.pressed[1]) {
+      int type = field.reveal(asw::input::mouse.x, asw::input::mouse.y);
 
       // Start timer
-      if (!gameTime.IsRunning()) {
-        gameTime.Start();
+      if (!gameTime.isRunning()) {
+        gameTime.start();
       }
 
       // Lose and reveal map
       if (type == 9) {
         asw::sound::play(explode, 255);  // , random(500, 1500)
         gameState = GameState::LOSE;
-        gameTime.Stop();
+        gameTime.stop();
       }
     }
 
     // Flagging
-    else if (MouseListener::mouse_pressed & 4) {
-      field.toggleFlag(MouseListener::x, MouseListener::y);
+    else if (asw::input::mouse.pressed[3]) {
+      field.toggleFlag(asw::input::mouse.x, asw::input::mouse.y);
     }
 
     // Reveal Map
     if (field.getNumUnknown() == 0) {
       field.revealMap();
       gameState = GameState::WIN;
-      gameTime.Stop();
+      gameTime.stop();
     }
   }
 
@@ -100,7 +98,7 @@ void Game::update() {
     menuYes.update();
   }
 
-  if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
+  if (asw::input::keyboard.pressed[SDL_SCANCODE_ESCAPE]) {
     setNextState(ProgramState::STATE_MENU);
   }
 }

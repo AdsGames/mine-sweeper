@@ -1,6 +1,6 @@
 #include "Button.h"
 
-#include <asw/util/MouseListener.h>
+#include <asw/asw.h>
 
 #include "../utility/tools.h"
 
@@ -14,8 +14,8 @@ void Button::setOnClick(std::function<void(void)> func) {
 
 // Load images from file
 void Button::setImages(const std::string& image1, const std::string& image2) {
-  image = asw::load::texture(image1);
-  imageHover = asw::load::texture(image2);
+  image = asw::assets::loadTexture(image1);
+  imageHover = asw::assets::loadTexture(image2);
 
   // Size
   auto size = asw::util::getTextureSize(image);
@@ -24,12 +24,12 @@ void Button::setImages(const std::string& image1, const std::string& image2) {
 }
 
 bool Button::isHovering() const {
-  return (signed)MouseListener::x > x && (signed)MouseListener::x < x + width &&
-         (signed)MouseListener::y > y && (signed)MouseListener::y < y + height;
+  return asw::input::mouse.x > x && asw::input::mouse.x < x + width &&
+         asw::input::mouse.y > y && asw::input::mouse.y < y + height;
 }
 
 void Button::update() const {
-  if (isHovering() && MouseListener::mouse_pressed & 1 && onClick != nullptr) {
+  if (isHovering() && asw::input::mouse.pressed[1] && onClick != nullptr) {
     onClick();
   }
 }
@@ -40,7 +40,7 @@ void Button::draw() const {
   } else if (!isHovering() && image) {
     asw::draw::sprite(image, x, y);
   } else {
-    asw::draw::primRectFill(x, y, x + width, y + height,
-                            asw::util::makeColor(153, 153, 153));
+    asw::draw::rectFill(x, y, x + width, y + height,
+                        asw::util::makeColor(153, 153, 153));
   }
 }

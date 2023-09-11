@@ -1,21 +1,21 @@
 #include "Intro.h"
 
-#include <asw/util/KeyListener.h>
+#include <asw/asw.h>
 
 #include "utility/tools.h"
 
 // Constructor
 void Intro::init() {
-  img_intro = asw::load::texture("assets/images/intro.png");
-  img_title = asw::load::texture("assets/images/title.png");
+  img_intro = asw::assets::loadTexture("assets/images/intro.png");
+  img_title = asw::assets::loadTexture("assets/images/title.png");
 
-  timer.Start();
+  timer.start();
 }
 
 void Intro::update() {
-  auto time = timer.GetElapsedTime<milliseconds>();
+  auto time = timer.getElapsedTime<std::chrono::milliseconds>();
 
-  if (time > 3000 || KeyListener::anyKeyPressed) {
+  if (time > 3000 || asw::input::keyboard.anyPressed) {
     setNextState(ProgramState::STATE_MENU);
   }
 }
@@ -23,7 +23,7 @@ void Intro::update() {
 // Draw to screen
 void Intro::draw() {
   // A.D.S. Games Splash
-  auto time = timer.GetElapsedTime<milliseconds>();
+  auto time = timer.getElapsedTime<std::chrono::milliseconds>();
 
   if (time < 1000) {
     asw::draw::sprite(img_intro, 0, 0);

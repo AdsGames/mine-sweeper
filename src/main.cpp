@@ -6,8 +6,6 @@
  */
 // Includes
 #include <asw/asw.h>
-#include <asw/util/KeyListener.h>
-#include <asw/util/MouseListener.h>
 #include <chrono>
 #include <memory>
 
@@ -43,10 +41,7 @@ void setup() {
 
 // Update
 void update() {
-  // Update listeners
-  KeyListener::update();
-  MouseListener::update();
-
+  // Update core
   asw::core::update();
 
   // Do state logic

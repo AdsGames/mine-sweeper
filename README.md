@@ -11,6 +11,14 @@ A remake of the classic windows game "Minesweeper". Clear the board of mines by 
 
 ## Setup
 
+### Dependencies
+
+To pull the submodules, run the following command:
+
+```bash
+git submodule update --init --recursive
+```
+
 ### Windows (MSYS2)
 
 ```bash

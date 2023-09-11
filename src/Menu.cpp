@@ -1,14 +1,13 @@
 #include "Menu.h"
 
-#include <asw/util/KeyListener.h>
-#include <asw/util/MouseListener.h>
+#include <asw/asw.h>
 
 #include "globals.h"
 #include "utility/tools.h"
 
 void Menu::init() {
-  title = asw::load::texture("assets/images/title.png");
-  main_menu = asw::load::texture("assets/images/main_menu.png");
+  title = asw::assets::loadTexture("assets/images/title.png");
+  main_menu = asw::assets::loadTexture("assets/images/main_menu.png");
   start_easy = Button(25, 45);
   start_medium = Button(25, 60);
   start_hard = Button(25, 75);
@@ -51,7 +50,7 @@ void Menu::update() {
   start_hard.update();
   quit.update();
 
-  if (KeyListener::keyPressed[SDL_SCANCODE_ESCAPE]) {
+  if (asw::input::keyboard.pressed[SDL_SCANCODE_ESCAPE]) {
     setNextState(ProgramState::STATE_EXIT);
   }
 }
