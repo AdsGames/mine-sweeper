@@ -27,7 +27,7 @@ jobs:
 
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: libharfbuzz-dev libfreetype-dev
+          packages: libharfbuzz-dev libfreetype-dev libasound2-dev
           version: 1.0
 
       - name: Setup project
