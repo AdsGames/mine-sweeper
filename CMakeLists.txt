@@ -20,7 +20,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 FetchContent_Declare(
   asw
   GIT_REPOSITORY https://github.com/adsgames/asw.git
-  GIT_TAG        fab768baec661df2076648176066e7c68cc84025
+  GIT_TAG        948e0e4cfc3da08040f67bb59c38c2b43d721d9b
   GIT_SHALLOW    TRUE
 )
 FetchContent_MakeAvailable(asw)
