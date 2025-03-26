@@ -27,7 +27,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "_deps"
-          key: ${{ runner.os }}
+          key: deps-${{ runner.os }}
 
       - uses: mymindstorm/setup-emsdk@v11
         with:
