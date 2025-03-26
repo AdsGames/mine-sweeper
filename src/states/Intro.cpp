@@ -1,8 +1,8 @@
-#include "Intro.h"
+#include "./Intro.h"
 
 #include <asw/asw.h>
 
-#include "utility/tools.h"
+#include "../utility/tools.h"
 
 // Constructor
 void Intro::init() {
@@ -12,11 +12,11 @@ void Intro::init() {
   timer.start();
 }
 
-void Intro::update() {
+void Intro::update(float _deltaTime) {
   auto time = timer.getElapsedTime<std::chrono::milliseconds>();
 
   if (time > 3000 || asw::input::keyboard.anyPressed) {
-    setNextState(ProgramState::STATE_MENU);
+    sceneManager.setNextScene(States::Menu);
   }
 }
 

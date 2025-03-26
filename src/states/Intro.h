@@ -12,15 +12,15 @@
 
 #include "State.h"
 
-class Intro : public State {
+class Intro : public asw::scene::Scene<States> {
  public:
-  using State::State;
+  using asw::scene::Scene<States>::Scene;
 
   // Override parent
   void init() override;
-  void update() override;
+  void update(float deltaTime) override;
   void draw() override;
-  void cleanup() override{};
+  void cleanup() override {};
 
  private:
   // Images

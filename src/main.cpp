@@ -6,96 +6,32 @@
  */
 // Includes
 #include <asw/asw.h>
-#include <chrono>
-#include <memory>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
-#include <emscripten/html5.h>
 #endif
 
-// For state engine
-#include "State.h"
-#include "globals.h"
-
-using namespace std::chrono_literals;
-using namespace std::chrono;
-constexpr nanoseconds timestep(16ms);
-
-// State engine
-std::unique_ptr<StateEngine> gameState;
-
-// Functions
-void setup();
-void draw();
-void update();
-
-// FPS system
-int fps = 0;
-int frames_done = 0;
-
-// Setup game
-void setup() {
-  gameState = std::make_unique<StateEngine>();
-}
-
-// Update
-void update() {
-  // Update core
-  asw::core::update();
-
-  // Do state logic
-  gameState->update();
-
-  // Handle exit
-  if (gameState->getStateId() == ProgramState::STATE_EXIT) {
-    asw::core::exit = true;
-  }
-}
-
-// Do state rendering
-void draw() {
-  gameState->draw();
-}
-
-// Loop (emscripten compatibility)
-#ifdef __EMSCRIPTEN__
-void loop() {
-  update();
-  draw();
-}
-#endif
+#include "states/Game.h"
+#include "states/Init.h"
+#include "states/Intro.h"
+#include "states/Menu.h"
+#include "states/State.h"
 
 // Main function*/
 int main(int argc, char* argv[]) {
   // Setup basic functionality
-  setup();
+  asw::core::init(128, 128, 4);
 
-  // Set the current state ID
-  gameState->setNextState(ProgramState::STATE_INIT);
+  // Register scenes
+  asw::scene::SceneManager<States> app;
+  app.registerScene(States::Init, new Init(app));
+  app.registerScene(States::Intro, new Intro(app));
+  app.registerScene(States::Menu, new Menu(app));
+  app.registerScene(States::Game, new Game(app));
+  app.setNextScene(States::Init);
 
-#ifdef __EMSCRIPTEN__
-  emscripten_set_main_loop(loop, 0, 1);
-#else
-
-  using clock = high_resolution_clock;
-  nanoseconds lag(0ns);
-  auto time_start = clock::now();
-
-  while (!asw::core::exit) {
-    auto delta_time = clock::now() - time_start;
-    time_start = clock::now();
-    lag += duration_cast<nanoseconds>(delta_time);
-
-    while (lag >= timestep) {
-      lag -= timestep;
-      update();
-    }
-
-    draw();
-    frames_done++;
-  }
-#endif
+  // Start game
+  app.start();
 
   return 0;
 }

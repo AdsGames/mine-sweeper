@@ -4,21 +4,22 @@
  * 31/12/2016
  * Menu stuff here!
  */
-#ifndef MENU_H
-#define MENU_H
+#pragma once
 
-#include "State.h"
-#include "ui/Button.h"
+#include <asw/asw.h>
 
-class Menu : public State {
+#include "../ui/Button.h"
+#include "./State.h"
+
+class Menu : public asw::scene::Scene<States> {
  public:
-  using State::State;
+  using asw::scene::Scene<States>::Scene;
 
   // Override parent
   void init() override;
-  void update() override;
+  void update(float deltaTime) override;
   void draw() override;
-  void cleanup() override{};
+  void cleanup() override {};
 
  private:
   // Images
@@ -31,5 +32,3 @@ class Menu : public State {
   Button start_hard;
   Button quit;
 };
-
-#endif  // MENU_H

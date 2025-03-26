@@ -7,10 +7,6 @@ on:
     tags:
       - v*
 
-env:
-  EM_VERSION: "latest"
-  EM_CACHE_FOLDER: "emsdk-cache"
-
 permissions:
   contents: read
   pages: write
@@ -26,20 +22,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          submodules: recursive
 
       - name: Setup cache
-        id: cache-system-libraries
         uses: actions/cache@v2
         with:
-          path: ${{env.EM_CACHE_FOLDER}}
-          key: ${{env.EM_VERSION}}-${{ runner.os }}
+          path: "_deps"
+          key: ${{ runner.os }}
 
       - uses: mymindstorm/setup-emsdk@v11
         with:
-          version: ${{env.EM_VERSION}}
-          actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+          version: 1.38.40
+          actions-cache-folder: "emsdk-cache"
 
       - name: Run CMake
         run: emcmake cmake -G "Unix Makefiles" .

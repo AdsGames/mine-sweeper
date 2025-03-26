@@ -1,7 +1,7 @@
-#include "Game.h"
+#include "./Game.h"
 
-#include "globals.h"
-#include "utility/tools.h"
+#include "../globals.h"
+#include "../utility/tools.h"
 
 #include <asw/asw.h>
 
@@ -22,11 +22,11 @@ void Game::init() {
   // Buttons
   menuYes.setImages("assets/images/buttons/button_yes.png",
                     "assets/images/buttons/button_yes_hover.png");
-  menuYes.setOnClick([this]() { setNextState(ProgramState::STATE_GAME); });
+  menuYes.setOnClick([this]() { sceneManager.setNextScene(States::Game); });
 
   menuNo.setImages("assets/images/buttons/button_no.png",
                    "assets/images/buttons/button_no_hover.png");
-  menuNo.setOnClick([this]() { setNextState(ProgramState::STATE_MENU); });
+  menuNo.setOnClick([this]() { sceneManager.setNextScene(States::Menu); });
 
   // Create minefield
   switch (game_difficulty) {
@@ -45,7 +45,7 @@ void Game::init() {
 }
 
 // All game logic goes on here
-void Game::update() {
+void Game::update(float _deltaTime) {
   // Set title text
   asw::display::setTitle(
       (std::string("Mines Left: ") +
@@ -63,7 +63,7 @@ void Game::update() {
     }
 
     // Revealing
-    if (asw::input::mouse.pressed[1]) {
+    if (asw::input::wasButtonPressed(asw::input::MouseButton::LEFT)) {
       int type = field.reveal(asw::input::mouse.x, asw::input::mouse.y);
 
       // Start timer
@@ -80,7 +80,7 @@ void Game::update() {
     }
 
     // Flagging
-    else if (asw::input::mouse.pressed[3]) {
+    else if (asw::input::wasButtonPressed(asw::input::MouseButton::RIGHT)) {
       field.toggleFlag(asw::input::mouse.x, asw::input::mouse.y);
     }
 
@@ -98,8 +98,8 @@ void Game::update() {
     menuYes.update();
   }
 
-  if (asw::input::keyboard.pressed[SDL_SCANCODE_ESCAPE]) {
-    setNextState(ProgramState::STATE_MENU);
+  if (asw::input::wasKeyPressed(asw::input::Key::ESCAPE)) {
+    sceneManager.setNextScene(States::Menu);
   }
 }
 
