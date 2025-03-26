@@ -25,8 +25,13 @@ jobs:
           path: "_deps"
           key: deps-${{ runner.os }}
 
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libsdl3-dev libsdl3-image-dev libsdl3-ttf-dev libsdl3-mixer-dev
+          version: 1.0
+
       - name: Setup project
-        run: cmake . -DSDL_UNIX_CONSOLE_BUILD=ON
+        run: cmake . -DSDL_UNIX_CONSOLE_BUILD=ON -DASW_VENDORED=OFF
 
       - name: Install Build Wrapper
         uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v5
