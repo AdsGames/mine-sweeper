@@ -1,12 +1,10 @@
-#include "Init.h"
+#include "./Init.h"
 
 #include <asw/asw.h>
-#include "globals.h"
+#include "../globals.h"
 
 // Construct state
 void Init::init() {
-  asw::core::init(128, 128, 4);
-
   asw::display::setTitle("Loading...");
 
   asw::display::setIcon("assets/images/icon.png");
@@ -15,6 +13,6 @@ void Init::init() {
 }
 
 // Update
-void Init::update() {
-  setNextState(ProgramState::STATE_INTRO);
+void Init::update(float _deltaTime) {
+  sceneManager.setNextScene(States::Intro);
 }

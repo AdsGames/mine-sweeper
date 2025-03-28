@@ -2,13 +2,7 @@
 
 #include <asw/asw.h>
 
-#include "../utility/tools.h"
-
-Button::Button() : Button(0, 0) {}
-
-Button::Button(int x, int y) : x(x), y(y) {}
-
-void Button::setOnClick(std::function<void(void)> func) {
+void Button::setOnClick(const std::function<void(void)>& func) {
   onClick = func;
 }
 
@@ -16,31 +10,20 @@ void Button::setOnClick(std::function<void(void)> func) {
 void Button::setImages(const std::string& image1, const std::string& image2) {
   image = asw::assets::loadTexture(image1);
   imageHover = asw::assets::loadTexture(image2);
-
-  // Size
-  auto size = asw::util::getTextureSize(image);
-  height = size.y;
-  width = size.x;
+  transform.size = asw::util::getTextureSize(image);
 }
 
-bool Button::isHovering() const {
-  return asw::input::mouse.x > x && asw::input::mouse.x < x + width &&
-         asw::input::mouse.y > y && asw::input::mouse.y < y + height;
-}
+void Button::update(float _deltaTime) {
+  const auto hovering =
+      transform.contains({asw::input::mouse.x, asw::input::mouse.y});
 
-void Button::update() const {
-  if (isHovering() && asw::input::mouse.pressed[1] && onClick != nullptr) {
+  if (hovering && asw::input::mouse.pressed[1] && onClick != nullptr) {
     onClick();
   }
-}
 
-void Button::draw() const {
-  if (isHovering() && imageHover) {
-    asw::draw::sprite(imageHover, x, y);
-  } else if (!isHovering() && image) {
-    asw::draw::sprite(image, x, y);
+  if (hovering) {
+    setTexture(imageHover);
   } else {
-    asw::draw::rectFill(x, y, x + width, y + height,
-                        asw::util::makeColor(153, 153, 153));
+    setTexture(image);
   }
 }

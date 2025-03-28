@@ -9,14 +9,15 @@
 #define MINEFIELD_H
 
 #include <asw/asw.h>
-#include "Cell.h"
+#include <vector>
+
+#include "./Cell.h"
 
 class Minefield {
  public:
   // Construct/destruct
   Minefield();
   Minefield(int width, int height, int num_mines);
-  virtual ~Minefield();
 
   // Get board state
   int getNumMines() const;
@@ -27,26 +28,29 @@ class Minefield {
   void revealMap();
 
   // Reveal at
-  int reveal(int x, int y);
+  int reveal(float x, float y);
 
   // Flag or unflag tile
-  void toggleFlag(int x, int y);
+  void toggleFlag(float x, float y);
 
   // Draw map
-  void draw() const;
+  void draw();
+
+  // Update map
+  void update(float deltaTime);
 
  private:
-  // Reveal relative
-  int revealRelative(int x, int y);
-
   // Get cell at screen position
-  Cell* getCellAt(int x, int y, int* pos_x = nullptr, int* pos_y = nullptr);
+  Cell* getCellAt(float x, float y, int* pos_x = nullptr, int* pos_y = nullptr);
+
+  // Reveal relative
+  void revealArea(int x, int y);
 
   // Generate map
   void generateMap(int x, int y);
 
   // Cells on screen
-  Cell cells[16][16];
+  std::vector<std::vector<Cell>> cells;
 
   // Variables
   int width;

@@ -8,24 +8,23 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "State.h"
-
 #include <asw/util/Timer.h>
 
-#include "Minefield.h"
-#include "ui/Button.h"
+#include "../game/Minefield.h"
+#include "../ui/Button.h"
+#include "./State.h"
 
 enum class GameState { GAME, WIN, LOSE };
 
-class Game : public State {
+class Game : public asw::scene::Scene<States> {
  public:
-  using State::State;
+  using asw::scene::Scene<States>::Scene;
 
   // Override parent
   void init() override;
-  void update() override;
+  void update(float deltaTime) override;
   void draw() override;
-  void cleanup() override{};
+  void cleanup() override {};
 
  private:
   // Bitmaps
