@@ -5,15 +5,12 @@
 // Constructor
 void Intro::init() {
   // Intro
-  intro = std::make_shared<asw::game::Sprite>();
+  intro = createObject<asw::game::Sprite>();
   intro->setTexture(asw::assets::loadTexture("assets/images/intro.png"));
-  registerObject(intro);
 
   // Title
-  title = std::make_shared<asw::game::Sprite>();
+  title = createObject<asw::game::Sprite>();
   title->setTexture(asw::assets::loadTexture("assets/images/title.png"));
-  title->active = false;
-  registerObject(title);
 
   timer.start();
 }
