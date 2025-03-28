@@ -42,6 +42,7 @@ if(EMSCRIPTEN)
 
   target_link_libraries(
     ${PROJECT_NAME} 
+    -sUSE_HARFBUZZ=1
     -sWASM=1 
     -sALLOW_MEMORY_GROWTH=1 
     -sMAXIMUM_MEMORY=1gb
