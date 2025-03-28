@@ -39,7 +39,7 @@ jobs:
 
       - uses: mymindstorm/setup-emsdk@v14
         with:
-          version: 1.38.40
+          version: 4.0.6
           actions-cache-folder: "emsdk-cache"
 
       - name: Run CMake
