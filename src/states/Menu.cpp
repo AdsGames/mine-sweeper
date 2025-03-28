@@ -1,54 +1,66 @@
 #include "./Menu.h"
 
 #include <asw/asw.h>
+#include <memory>
 
 #include "../globals.h"
-#include "../utility/tools.h"
 
 void Menu::init() {
-  title = asw::assets::loadTexture("assets/images/title.png");
-  main_menu = asw::assets::loadTexture("assets/images/main_menu.png");
-  start_easy = Button(25, 45);
-  start_medium = Button(25, 60);
-  start_hard = Button(25, 75);
-  quit = Button(25, 90);
-
   // Title
-  asw::display::setTitle("Minesweeper - A.D.S. Games");
+  auto title = std::make_shared<asw::game::Sprite>();
+  title->transform.position = asw::Vec2<float>(0, 0);
+  title->setTexture(asw::assets::loadTexture("assets/images/title.png"));
+  registerObject(title);
+
+  // Main menu
+  auto main_menu = std::make_shared<asw::game::Sprite>();
+  main_menu->transform.position = asw::Vec2<float>(14, 31);
+  main_menu->setTexture(
+      asw::assets::loadTexture("assets/images/main_menu.png"));
+  registerObject(main_menu);
 
   // Buttons
-  start_easy.setImages("assets/images/buttons/start_easy.png",
-                       "assets/images/buttons/start_easy_hover.png");
-  start_easy.setOnClick([this]() {
+  auto start_easy = std::make_shared<Button>();
+  start_easy->transform.position = asw::Vec2<float>(25, 45);
+  start_easy->setImages("assets/images/buttons/start_easy.png",
+                        "assets/images/buttons/start_easy_hover.png");
+  start_easy->setOnClick([this]() {
     game_difficulty = 0;
-    sceneManager.setNextScene(States::Game);
+    this->sceneManager.setNextScene(States::Game);
   });
+  registerObject(start_easy);
 
-  start_medium.setImages("assets/images/buttons/start_medium.png",
-                         "assets/images/buttons/start_medium_hover.png");
-  start_medium.setOnClick([this]() {
+  auto start_medium = std::make_shared<Button>();
+  start_medium->transform.position = asw::Vec2<float>(25, 60);
+  start_medium->setImages("assets/images/buttons/start_medium.png",
+                          "assets/images/buttons/start_medium_hover.png");
+  start_medium->setOnClick([this]() {
     game_difficulty = 1;
     sceneManager.setNextScene(States::Game);
   });
+  registerObject(start_medium);
 
-  start_hard.setImages("assets/images/buttons/start_hard.png",
-                       "assets/images/buttons/start_hard_hover.png");
-  start_hard.setOnClick([this]() {
+  auto start_hard = std::make_shared<Button>();
+  start_hard->transform.position = asw::Vec2<float>(25, 75);
+  start_hard->setImages("assets/images/buttons/start_hard.png",
+                        "assets/images/buttons/start_hard_hover.png");
+  start_hard->setOnClick([this]() {
     game_difficulty = 2;
     sceneManager.setNextScene(States::Game);
   });
+  registerObject(start_hard);
 
-  quit.setImages("assets/images/buttons/quit.png",
-                 "assets/images/buttons/quit_hover.png");
-  quit.setOnClick([]() { asw::core::exit = true; });
+  auto quit = std::make_shared<Button>();
+  quit->transform.position = asw::Vec2<float>(25, 90);
+  quit->setImages("assets/images/buttons/quit.png",
+                  "assets/images/buttons/quit_hover.png");
+  quit->setOnClick([]() { asw::core::exit = true; });
+  registerObject(quit);
 }
 
 // Update game
-void Menu::update(float _deltaTime) {
-  start_easy.update();
-  start_medium.update();
-  start_hard.update();
-  quit.update();
+void Menu::update(float deltaTime) {
+  Scene::update(deltaTime);
 
   if (asw::input::wasKeyPressed(asw::input::Key::ESCAPE)) {
     asw::core::exit = true;
@@ -57,13 +69,5 @@ void Menu::update(float _deltaTime) {
 
 // Draw to screen
 void Menu::draw() {
-  // Draw menu
-  asw::draw::sprite(title, 0, 0);
-  asw::draw::sprite(main_menu, 14, 31);
-
-  // Buttons
-  start_easy.draw();
-  start_medium.draw();
-  start_hard.draw();
-  quit.draw();
+  Scene::draw();
 }

@@ -1,7 +1,6 @@
 #include "./Game.h"
 
 #include "../globals.h"
-#include "../utility/tools.h"
 
 #include <asw/asw.h>
 
@@ -11,9 +10,15 @@ void Game::init() {
   menuLose = asw::assets::loadTexture("assets/images/menu_lose.png");
   explode = asw::assets::loadSample("assets/sounds/explode.wav");
   beep = asw::assets::loadSample("assets/sounds/timer.wav");
+
   field = Minefield();
-  menuYes = Button(36, 73);
-  menuNo = Button(68, 72);
+
+  menuYes = Button();
+  menuYes.transform.position = asw::Vec2<float>(36, 73);
+
+  menuNo = Button();
+  menuNo.transform.position = asw::Vec2<float>(68, 72);
+
   gameTime = Timer();
   lastBeepTime = 0;
   gameState = GameState::GAME;
@@ -30,6 +35,10 @@ void Game::init() {
 
   // Create minefield
   switch (game_difficulty) {
+    case 3:
+      field = Minefield(20, 20, 80);
+      break;
+
     case 2:
       field = Minefield(16, 16, 40);
       break;
@@ -45,7 +54,9 @@ void Game::init() {
 }
 
 // All game logic goes on here
-void Game::update(float _deltaTime) {
+void Game::update(float deltaTime) {
+  field.update(deltaTime);
+
   // Set title text
   asw::display::setTitle(
       (std::string("Mines Left: ") +
@@ -57,14 +68,14 @@ void Game::update(float _deltaTime) {
   if (gameState == GameState::GAME) {
     // Plays stressing timer sound
     if (gameTime.getElapsedTime<std::chrono::seconds>() > lastBeepTime &&
-        sound == true) {
+        sound) {
       asw::sound::play(beep, 127);  // , 500
       lastBeepTime++;
     }
 
     // Revealing
     if (asw::input::wasButtonPressed(asw::input::MouseButton::LEFT)) {
-      int type = field.reveal(asw::input::mouse.x, asw::input::mouse.y);
+      const int type = field.reveal(asw::input::mouse.x, asw::input::mouse.y);
 
       // Start timer
       if (!gameTime.isRunning()) {
@@ -94,8 +105,8 @@ void Game::update(float _deltaTime) {
 
   // Win or lose
   else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
-    menuNo.update();
-    menuYes.update();
+    menuNo.update(deltaTime);
+    menuYes.update(deltaTime);
   }
 
   if (asw::input::wasKeyPressed(asw::input::Key::ESCAPE)) {
@@ -111,9 +122,9 @@ void Game::draw() {
   // Win and Lose menu text
   if (gameState == GameState::WIN || gameState == GameState::LOSE) {
     if (gameState == GameState::WIN) {
-      asw::draw::sprite(menuWin, 25, 42);
+      asw::draw::sprite(menuWin, {25, 42});
     } else if (gameState == GameState::LOSE) {
-      asw::draw::sprite(menuLose, 25, 42);
+      asw::draw::sprite(menuLose, {25, 42});
     }
 
     // Buttons

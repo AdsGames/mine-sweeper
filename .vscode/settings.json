@@ -83,7 +83,13 @@
     "span": "cpp",
     "stdfloat": "cpp",
     "stop_token": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "__tree": "cpp",
+    "complex": "cpp",
+    "execution": "cpp",
+    "queue": "cpp",
+    "ranges": "cpp",
+    "stack": "cpp"
   },
   "sonarlint.pathToCompileCommands": "${workspaceFolder}\\compile_commands.json"
 }

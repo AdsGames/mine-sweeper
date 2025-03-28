@@ -9,6 +9,7 @@
 
 #include <asw/asw.h>
 #include <asw/util/Timer.h>
+#include <memory>
 
 #include "State.h"
 
@@ -23,11 +24,10 @@ class Intro : public asw::scene::Scene<States> {
   void cleanup() override {};
 
  private:
-  // Images
-  asw::Texture img_intro;
-  asw::Texture img_title;
-
   Timer timer;
+
+  std::shared_ptr<asw::game::Sprite> intro;
+  std::shared_ptr<asw::game::Sprite> title;
 };
 
 #endif  // INTRO_H

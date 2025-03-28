@@ -18,7 +18,7 @@
 #include "states/State.h"
 
 // Main function*/
-int main(int argc, char* argv[]) {
+int main() {
   // Setup basic functionality
   asw::core::init(128, 128, 4);
 

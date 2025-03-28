@@ -11,11 +11,12 @@
 #include <asw/asw.h>
 #include <array>
 
-class Cell {
+class Cell : public asw::game::Sprite {
  public:
   // Construct and deconstruct
-  Cell();
-  Cell(int x, int y, int width, int height);
+  Cell() = default;
+
+  Cell(const asw::Quad<float>& transform);
 
   // Returns type of block
   int getType() const;
@@ -33,23 +34,12 @@ class Cell {
   void reveal();
 
   // Set whether flagged or not
-  int toggleFlag();
-
-  // Point over
-  bool collisionAt(int x, int y) const;
+  void toggleFlag();
 
   // Draw image to screen
-  void draw() const;
+  void update(float deltaTime) override;
 
  private:
-  // Position
-  int x;
-  int y;
-
-  // Size
-  int width;
-  int height;
-
   // Type of cell
   int type{0};
 

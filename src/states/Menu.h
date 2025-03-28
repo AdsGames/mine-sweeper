@@ -20,15 +20,4 @@ class Menu : public asw::scene::Scene<States> {
   void update(float deltaTime) override;
   void draw() override;
   void cleanup() override {};
-
- private:
-  // Images
-  asw::Texture title;
-  asw::Texture main_menu;
-
-  // Buttons
-  Button start_easy;
-  Button start_medium;
-  Button start_hard;
-  Button quit;
 };

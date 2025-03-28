@@ -1,25 +1,24 @@
-#include "Cell.h"
+#include "./Cell.h"
 
 #include <asw/asw.h>
 #include <string>
 
-#include "globals.h"
-#include "utility/tools.h"
+#include "../globals.h"
 
 // Shared images
 std::array<asw::Texture, 12> Cell::images = {nullptr};
 
-Cell::Cell() : Cell(0, 0, 0, 0) {}
-
 // Create
-Cell::Cell(int x, int y, int width, int height)
-    : x(x), y(y), width(width), height(height) {
+Cell::Cell(const asw::Quad<float>& transform) {
+  this->transform = transform;
+
   // Load images
-  if (!images.at(0).get()) {
+  if (images.at(0).get() == nullptr) {
     std::string directory = "assets/images/blocks_small/";
 
-    if (game_difficulty == 0)
+    if (game_difficulty == 0) {
       directory = "assets/images/blocks/";
+    }
 
     for (int i = 0; i < 12; i++) {
       images.at(i) =
@@ -50,29 +49,30 @@ bool Cell::isRevealed() const {
 
 // Set revealed
 void Cell::reveal() {
+  if (revealed || flagged) {
+    return;
+  }
+
   revealed = true;
-  flagged = false;
 }
 
 // Set whether flagged or not
-int Cell::toggleFlag() {
+void Cell::toggleFlag() {
+  if (revealed) {
+    return;
+  }
+
   flagged = !flagged;
-  return flagged;
 }
 
-// Point over
-bool Cell::collisionAt(int x, int y) const {
-  return (x >= this->x && x < this->x + width && y >= this->y &&
-          y < this->y + height);
-}
+void Cell::update(float deltaTime) {
+  asw::game::Sprite::update(deltaTime);
 
-// Draw
-void Cell::draw() const {
-  if (flagged) {
-    asw::draw::stretchSprite(images.at(10), x, y, width, height);
-  } else if (!revealed) {
-    asw::draw::stretchSprite(images.at(11), x, y, width, height);
+  if (revealed) {
+    setTexture(images.at(type), false);
+  } else if (flagged) {
+    setTexture(images.at(10), false);
   } else {
-    asw::draw::stretchSprite(images.at(type), x, y, width, height);
+    setTexture(images.at(11), false);
   }
 }

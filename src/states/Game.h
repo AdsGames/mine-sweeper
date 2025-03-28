@@ -10,7 +10,7 @@
 
 #include <asw/util/Timer.h>
 
-#include "../Minefield.h"
+#include "../game/Minefield.h"
 #include "../ui/Button.h"
 #include "./State.h"
 
