@@ -12,16 +12,16 @@ A remake of the classic windows game "Minesweeper". Clear the board of mines by 
 
 ## Setup
 
-### Build
+### CMake
 
 ```bash
-cmake .
-make
+cmake --preset debug
+cmake --build --preset debug
 ```
 
 ### Build Emscripten
 
 ```bash
-emcmake cmake .
-make
+emcmake cmake --preset debug
+cmake --build --preset debug
 ```
