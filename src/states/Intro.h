@@ -8,7 +8,6 @@
 #define INTRO_H
 
 #include <asw/asw.h>
-#include <asw/util/Timer.h>
 #include <memory>
 
 #include "State.h"
@@ -19,12 +18,12 @@ class Intro : public asw::scene::Scene<States> {
 
   // Override parent
   void init() override;
-  void update(float deltaTime) override;
+  void update(float dt) override;
   void draw() override;
   void cleanup() override {};
 
  private:
-  Timer timer;
+  float timer;
 
   std::shared_ptr<asw::game::Sprite> intro;
   std::shared_ptr<asw::game::Sprite> title;

@@ -22,7 +22,7 @@ Cell::Cell(const asw::Quad<float>& transform) {
 
     for (int i = 0; i < 12; i++) {
       images.at(i) =
-          asw::assets::loadTexture(directory + std::to_string(i) + ".png");
+          asw::assets::load_texture(directory + std::to_string(i) + ".png");
     }
   }
 }
@@ -65,14 +65,14 @@ void Cell::toggleFlag() {
   flagged = !flagged;
 }
 
-void Cell::update(float deltaTime) {
-  asw::game::Sprite::update(deltaTime);
+void Cell::update(float dt) {
+  asw::game::Sprite::update(dt);
 
   if (revealed) {
-    setTexture(images.at(type), false);
+    set_texture(images.at(type), false);
   } else if (flagged) {
-    setTexture(images.at(10), false);
+    set_texture(images.at(10), false);
   } else {
-    setTexture(images.at(11), false);
+    set_texture(images.at(11), false);
   }
 }

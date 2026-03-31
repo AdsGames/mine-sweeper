@@ -37,7 +37,7 @@ class Minefield {
   void draw();
 
   // Update map
-  void update(float deltaTime);
+  void update(float dt);
 
  private:
   // Get cell at screen position

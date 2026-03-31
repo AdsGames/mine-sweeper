@@ -21,7 +21,7 @@ Minefield::Minefield(int width, int height, int num_mines)
   height = std::max(height, 1);
 
   // Init blocks
-  auto screenSize = asw::display::getLogicalSize();
+  auto screenSize = asw::display::get_logical_size();
   const int cell_size = screenSize.x / width;
   const int offset = (screenSize.x % cell_size) / 2;
 
@@ -198,13 +198,13 @@ void Minefield::draw() {
 }
 
 // Draw map
-void Minefield::update(float deltaTime) {
+void Minefield::update(float dt) {
   num_flagged = 0;
   num_unknown = 0;
 
   for (auto& row : cells) {
     for (auto& cell : row) {
-      cell.update(deltaTime);
+      cell.update(dt);
 
       if (cell.isFlagged()) {
         num_flagged++;

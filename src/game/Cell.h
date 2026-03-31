@@ -37,7 +37,7 @@ class Cell : public asw::game::Sprite {
   void toggleFlag();
 
   // Draw image to screen
-  void update(float deltaTime) override;
+  void update(float dt) override;
 
  private:
   // Type of cell
