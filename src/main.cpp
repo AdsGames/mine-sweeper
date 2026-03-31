@@ -21,17 +21,20 @@
 int main() {
   // Setup basic functionality
   asw::core::init(128, 128, 4);
+  asw::core::print_info();
 
   // Register scenes
   asw::scene::SceneManager<States> app;
-  app.registerScene<Init>(States::Init, app);
-  app.registerScene<Intro>(States::Intro, app);
-  app.registerScene<Menu>(States::Menu, app);
-  app.registerScene<Game>(States::Game, app);
-  app.setNextScene(States::Init);
+  app.register_scene<Init>(States::Init, app);
+  app.register_scene<Intro>(States::Intro, app);
+  app.register_scene<Menu>(States::Menu, app);
+  app.register_scene<Game>(States::Game, app);
+  app.set_next_scene(States::Init);
 
   // Start game
   app.start();
+
+  asw::core::shutdown();
 
   return 0;
 }

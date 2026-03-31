@@ -6,7 +6,7 @@
 
 class Button : public asw::game::Sprite {
  public:
-  void update(float deltaTime) override;
+  void update(float dt) override;
 
   void setImages(const std::string& image1, const std::string& image2);
 

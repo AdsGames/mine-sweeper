@@ -8,8 +8,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <asw/util/Timer.h>
-
 #include "../game/Minefield.h"
 #include "../ui/Button.h"
 #include "./State.h"
@@ -22,7 +20,7 @@ class Game : public asw::scene::Scene<States> {
 
   // Override parent
   void init() override;
-  void update(float deltaTime) override;
+  void update(float dt) override;
   void draw() override;
   void cleanup() override {};
 
@@ -43,7 +41,8 @@ class Game : public asw::scene::Scene<States> {
   Button menuNo;
 
   // Game timer
-  Timer gameTime;
+  float gameTime;
+  bool gameTimeRunning;
   int lastBeepTime;
 
   // Mini state in game
