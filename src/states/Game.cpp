@@ -1,10 +1,12 @@
 #include "./Game.h"
 
 #include <asw/asw.h>
+#include <functional>
+#include <string>
+#include <utility>
 
 #include "../Controls.h"
 #include "../globals.h"
-#include "../ui/ImageButton.h"
 
 // Init game state
 void Game::init() {
@@ -26,15 +28,30 @@ void Game::init() {
   ui = std::make_unique<asw::ui::Root>();
   ui->set_size(screen_size.x, screen_size.y);
 
-  ui->root.add_child<ImageButton>(
-      "assets/images/buttons/button_yes.png",
-      "assets/images/buttons/button_yes_hover.png", asw::Vec2<float>(36, 73),
-      [this]() { manager.set_next_scene(States::Game); });
+  // Image only buttons: the hover image also shows while focused, so hide the
+  // theme focus ring
+  ui->ctx.theme.btn_focus_ring = asw::Color{0, 0, 0, 0};
 
-  ui->root.add_child<ImageButton>(
-      "assets/images/buttons/button_no.png",
-      "assets/images/buttons/button_no_hover.png", asw::Vec2<float>(68, 72),
-      [this]() { manager.set_next_scene(States::Menu); });
+  const auto add_button = [this](const std::string& image,
+                                 const std::string& hover_image,
+                                 const asw::Vec2<float>& position,
+                                 std::function<void()> on_click) {
+    auto& button = ui->root.add_child<asw::ui::Button>();
+    button.draw_background = false;
+    button.set_texture(asw::assets::load_texture(image), true);
+    button.texture_hover = asw::assets::load_texture(hover_image);
+    button.transform.position = position;
+    button.on_click = std::move(on_click);
+  };
+
+  add_button("assets/images/buttons/button_yes.png",
+             "assets/images/buttons/button_yes_hover.png",
+             asw::Vec2<float>(36, 73),
+             [this]() { manager.set_next_scene(States::Game); });
+  add_button("assets/images/buttons/button_no.png",
+             "assets/images/buttons/button_no_hover.png",
+             asw::Vec2<float>(68, 72),
+             [this]() { manager.set_next_scene(States::Menu); });
 
   // Create minefield
   switch (game_difficulty) {
