@@ -26,6 +26,9 @@ void Menu::init() {
   ui = std::make_unique<asw::ui::Root>();
   ui->set_size(screen_size.x, screen_size.y);
 
+  // The root is a full screen panel, keep it see through so the scene shows
+  ui->root.bg = asw::Color{0, 0, 0, 0};
+
   // Image only buttons: the hover image also shows while focused, so hide the
   // theme focus ring
   ui->ctx.theme.btn_focus_ring = asw::Color{0, 0, 0, 0};
