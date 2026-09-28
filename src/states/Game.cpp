@@ -20,6 +20,7 @@ void Game::init() {
   menuNo.transform.position = asw::Vec2<float>(68, 72);
 
   gameTime = 0.0F;
+  gameTimeRunning = false;
   lastBeepTime = 0;
   gameState = GameState::GAME;
   sound = true;
@@ -72,7 +73,7 @@ void Game::update(float dt) {
   if (gameState == GameState::GAME) {
     // Plays stressing timer sound
     if (gameTime > lastBeepTime && sound) {
-      asw::sound::play(beep, 127);  // , 500
+      asw::sound::play(beep, 0.5F, 0.0F);
       lastBeepTime++;
     }
 
@@ -80,14 +81,15 @@ void Game::update(float dt) {
     if (asw::input::get_mouse_button_down(asw::input::MouseButton::Left)) {
       const int type = field.reveal(mouse.position.x, mouse.position.y);
 
-      // Start timer
-      if (!gameTimeRunning) {
+      // Start timer on the first reveal
+      if (type != -1) {
         gameTimeRunning = true;
       }
 
       // Lose and reveal map
       if (type == 9) {
-        asw::sound::play(explode, 255);  // , random(500, 1500)
+        asw::sound::play(explode, 1.0F, 0.0F);
+        field.revealMap();
         gameState = GameState::LOSE;
         gameTimeRunning = false;
       }
@@ -99,8 +101,8 @@ void Game::update(float dt) {
       field.toggleFlag(mouse.position.x, mouse.position.y);
     }
 
-    // Reveal Map
-    if (field.getNumUnknown() == 0) {
+    // Win once every safe cell is revealed
+    if (gameState == GameState::GAME && field.isCleared()) {
       field.revealMap();
       gameState = GameState::WIN;
       gameTimeRunning = false;

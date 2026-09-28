@@ -10,27 +10,26 @@
 Minefield::Minefield() : Minefield(1, 1, 0) {}
 
 Minefield::Minefield(int width, int height, int num_mines)
-    : width(width),
-      height(height),
-      num_mines(num_mines),
-      num_unknown((width * height) - num_mines),
+    : width(std::max(width, 1)),
+      height(std::max(height, 1)),
+      num_mines(std::clamp(num_mines, 0, (this->width * this->height) - 1)),
+      num_unknown((this->width * this->height) - this->num_mines),
       num_flagged(0),
+      num_revealed(0),
       first_reveal(false) {
-  // Check parameters
-  width = std::max(width, 1);
-  height = std::max(height, 1);
-
   // Init blocks
   auto screenSize = asw::display::get_logical_size();
-  const int cell_size = screenSize.x / width;
-  const int offset = (screenSize.x % cell_size) / 2;
+  const int cell_size = std::min(screenSize.x / this->width,
+                                 screenSize.y / this->height);
+  const int offset_x = (screenSize.x - (cell_size * this->width)) / 2;
+  const int offset_y = (screenSize.y - (cell_size * this->height)) / 2;
 
-  for (int i = 0; i < width; i++) {
+  for (int i = 0; i < this->width; i++) {
     cells.emplace_back();
 
-    for (int t = 0; t < height; t++) {
-      cells.at(i).emplace_back(asw::Quad<float>(i * cell_size + offset,
-                                                t * cell_size + offset,
+    for (int t = 0; t < this->height; t++) {
+      cells.at(i).emplace_back(asw::Quad<float>(i * cell_size + offset_x,
+                                                t * cell_size + offset_y,
                                                 cell_size, cell_size));
     }
   }
@@ -49,6 +48,11 @@ int Minefield::getNumFlagged() const {
   return num_flagged;
 }
 
+// All safe cells revealed
+bool Minefield::isCleared() const {
+  return num_revealed == (width * height) - num_mines;
+}
+
 // Generate minefield
 void Minefield::generateMap(int x, int y) {
   // Plant mines
@@ -59,7 +63,7 @@ void Minefield::generateMap(int x, int y) {
     const int r_y = asw::random::between(0, height - 1);
 
     auto& cell = cells.at(r_x).at(r_y);
-    if (cell.getType() != 9 && r_x != x && r_y != y) {
+    if (cell.getType() != 9 && (r_x != x || r_y != y)) {
       cell.setType(9);
       num_placed++;
     }
@@ -98,7 +102,8 @@ int Minefield::reveal(float x, float y) {
   int cell_y;
   auto const* cell = getCellAt(x, y, &cell_x, &cell_y);
 
-  if (cell == nullptr) {
+  // Flagged and revealed cells can not be clicked
+  if (cell == nullptr || cell->isFlagged() || cell->isRevealed()) {
     return -1;
   }
 
@@ -134,8 +139,8 @@ void Minefield::revealArea(int x, int y) {
 
     Cell& cell = cells.at(cx).at(cy);
 
-    // Skip if already revealed
-    if (cell.isRevealed()) {
+    // Skip if already revealed or flagged
+    if (cell.isRevealed() || cell.isFlagged()) {
       continue;
     }
 
@@ -201,6 +206,7 @@ void Minefield::draw() {
 void Minefield::update(float dt) {
   num_flagged = 0;
   num_unknown = 0;
+  num_revealed = 0;
 
   for (auto& row : cells) {
     for (auto& cell : row) {
@@ -208,7 +214,9 @@ void Minefield::update(float dt) {
 
       if (cell.isFlagged()) {
         num_flagged++;
-      } else if (!cell.isRevealed()) {
+      } else if (cell.isRevealed()) {
+        num_revealed++;
+      } else {
         num_unknown++;
       }
     }

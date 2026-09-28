@@ -23,6 +23,7 @@ class Minefield {
   int getNumMines() const;
   int getNumUnknown() const;
   int getNumFlagged() const;
+  bool isCleared() const;
 
   // Reveal map
   void revealMap();
@@ -60,6 +61,7 @@ class Minefield {
   int num_mines;
   int num_unknown;
   int num_flagged;
+  int num_revealed;
 
   // Don't allow mine on first click
   bool first_reveal;
