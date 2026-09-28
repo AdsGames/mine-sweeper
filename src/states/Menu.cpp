@@ -22,28 +22,20 @@ void Menu::init() {
       asw::assets::load_texture("assets/images/main_menu.png"));
 
   // Buttons
-  const auto screen_size = asw::display::get_logical_size();
   ui = std::make_unique<asw::ui::Root>();
-  ui->set_size(screen_size.x, screen_size.y);
-
-  // The root is a full screen panel, keep it see through so the scene shows
-  ui->root.bg = asw::Color{0, 0, 0, 0};
-
-  // Image only buttons: the hover image also shows while focused, so hide the
-  // theme focus ring
-  ui->ctx.theme.focus_ring.width = 0;
-
   ui->ctx.navigation = controls::navigation();
   ui->on_back = []() { asw::core::exit(); };
 
-  const auto add_button = [this](const std::string& image,
-                                 const std::string& hover_image,
+  // Image only buttons: the hover image shows focus, so hide the focus ring
+  ui->ctx.theme.focus_ring.width = 0;
+
+  const auto add_button = [this](const std::string& name,
                                  const asw::Vec2<float>& position,
                                  std::function<void()> on_click) {
+    const std::string path = "assets/images/buttons/" + name;
     auto& button = ui->root.add_child<asw::ui::Button>();
-    button.draw_background = false;
-    button.set_texture(asw::assets::load_texture(image), true);
-    button.texture_hover = asw::assets::load_texture(hover_image);
+    button.set_images(asw::assets::load_texture(path + ".png"),
+                      asw::assets::load_texture(path + "_hover.png"));
     button.transform.position = position;
     button.on_click = std::move(on_click);
   };
@@ -55,18 +47,10 @@ void Menu::init() {
     };
   };
 
-  add_button("assets/images/buttons/start_easy.png",
-             "assets/images/buttons/start_easy_hover.png",
-             asw::Vec2<float>(25, 45), start(0));
-  add_button("assets/images/buttons/start_medium.png",
-             "assets/images/buttons/start_medium_hover.png",
-             asw::Vec2<float>(25, 60), start(1));
-  add_button("assets/images/buttons/start_hard.png",
-             "assets/images/buttons/start_hard_hover.png",
-             asw::Vec2<float>(25, 75), start(2));
-  add_button("assets/images/buttons/quit.png",
-             "assets/images/buttons/quit_hover.png", asw::Vec2<float>(25, 90),
-             []() { asw::core::exit(); });
+  add_button("start_easy", asw::Vec2<float>(25, 45), start(0));
+  add_button("start_medium", asw::Vec2<float>(25, 60), start(1));
+  add_button("start_hard", asw::Vec2<float>(25, 75), start(2));
+  add_button("quit", asw::Vec2<float>(25, 90), []() { asw::core::exit(); });
 }
 
 // Update game

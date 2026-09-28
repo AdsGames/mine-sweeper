@@ -1,9 +1,8 @@
 #include "./Game.h"
 
 #include <asw/asw.h>
-#include <functional>
+#include <memory>
 #include <string>
-#include <utility>
 
 #include "../Controls.h"
 #include "../globals.h"
@@ -23,41 +22,26 @@ void Game::init() {
   gameState = GameState::GAME;
   sound = true;
 
-  // Buttons
-  const auto screen_size = asw::display::get_logical_size();
+  // Play again buttons, image only: the hover image shows focus, so hide the
+  // focus ring
   ui = std::make_unique<asw::ui::Root>();
-  ui->set_size(screen_size.x, screen_size.y);
-
-  // The root is a full screen panel, keep it see through so the scene shows
-  ui->root.bg = asw::Color{0, 0, 0, 0};
-
-  // Image only buttons: the hover image also shows while focused, so hide the
-  // theme focus ring
-  ui->ctx.theme.focus_ring.width = 0;
-
   ui->ctx.navigation = controls::navigation();
+  ui->ctx.theme.focus_ring.width = 0;
   ui->on_back = [this]() { manager.set_next_scene(States::Menu); };
 
-  const auto add_button = [this](const std::string& image,
-                                 const std::string& hover_image,
-                                 const asw::Vec2<float>& position,
-                                 std::function<void()> on_click) {
-    auto& button = ui->root.add_child<asw::ui::Button>();
-    button.draw_background = false;
-    button.set_texture(asw::assets::load_texture(image), true);
-    button.texture_hover = asw::assets::load_texture(hover_image);
-    button.transform.position = position;
-    button.on_click = std::move(on_click);
-  };
+  auto& yes = ui->root.add_child<asw::ui::Button>();
+  yes.set_images(
+      asw::assets::load_texture("assets/images/buttons/button_yes.png"),
+      asw::assets::load_texture("assets/images/buttons/button_yes_hover.png"));
+  yes.transform.position = asw::Vec2<float>(36, 73);
+  yes.on_click = [this]() { manager.set_next_scene(States::Game); };
 
-  add_button("assets/images/buttons/button_yes.png",
-             "assets/images/buttons/button_yes_hover.png",
-             asw::Vec2<float>(36, 73),
-             [this]() { manager.set_next_scene(States::Game); });
-  add_button("assets/images/buttons/button_no.png",
-             "assets/images/buttons/button_no_hover.png",
-             asw::Vec2<float>(68, 72),
-             [this]() { manager.set_next_scene(States::Menu); });
+  auto& no = ui->root.add_child<asw::ui::Button>();
+  no.set_images(
+      asw::assets::load_texture("assets/images/buttons/button_no.png"),
+      asw::assets::load_texture("assets/images/buttons/button_no_hover.png"));
+  no.transform.position = asw::Vec2<float>(68, 72);
+  no.on_click = [this]() { manager.set_next_scene(States::Menu); };
 
   // Create minefield
   switch (game_difficulty) {
