@@ -31,7 +31,10 @@ void Menu::init() {
 
   // Image only buttons: the hover image also shows while focused, so hide the
   // theme focus ring
-  ui->ctx.theme.btn_focus_ring = asw::Color{0, 0, 0, 0};
+  ui->ctx.theme.focus_ring.width = 0;
+
+  ui->ctx.navigation = controls::navigation();
+  ui->on_back = []() { asw::core::exit(); };
 
   const auto add_button = [this](const std::string& image,
                                  const std::string& hover_image,
@@ -69,11 +72,7 @@ void Menu::init() {
 // Update game
 void Menu::update(float dt) {
   Scene::update(dt);
-  controls::update_ui(*ui);
-
-  if (asw::input::get_action_down(controls::UI_BACK)) {
-    asw::core::exit();
-  }
+  ui->update();
 }
 
 // Draw to screen

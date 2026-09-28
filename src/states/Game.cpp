@@ -33,7 +33,10 @@ void Game::init() {
 
   // Image only buttons: the hover image also shows while focused, so hide the
   // theme focus ring
-  ui->ctx.theme.btn_focus_ring = asw::Color{0, 0, 0, 0};
+  ui->ctx.theme.focus_ring.width = 0;
+
+  ui->ctx.navigation = controls::navigation();
+  ui->on_back = [this]() { manager.set_next_scene(States::Menu); };
 
   const auto add_button = [this](const std::string& image,
                                  const std::string& hover_image,
@@ -128,15 +131,16 @@ void Game::update(float dt) {
       gameState = GameState::WIN;
       gameTimeRunning = false;
     }
+
+    if (asw::input::get_action_down(controls::UI_BACK)) {
+      manager.set_next_scene(States::Menu);
+    }
   }
 
-  // Win or lose
-  else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
-    controls::update_ui(*ui);
-  }
-
-  if (asw::input::get_action_down(controls::UI_BACK)) {
-    manager.set_next_scene(States::Menu);
+  // Win or lose: only the play again buttons take input, so a click on them
+  // never reaches the minefield. Back goes to the menu through ui->on_back.
+  else {
+    ui->update();
   }
 }
 
