@@ -49,6 +49,7 @@ class Cell : public asw::game::Sprite {
 
   // Images
   static std::array<asw::Texture, 12> images;
+  static std::string images_directory;
 };
 
 #endif

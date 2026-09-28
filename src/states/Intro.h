@@ -20,10 +20,9 @@ class Intro : public asw::scene::Scene<States> {
   void init() override;
   void update(float dt) override;
   void draw() override;
-  void cleanup() override {};
 
  private:
-  float timer;
+  float timer{0.0F};
 
   std::shared_ptr<asw::game::Sprite> intro;
   std::shared_ptr<asw::game::Sprite> title;

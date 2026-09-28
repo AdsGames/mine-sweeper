@@ -4,6 +4,8 @@
 
 // Constructor
 void Intro::init() {
+  timer = 0.0F;
+
   // Intro
   intro = create_object<asw::game::Sprite>();
   intro->set_texture(asw::assets::load_texture("assets/images/intro.png"));

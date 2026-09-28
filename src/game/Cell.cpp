@@ -7,18 +7,21 @@
 
 // Shared images
 std::array<asw::Texture, 12> Cell::images = {nullptr};
+std::string Cell::images_directory;
 
 // Create
 Cell::Cell(const asw::Quad<float>& transform) {
   this->transform = transform;
 
-  // Load images
-  if (images.at(0).get() == nullptr) {
-    std::string directory = "assets/images/blocks_small/";
+  // Load images, again if the difficulty needs the other image set
+  std::string directory = "assets/images/blocks_small/";
 
-    if (game_difficulty == 0) {
-      directory = "assets/images/blocks/";
-    }
+  if (game_difficulty == 0) {
+    directory = "assets/images/blocks/";
+  }
+
+  if (directory != images_directory) {
+    images_directory = directory;
 
     for (int i = 0; i < 12; i++) {
       images.at(i) =

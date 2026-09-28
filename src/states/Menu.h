@@ -19,5 +19,4 @@ class Menu : public asw::scene::Scene<States> {
   void init() override;
   void update(float dt) override;
   void draw() override;
-  void cleanup() override {};
 };
