@@ -7,8 +7,8 @@
 #pragma once
 
 #include <asw/asw.h>
+#include <memory>
 
-#include "../ui/Button.h"
 #include "./State.h"
 
 class Menu : public asw::scene::Scene<States> {
@@ -19,4 +19,7 @@ class Menu : public asw::scene::Scene<States> {
   void init() override;
   void update(float dt) override;
   void draw() override;
+
+ private:
+  std::unique_ptr<asw::ui::Root> ui;
 };

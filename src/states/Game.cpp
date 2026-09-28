@@ -1,8 +1,11 @@
 #include "./Game.h"
 
-#include "../globals.h"
-
 #include <asw/asw.h>
+#include <memory>
+#include <string>
+
+#include "../Controls.h"
+#include "../globals.h"
 
 // Init game state
 void Game::init() {
@@ -13,26 +16,32 @@ void Game::init() {
 
   field = Minefield();
 
-  menuYes = Button();
-  menuYes.transform.position = asw::Vec2<float>(36, 73);
-
-  menuNo = Button();
-  menuNo.transform.position = asw::Vec2<float>(68, 72);
-
   gameTime = 0.0F;
   gameTimeRunning = false;
   lastBeepTime = 0;
   gameState = GameState::GAME;
   sound = true;
 
-  // Buttons
-  menuYes.setImages("assets/images/buttons/button_yes.png",
-                    "assets/images/buttons/button_yes_hover.png");
-  menuYes.setOnClick([this]() { manager.set_next_scene(States::Game); });
+  // Play again buttons, image only: the hover image shows focus, so hide the
+  // focus ring
+  ui = std::make_unique<asw::ui::Root>();
+  ui->ctx.navigation = controls::navigation();
+  ui->ctx.theme.focus_ring.width = 0;
+  ui->on_back = [this]() { manager.set_next_scene(States::Menu); };
 
-  menuNo.setImages("assets/images/buttons/button_no.png",
-                   "assets/images/buttons/button_no_hover.png");
-  menuNo.setOnClick([this]() { manager.set_next_scene(States::Menu); });
+  auto& yes = ui->root.add_child<asw::ui::Button>();
+  yes.set_images(
+      asw::assets::load_texture("assets/images/buttons/button_yes.png"),
+      asw::assets::load_texture("assets/images/buttons/button_yes_hover.png"));
+  yes.transform.position = asw::Vec2<float>(36, 73);
+  yes.on_click = [this]() { manager.set_next_scene(States::Game); };
+
+  auto& no = ui->root.add_child<asw::ui::Button>();
+  no.set_images(
+      asw::assets::load_texture("assets/images/buttons/button_no.png"),
+      asw::assets::load_texture("assets/images/buttons/button_no_hover.png"));
+  no.transform.position = asw::Vec2<float>(68, 72);
+  no.on_click = [this]() { manager.set_next_scene(States::Menu); };
 
   // Create minefield
   switch (game_difficulty) {
@@ -78,7 +87,7 @@ void Game::update(float dt) {
     }
 
     // Revealing
-    if (asw::input::get_mouse_button_down(asw::input::MouseButton::Left)) {
+    if (asw::input::get_action_down(controls::REVEAL)) {
       const int type = field.reveal(mouse.position.x, mouse.position.y);
 
       // Start timer on the first reveal
@@ -96,8 +105,7 @@ void Game::update(float dt) {
     }
 
     // Flagging
-    else if (asw::input::get_mouse_button_down(
-                 asw::input::MouseButton::Right)) {
+    else if (asw::input::get_action_down(controls::FLAG)) {
       field.toggleFlag(mouse.position.x, mouse.position.y);
     }
 
@@ -107,16 +115,16 @@ void Game::update(float dt) {
       gameState = GameState::WIN;
       gameTimeRunning = false;
     }
+
+    if (asw::input::get_action_down(controls::UI_BACK)) {
+      manager.set_next_scene(States::Menu);
+    }
   }
 
-  // Win or lose
-  else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
-    menuNo.update(dt);
-    menuYes.update(dt);
-  }
-
-  if (asw::input::get_key_down(asw::input::Key::Escape)) {
-    manager.set_next_scene(States::Menu);
+  // Win or lose: only the play again buttons take input, so a click on them
+  // never reaches the minefield. Back goes to the menu through ui->on_back.
+  else {
+    ui->update();
   }
 }
 
@@ -134,7 +142,6 @@ void Game::draw() {
     }
 
     // Buttons
-    menuYes.draw();
-    menuNo.draw();
+    ui->draw();
   }
 }

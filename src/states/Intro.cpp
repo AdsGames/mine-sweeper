@@ -2,6 +2,8 @@
 
 #include <asw/asw.h>
 
+#include "../Controls.h"
+
 // Constructor
 void Intro::init() {
   timer = 0.0F;
@@ -38,7 +40,9 @@ void Intro::update(float dt) {
         asw::util::lerp(1.0F, 0.0F, static_cast<float>(timer - 2.8F) / 0.2F);
   }
 
-  if (timer >= 3.0F || keyboard.any_pressed) {
+  if (timer >= 3.0F || keyboard.any_pressed ||
+      asw::input::get_action_down(controls::UI_CONFIRM) ||
+      asw::input::get_action_down(controls::UI_BACK)) {
     manager.set_next_scene(States::Menu);
   }
 }

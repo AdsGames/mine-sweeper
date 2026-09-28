@@ -11,6 +11,7 @@
 #include <emscripten.h>
 #endif
 
+#include "Controls.h"
 #include "states/Game.h"
 #include "states/Init.h"
 #include "states/Intro.h"
@@ -22,6 +23,7 @@ int main() {
   // Setup basic functionality
   asw::core::init(128, 128, 4);
   asw::core::print_info();
+  controls::bind();
 
   // Register scenes
   asw::scene::SceneManager<States> app;

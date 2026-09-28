@@ -8,8 +8,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <memory>
+
 #include "../game/Minefield.h"
-#include "../ui/Button.h"
 #include "./State.h"
 
 enum class GameState { GAME, WIN, LOSE };
@@ -36,9 +37,8 @@ class Game : public asw::scene::Scene<States> {
   // Minefield
   Minefield field;
 
-  // Buttons
-  Button menuYes;
-  Button menuNo;
+  // Play again buttons
+  std::unique_ptr<asw::ui::Root> ui;
 
   // Game timer
   float gameTime;

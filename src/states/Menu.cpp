@@ -1,8 +1,12 @@
 #include "./Menu.h"
 
 #include <asw/asw.h>
+#include <functional>
 #include <memory>
+#include <string>
+#include <utility>
 
+#include "../Controls.h"
 #include "../globals.h"
 
 void Menu::init() {
@@ -18,50 +22,45 @@ void Menu::init() {
       asw::assets::load_texture("assets/images/main_menu.png"));
 
   // Buttons
-  auto start_easy = create_object<Button>();
-  start_easy->transform.position = asw::Vec2<float>(25, 45);
-  start_easy->setImages("assets/images/buttons/start_easy.png",
-                        "assets/images/buttons/start_easy_hover.png");
-  start_easy->setOnClick([this]() {
-    game_difficulty = 0;
-    this->manager.set_next_scene(States::Game);
-  });
+  ui = std::make_unique<asw::ui::Root>();
+  ui->ctx.navigation = controls::navigation();
+  ui->on_back = []() { asw::core::exit(); };
 
-  auto start_medium = create_object<Button>();
-  start_medium->transform.position = asw::Vec2<float>(25, 60);
-  start_medium->setImages("assets/images/buttons/start_medium.png",
-                          "assets/images/buttons/start_medium_hover.png");
-  start_medium->setOnClick([this]() {
-    game_difficulty = 1;
-    manager.set_next_scene(States::Game);
-  });
+  // Image only buttons: the hover image shows focus, so hide the focus ring
+  ui->ctx.theme.focus_ring.width = 0;
 
-  auto start_hard = create_object<Button>();
-  start_hard->transform.position = asw::Vec2<float>(25, 75);
-  start_hard->setImages("assets/images/buttons/start_hard.png",
-                        "assets/images/buttons/start_hard_hover.png");
-  start_hard->setOnClick([this]() {
-    game_difficulty = 2;
-    manager.set_next_scene(States::Game);
-  });
+  const auto add_button = [this](const std::string& name,
+                                 const asw::Vec2<float>& position,
+                                 std::function<void()> on_click) {
+    const std::string path = "assets/images/buttons/" + name;
+    auto& button = ui->root.add_child<asw::ui::Button>();
+    button.set_images(asw::assets::load_texture(path + ".png"),
+                      asw::assets::load_texture(path + "_hover.png"));
+    button.transform.position = position;
+    button.on_click = std::move(on_click);
+  };
 
-  auto quit = create_object<Button>();
-  quit->transform.position = asw::Vec2<float>(25, 90);
-  quit->setImages("assets/images/buttons/quit.png",
-                  "assets/images/buttons/quit_hover.png");
-  quit->setOnClick([]() { asw::core::exit(); });
+  const auto start = [this](int difficulty) {
+    return [this, difficulty]() {
+      game_difficulty = difficulty;
+      manager.set_next_scene(States::Game);
+    };
+  };
+
+  add_button("start_easy", asw::Vec2<float>(25, 45), start(0));
+  add_button("start_medium", asw::Vec2<float>(25, 60), start(1));
+  add_button("start_hard", asw::Vec2<float>(25, 75), start(2));
+  add_button("quit", asw::Vec2<float>(25, 90), []() { asw::core::exit(); });
 }
 
 // Update game
 void Menu::update(float dt) {
   Scene::update(dt);
-
-  if (asw::input::get_key_down(asw::input::Key::Escape)) {
-    asw::core::exit();
-  }
+  ui->update();
 }
 
 // Draw to screen
 void Menu::draw() {
   Scene::draw();
+  ui->draw();
 }
