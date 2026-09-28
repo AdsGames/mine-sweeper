@@ -3,6 +3,7 @@
 #include <asw/asw.h>
 #include <memory>
 
+#include "../Controls.h"
 #include "../globals.h"
 #include "../ui/ImageButton.h"
 
@@ -48,9 +49,9 @@ void Menu::init() {
 // Update game
 void Menu::update(float dt) {
   Scene::update(dt);
-  ui->update();
+  controls::update_ui(*ui);
 
-  if (asw::input::get_key_down(asw::input::Key::Escape)) {
+  if (asw::input::get_action_down(controls::UI_BACK)) {
     asw::core::exit();
   }
 }

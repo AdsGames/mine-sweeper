@@ -2,6 +2,7 @@
 
 #include <asw/asw.h>
 
+#include "../Controls.h"
 #include "../globals.h"
 #include "../ui/ImageButton.h"
 
@@ -79,7 +80,7 @@ void Game::update(float dt) {
     }
 
     // Revealing
-    if (asw::input::get_mouse_button_down(asw::input::MouseButton::Left)) {
+    if (asw::input::get_action_down(controls::REVEAL)) {
       const int type = field.reveal(mouse.position.x, mouse.position.y);
 
       // Start timer on the first reveal
@@ -97,8 +98,7 @@ void Game::update(float dt) {
     }
 
     // Flagging
-    else if (asw::input::get_mouse_button_down(
-                 asw::input::MouseButton::Right)) {
+    else if (asw::input::get_action_down(controls::FLAG)) {
       field.toggleFlag(mouse.position.x, mouse.position.y);
     }
 
@@ -112,10 +112,10 @@ void Game::update(float dt) {
 
   // Win or lose
   else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
-    ui->update();
+    controls::update_ui(*ui);
   }
 
-  if (asw::input::get_key_down(asw::input::Key::Escape)) {
+  if (asw::input::get_action_down(controls::UI_BACK)) {
     manager.set_next_scene(States::Menu);
   }
 }
