@@ -1,8 +1,9 @@
 #include "./Game.h"
 
-#include "../globals.h"
-
 #include <asw/asw.h>
+
+#include "../globals.h"
+#include "../ui/ImageButton.h"
 
 // Init game state
 void Game::init() {
@@ -13,12 +14,6 @@ void Game::init() {
 
   field = Minefield();
 
-  menuYes = Button();
-  menuYes.transform.position = asw::Vec2<float>(36, 73);
-
-  menuNo = Button();
-  menuNo.transform.position = asw::Vec2<float>(68, 72);
-
   gameTime = 0.0F;
   gameTimeRunning = false;
   lastBeepTime = 0;
@@ -26,13 +21,19 @@ void Game::init() {
   sound = true;
 
   // Buttons
-  menuYes.setImages("assets/images/buttons/button_yes.png",
-                    "assets/images/buttons/button_yes_hover.png");
-  menuYes.setOnClick([this]() { manager.set_next_scene(States::Game); });
+  const auto screen_size = asw::display::get_logical_size();
+  ui = std::make_unique<asw::ui::Root>();
+  ui->set_size(screen_size.x, screen_size.y);
 
-  menuNo.setImages("assets/images/buttons/button_no.png",
-                   "assets/images/buttons/button_no_hover.png");
-  menuNo.setOnClick([this]() { manager.set_next_scene(States::Menu); });
+  ui->root.add_child<ImageButton>(
+      "assets/images/buttons/button_yes.png",
+      "assets/images/buttons/button_yes_hover.png", asw::Vec2<float>(36, 73),
+      [this]() { manager.set_next_scene(States::Game); });
+
+  ui->root.add_child<ImageButton>(
+      "assets/images/buttons/button_no.png",
+      "assets/images/buttons/button_no_hover.png", asw::Vec2<float>(68, 72),
+      [this]() { manager.set_next_scene(States::Menu); });
 
   // Create minefield
   switch (game_difficulty) {
@@ -111,8 +112,7 @@ void Game::update(float dt) {
 
   // Win or lose
   else if (gameState == GameState::WIN || gameState == GameState::LOSE) {
-    menuNo.update(dt);
-    menuYes.update(dt);
+    ui->update();
   }
 
   if (asw::input::get_key_down(asw::input::Key::Escape)) {
@@ -134,7 +134,6 @@ void Game::draw() {
     }
 
     // Buttons
-    menuYes.draw();
-    menuNo.draw();
+    ui->draw();
   }
 }
